@@ -11,4 +11,3 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 For more information, please refer to <http://unlicense.org>
 You'll have a chance to review before committing a LICENSE file to a new branch or the root of your project.
 
- Review and submit
