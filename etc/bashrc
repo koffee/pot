@@ -92,8 +92,9 @@ show() { ## FUN ## display definition of FUN ## shell
   type $1
 }
 doco() {
-	find . -name '*md' -exec $Here/etc/para1 {} \;
+	find . -name '*md'        -exec $Here/etc/para1 {} \;
 	find . -name '*coffee.md' -exec $Here/etc/para1 {} \;
+	find . -name '*litcoffee' -exec $Here/etc/para1 {} \;
 }
 oks() { ## ## run all the Xok.coffee.md files ## programming
   ls ${Here}/lib/*ok.lua | 
