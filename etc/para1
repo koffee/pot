@@ -13,10 +13,13 @@ ______
 EOF
 }
 
-header
+f="/tmp/$$.out"
+
+header > $f
+
 gawk '
       { body = body || $0 ~ /^[ \t]*$/}
 body  { print }
-     '  $1 #> "/tmp/$$.out"
+     '  $1 >> $f
 
-#mv "/tmp/$$.out"  $1
+mv $f $1
