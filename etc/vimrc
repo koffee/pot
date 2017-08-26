@@ -1,0 +1,57 @@
+set nocompatible
+filetype off
+"set backupdir-=.
+"set backupdir^=~/tmp,/tmp
+"set nocompatible              " required
+""filetype off                  " required
+"filetype plugin indent on
+set modelines=3
+set scrolloff=3
+set autoindent
+"set hidden "remember ls
+"set wildmenu
+"set wildmode=list:longest
+set visualbell
+set ttyfast
+set backspace=indent,eol,start
+"set laststatus=2
+set splitbelow
+"set filetype=lua ts=2 sw=2 sts=2 expandtab
+""ascii mouse
+set mouse=a
+"""place buffer name into window title
+set title
+"show line numbers
+set number
+""" auto-change directory to that of the current buffer
+"autocmd BufEnter * cd %:p:h
+"" Shows the matching bracket when entering expressions
+"" " (you'll never miss one again!)
+set showmatch
+set matchtime=15
+""set syntax=on
+""syntax enable
+""" Incremental search
+"" (as you type in the search query, it will show you
+"" " whether your query currently matches anything)
+set ignorecase
+set incsearch
+set smartcase
+set showmatch
+set hlsearch
+
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#rc()
+
+"Plugin 'kchmck/vim-coffee-script'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'jwhitley/vim-literate-coffeescript'
+"Plugin 'scrooloose/syntastic'
+Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'croaker/mustang-vim'
+Plugin 'enricobacis/vim-airline-clock'
+
+
+syntax enable
+filetype plugin indent on

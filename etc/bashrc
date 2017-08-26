@@ -1,0 +1,275 @@
+#!/bin/bash
+# -*- sh -*-
+
+spell() { ## FILE.md ## spell check FILE.md ## editor
+  aspell -H -c $1
+}
+newdle() { ## ## update vim bundles ## editor
+   cd $HOME/.vim/bundle
+   for i in *; do (echo -en "$i\t\t "; cd $i; git pull); done
+   cd $Koffeed
+}
+sniped() { ## ## edit snippets file ## editor
+    vi /Users/timm/.vim/bundle/vim-snippets/snippets/coffee/coffee.snippets
+}
+snips() { ## ## show snippets file ## editor
+    cat vi /Users/timm/.vim/bundle/vim-snippets/snippets/coffee/coffee.snippets
+}
+load() { ## ## reload environment ## shell
+ . $Koffeed/etc/bashrc
+}
+init() { ## ## install KOFFEE (need only be run once) ## :init
+  cd $Koffeed
+  if [ "$(uname)" == "Darwin" ]; then
+      /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  fi
+  sudo easy_install Pygments
+  [[ ! (-x "$(command -v npm)") ]] && brew install npm
+  [[ ! (-x "$(command -v coffee)") ]] && npm install -g coffeescript
+  [[ ! (-x "$(command -v gawk)") ]] && brew install gawk
+  for f in vim git aspell graphviz make ctags gawk mc htop ranger asciiquarium cmatrix ; do
+    if which $f; then true; else 
+     if [ "$(uname)" == "Darwin" ]; then
+        brew install $f
+     elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+        sudo apt-get install $f
+     elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
+        choco install $f
+     elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
+        choco install $f
+     fi 
+   fi
+  done
+  if  [ ! -d "$HOME/.vim/bundle/Vundle.vim" ]; then
+    git clone https://github.com/VundleVim/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim
+    vim -u "$Koffeed/etc/vimrc" -c 'PluginInstall' -c 'qa!'
+  fi
+  if [ ! -f "$Koffeed/.gitignore" ]; then
+     cat <<EOF > "$Koffeed/.gitignore"
+#vimstuff
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+*.un~
+Session.vim
+netrwhist
+*~
+# sed stuff
+*.bak
+# doc stuff
+docs
+locco
+# mac stuff
+.DS_Store
+# testing stuff
+_allok.lua
+* coffeescript stuff
+raw
+presentation
+test.coffee
+test*.coffee
+test.litcoffee
+test*.litcoffee
+test/*.js
+parser.output
+/node_modules
+npm-debug.log*
+EOF
+  git add $Koffeed/.gitignore
+  fi
+  gitting
+  echo "you should run commands like the following..."
+  type timm
+}
+vi() { ## FILE ## edit files using the KOFFEE config stuff ## editor
+    vim -u "$Koffeed/etc/vimrc" $*
+    echo "Done!"
+}
+ok() { ## STEM ## shorthand for koffee STEMok.litcoffee ## programming
+  coffee ${1}ok.litcoffee
+}
+show() { ## FUN ## display definition of FUN ## shell
+  type $1
+}
+doco() {
+	find . -name '*md' -exec $Koffeed/etc/para1 {} \;
+	find . -name '*litcoffee' -exec $Koffeed/etc/para1 {} \;
+}
+oks() { ## ## run all the Xok.litcoffee files ## programming
+  ls ${Koffeed}/lib/*ok.lua | 
+  grep -v _allok |
+  gawk '{sub(/.lua/,"",$0) 
+         sub(/^.*\//,"",$0)
+         print " print(); print() " 
+         print "local THiss=\""$0"\"" 
+         print "local BAr=\"-----------------------------------\"" 
+         print " print(BAr .. BAr .. BAr)" 
+         print " print(\"-- \" .. THiss) " 
+         print " print(BAr .. BAr .. BAr)"  
+         print " print(); print(); " 
+         print " require \"" $0 "\""}' > ${Koffeed}/lib/_allok.lua
+  cd ${Koffeed}/lib
+  koffee _allok.litcoffee
+  rm  _allok.litcoffee
+  cd $Koffeed
+}
+bye() { ## ## push all to on-line repo ## git
+  gitting
+	git status
+	git commit -am "saving"
+ git push origin master
+}
+hi() { ## ## pull updates from on-line repo ## git
+  gitting
+	git push origin master
+}
+gitting() {
+	git config --global credential.helper cache
+	git config credential.helper 'cache --timeout=3600'
+	git config --global push.default simple
+}
+timm() { ## ## Private: sets up this repo for timm ## git
+	git config --global user.name "Tim Menzies"
+	git config --global user.email tim.menzies@gmail.com
+}
+legal() { ## ## show copyright notice ## misc
+  cat $Koffeed/LICENSE.md
+}
+help() { ## ## show help ## misc
+  [[ ! (-x "$(command -v gawk)") ]] && brew install gawk
+  echo "${blue}"
+  grep '##' $Koffeed/etc/bashrc | 
+  sort -t\# -k 7  | 
+  grep -v 'grep' |
+  gawk '  function trim(x) {
+            sub(/^[ \t]*/,"",x)
+            sub(/[ \t]*$/,"",x)
+            return x
+          }
+           BEGIN  { FS="##" }  
+          /BEGIN/ { next    }
+          { for(i=1;i<=NF;i++)
+               $i=trim($i)
+            pad="       "
+            gsub(/:/,"",$NF)
+            pre=  $NF==last ? pad : "\n" toupper($NF)":\n" pad
+            last=$NF 
+            gsub(/[(){]/,"",$1)
+            opts= NF==4 ? $2 : ""
+            text= NF==4 ? $3 : $2
+	    if ($3)
+	       printf("%s%-8s%-10s%s\n",pre,$1,opts,text)}
+              '
+  echo -n "${white}"
+}
+quit() { ## ## exit ## shell
+  exit
+}
+alexy() { ## ## about Alexy Leonev ## misc
+  cat<<-EOF | fmt -60
+  
+	"The stars and the sun are everywhere… I did not expect all this.
+	The silence struck me. I could hear my heart beating so clearly. 
+        I could hear my breath – it even hurt to think."
+
+	 -- Alexy Leonev
+
+	On March 18, 1965, Alexey Leonov stepped outside the thin
+	metal shell of Voskhod-2 to float in the harsh void of
+	space. For 12 minutes and 9 seconds, Leonov opened the doors
+	on an entire new branch of exploration as the first
+	spacewalker. It was nearly a disaster.
+	
+	Leonov’s spacesuit had bloated and stiffened in the vacuum,
+	and was too large and inflexible to reenter the airlock.  He
+	opened a valve to slowly release oxygen, depressurizing his
+	suit until it was small enough to squeeze within the
+	relative safety of the spacecraft.
+	
+	His bad luck continued with a harrowing end to the Voskhod-2
+	mission. The craft malfunctioned during reentry and the
+	automatic re-entry system failed to fire, sending them
+	wildly off-course. Worse still, the orbital module failed to
+	separate, sending them tumbling. When they finally reached
+	solid ground, Leonov and fellow creman Belyayev were greeted
+	by wolves and bears when the spacecraft dropped them in the
+	middle of a thick forest during a snowstorm.
+	
+	It was mating season, so the wolves and bears were even more
+	aggressive than usual. The forest was too thick for a rescue
+	helicopter to land. They’d opened the hatch with explosive
+	bolts on landing, leaving the cosmonauts exposed to the
+	storm and subzero temperatures. The electrical system
+	malfunctioned, knocking out the heater while the fans ran at
+	full blast. Sweat in their spacesuits threatened to freeze,
+	forcing them to wring the suits out to prevent frostbite. A
+	rescue party on skis finally reached them the second day,
+	chopping wood for a small log cabin and an enormous bonfire.
+	Most importantly, the rescuers brought brandy to celebrate
+	the triumphant mission. The next morning, the cosmonauts
+	skied several kilometres to a pickup location.
+	
+	Postscript: At the time of this writing (August 2017), he is
+	still alive and kicking. Clearly, nothing can kill this guy.
+
+	EOF
+}
+here() { cd $1; basename "$PWD"; }
+
+koffee() { ## FILE ## call "luajit FILE" in this environment (.lua optional) ## lua
+  coffee -M $*
+}
+setup() {
+#  echo -e "\033]6;1;bg;red;brightness;40\a"
+#  echo -e "\033]6;1;bg;green;brightness;44\a"
+#  echo -e "\033]6;1;bg;blue;brightness;52\a"
+  alias ls='ls -G'
+  export LESS='-R'
+  export LESSOPEN='|$Koffeed/etc/lessfilter %s'
+  Tag="KOFFEE"
+  Img="https://github.com/src/blob/master/img"
+  _c1="\[\033[01;32m\]"
+  _c2="\[\033[01;34m\]"
+  _c3="\[\033[31m\]"
+  _c6="\033[33m"
+  _c5="\[\033[35m\]$"
+  _c0="\[\033[00m\]"
+  _c7="[\033]01;19\]"
+  red=$(tput setaf 1)
+  blue=$(tput setaf 6)
+  ltyl=$(tput setaf 11)
+  white=$(tput setaf 15)
+}
+promptcom() {
+  PROMPT_COMMAND='echo  -ne "${_c6}${Tag}\033]0;$(here ../..)/$(here ..)/$(here .)\007";PS1="${_c1}(\A) $(here ../..)/$_c2$(here ..)/$_c3$(here .) ${_c6}\!>${_c0}\e[m "'
+} 
+banner() {
+  echo -n "${ltyl}" 
+  cat <<'EOF'
+
+         {       
+      {   }                Should I kill myself?
+       }_{ __{             Or have a cup of coffee?
+    .-{   }   }-.          -- Albert Camus
+   (   }     {   )         
+   |`-.._____..-'|         A morning without 
+   |             ;--.      coffee is like sleep.
+   |            (__  \     -- Unknown  
+   |             | )  )    
+   |             |/  /     What goes best with
+   |             /  /      coffee? Another cup.
+   |            (  /       -- Henry Rollins
+   \             y'   
+    `-.._____..-'  -Feix Lee      
+EOF
+echo -n "${white}"
+}
+##########################################################
+# start up actions
+setup
+promptcom
+if [ -f "$HOME/.config/koffee/config" ]; then
+  . "$HOME/.config/kofee/config"
+fi
+banner
+help
+
