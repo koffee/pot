@@ -7,8 +7,9 @@
 ______
 
 # Literate CoffeeScript
-#
+
 ## This is a first example of writing a markdown file with literate coffeescript
+
 [Literate coffeescript](http://coffeescript.org/#literate), let you
 mix Markdown syntax with plain coffeescript.
 
