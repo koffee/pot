@@ -1,21 +1,19 @@
-    #
-    #    fs = require 'fs'
-    #    
-    #    say =  (f) -> console.log(f)
-    #
-    #    lines = (f) ->
-    #      for line in fs.readFileSync(f).toString().split '\n'
-    #        yield line
-    #      return
-    #
-    #
-    #    read1 = (f, fn) ->
-    #       fs.readFile f, "utf8",  (err, data) ->
-    #         if data?
-    #           fn console.log("[" + data.toString() + "]")
-    #
-    fs = require 'fs'
-    byline = require 'readline-stream'
+[home](http://tiny.cc/koff) |
+[copyright](https://github.com/koffee/script/blob/master/LICENSE.md) &copy;2017, tim&commat;menzies.us<br>
+[<img width=900 src=https://raw.githubusercontent.com/koffee/script/master/img/head.png>](http://tiny.cc/koffee)<br>
+[src](https://github.com/koffee/script/tree/master/lib) |
+[tour](https://github.com/koffee/script/blob/master/docs/TOUR.md) |
+[style](https://github.com/koffee/script/blob/master/docs/STYLE.md) 
+
+
+
+
+
+
+
+
+
+
 
     stream = fs.createReadStream('aa.coffee.md')
     stream = stream.pipe(ReadlineStream())
