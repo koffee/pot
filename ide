@@ -1,1 +1,2 @@
+#!/usr/bin/env bash
 Here=$(pwd) bash --init-file etc/bashrc -i

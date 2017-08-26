@@ -5,7 +5,7 @@ x
 Knuth and Lewis' improvements to Park and Miller's LCPRNG
 if created without a seed, uses current time as seed
 
-    class @rand
+    class rand
       @seed0: 10013
       @mult:  16807
       @mod:   2147483647
@@ -29,3 +29,6 @@ if created without a seed, uses current time as seed
         i = Math.floor 97*x
         [ x,@some[i] ] = [ @some[i],x ]
         x
+
+    this.rand = rand
+

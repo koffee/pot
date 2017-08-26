@@ -5,18 +5,18 @@ spell() { ## FILE.md ## spell check FILE.md ## editor
   aspell -H -c $1
 }
 newdle() { ## ## update vim bundles ## editor
-   cd $HOME/.vim/bundle
-   for i in *; do (echo -en "$i\t\t "; cd $i; git pull); done
-   cd $Here
+  cd $HOME/.vim/bundle
+  for i in *; do (echo -en "$i\t\t "; cd $i; git pull); done
+  cd $Here
 }
 sniped() { ## ## edit snippets file ## editor
-    vi /Users/timm/.vim/bundle/vim-snippets/snippets/coffee/coffee.snippets
+  vi /Users/timm/.vim/bundle/vim-snippets/snippets/coffee/coffee.snippets
 }
 snips() { ## ## show snippets file ## editor
-    cat vi /Users/timm/.vim/bundle/vim-snippets/snippets/coffee/coffee.snippets
+  cat vi /Users/timm/.vim/bundle/vim-snippets/snippets/coffee/coffee.snippets
 }
 load() { ## ## reload environment ## shell
- . $Here/etc/bashrc
+  . $Here/etc/bashrc
 }
 init() { ## ## install KOFFEE (need only be run once) ## :init
   cd $Here
