@@ -39,7 +39,7 @@ set incsearch
 set smartcase
 set showmatch
 set hlsearch
-
+set filetype=litcoffee ts=2 sw=2 sts=2 expandtab
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#rc()
 
