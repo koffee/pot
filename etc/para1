@@ -17,7 +17,7 @@ f="/tmp/$$.out"
 header > $f
 
 gawk '
-      { body = body || $0 ~ /^[ \t]*$/}
+      { body = body || $0 ~ /^[ \t]*$/; next}
 body  { print }
      '  $1 >> $f
 

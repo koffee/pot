@@ -27,6 +27,7 @@ init() { ## ## install KOFFEE (need only be run once) ## :init
   [[ ! (-x "$(command -v npm)") ]] && brew install npm
   [[ ! (-x "$(command -v coffee)") ]] && npm install -g coffeescript
   [[ ! (-x "$(command -v gawk)") ]] && brew install gawk
+  npm install -g readline
   for f in vim git aspell graphviz make ctags gawk mc htop ranger asciiquarium cmatrix ; do
     if which $f; then true; else 
      if [ "$(uname)" == "Darwin" ]; then
@@ -215,8 +216,8 @@ alexy() { ## ## about Alexy Leonev ## misc
 }
 here() { cd $1; basename "$PWD"; }
 
-koffee() { ## FILE ## call "luajit FILE" in this environment (.lua optional) ## lua
-  coffee -M $*
+k() { ## FILE ## call "luajit FILE" in this environment (.lua optional) ## lua
+  coffee -M $1.coffee.md
 }
 setup() {
 #  echo -e "\033]6;1;bg;red;brightness;40\a"
