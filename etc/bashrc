@@ -7,7 +7,7 @@ spell() { ## FILE.md ## spell check FILE.md ## editor
 newdle() { ## ## update vim bundles ## editor
    cd $HOME/.vim/bundle
    for i in *; do (echo -en "$i\t\t "; cd $i; git pull); done
-   cd $Koffeed
+   cd $Here
 }
 sniped() { ## ## edit snippets file ## editor
     vi /Users/timm/.vim/bundle/vim-snippets/snippets/coffee/coffee.snippets
@@ -16,10 +16,10 @@ snips() { ## ## show snippets file ## editor
     cat vi /Users/timm/.vim/bundle/vim-snippets/snippets/coffee/coffee.snippets
 }
 load() { ## ## reload environment ## shell
- . $Koffeed/etc/bashrc
+ . $Here/etc/bashrc
 }
 init() { ## ## install KOFFEE (need only be run once) ## :init
-  cd $Koffeed
+  cd $Here
   if [ "$(uname)" == "Darwin" ]; then
       /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   fi
@@ -42,10 +42,10 @@ init() { ## ## install KOFFEE (need only be run once) ## :init
   done
   if  [ ! -d "$HOME/.vim/bundle/Vundle.vim" ]; then
     git clone https://github.com/VundleVim/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim
-    vim -u "$Koffeed/etc/vimrc" -c 'PluginInstall' -c 'qa!'
+    vim -u "$Here/etc/vimrc" -c 'PluginInstall' -c 'qa!'
   fi
-  if [ ! -f "$Koffeed/.gitignore" ]; then
-     cat <<EOF > "$Koffeed/.gitignore"
+  if [ ! -f "$Here/.gitignore" ]; then
+     cat <<EOF > "$Here/.gitignore"
 #vimstuff
 [._]*.s[a-w][a-z]
 [._]s[a-w][a-z]
@@ -67,35 +67,35 @@ raw
 presentation
 test.coffee
 test*.coffee
-test.litcoffee
-test*.litcoffee
+test.coffee.md
+test*.coffee.md
 test/*.js
 parser.output
 /node_modules
 npm-debug.log*
 EOF
-  git add $Koffeed/.gitignore
+  git add $Here/.gitignore
   fi
   gitting
   echo "you should run commands like the following..."
   type timm
 }
 vi() { ## FILE ## edit files using the KOFFEE config stuff ## editor
-    vim -u "$Koffeed/etc/vimrc" $*
+    vim -u "$Here/etc/vimrc" $*
     echo "Done!"
 }
-ok() { ## STEM ## shorthand for koffee STEMok.litcoffee ## programming
-  coffee ${1}ok.litcoffee
+ok() { ## STEM ## shorthand for koffee STEMok.coffee.md ## programming
+  coffee ${1}ok.coffee.md
 }
 show() { ## FUN ## display definition of FUN ## shell
   type $1
 }
 doco() {
-	find . -name '*md' -exec $Koffeed/etc/para1 {} \;
-	find . -name '*litcoffee' -exec $Koffeed/etc/para1 {} \;
+	find . -name '*md' -exec $Here/etc/para1 {} \;
+	find . -name '*coffee.md' -exec $Here/etc/para1 {} \;
 }
-oks() { ## ## run all the Xok.litcoffee files ## programming
-  ls ${Koffeed}/lib/*ok.lua | 
+oks() { ## ## run all the Xok.coffee.md files ## programming
+  ls ${Here}/lib/*ok.lua | 
   grep -v _allok |
   gawk '{sub(/.lua/,"",$0) 
          sub(/^.*\//,"",$0)
@@ -106,11 +106,11 @@ oks() { ## ## run all the Xok.litcoffee files ## programming
          print " print(\"-- \" .. THiss) " 
          print " print(BAr .. BAr .. BAr)"  
          print " print(); print(); " 
-         print " require \"" $0 "\""}' > ${Koffeed}/lib/_allok.lua
-  cd ${Koffeed}/lib
-  koffee _allok.litcoffee
-  rm  _allok.litcoffee
-  cd $Koffeed
+         print " require \"" $0 "\""}' > ${Here}/lib/_allok.lua
+  cd ${Here}/lib
+  koffee _allok.coffee.md
+  rm  _allok.coffee.md
+  cd $Here
 }
 bye() { ## ## push all to on-line repo ## git
   gitting
@@ -132,12 +132,12 @@ timm() { ## ## Private: sets up this repo for timm ## git
 	git config --global user.email tim.menzies@gmail.com
 }
 legal() { ## ## show copyright notice ## misc
-  cat $Koffeed/LICENSE.md
+  cat $Here/LICENSE.md
 }
 help() { ## ## show help ## misc
   [[ ! (-x "$(command -v gawk)") ]] && brew install gawk
   echo "${blue}"
-  grep '##' $Koffeed/etc/bashrc | 
+  grep '##' $Here/etc/bashrc | 
   sort -t\# -k 7  | 
   grep -v 'grep' |
   gawk '  function trim(x) {
@@ -224,9 +224,9 @@ setup() {
 #  echo -e "\033]6;1;bg;blue;brightness;52\a"
   alias ls='ls -G'
   export LESS='-R'
-  export LESSOPEN='|$Koffeed/etc/lessfilter %s'
+  export LESSOPEN='|$Here/etc/lessfilter %s'
   Tag="KOFFEE"
-  Img="https://github.com/src/blob/master/img"
+  Img="https://github.com/koffee/script/blob/master/img"
   _c1="\[\033[01;32m\]"
   _c2="\[\033[01;34m\]"
   _c3="\[\033[31m\]"
@@ -245,7 +245,7 @@ promptcom() {
 banner() {
   echo -n "${ltyl}" 
   cat <<'EOF'
-
+                           KOFFEE / script v1.0
          {       
       {   }                Should I kill myself?
        }_{ __{             Or have a cup of coffee?
