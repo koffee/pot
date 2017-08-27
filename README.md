@@ -23,17 +23,17 @@ systems are blazzing fast, generate succinct models, and offer novel services th
 
 But there is no reference implementation contain all these ideas  in one place. 
 To fix that, I started [lualure](https://lualure.github.io/info/)
-and that looks promising. However...
+and that looked promising. However...
 
-- after a month of writing `local` in front of everything... 
-- and after reading worrying things about fragmentation of the LUA community [(in particular, about LUAJIT)](https://realmensch.org/2016/05/28/goodbye-lua/)
+- After a month of writing `local` in front of everything... 
+- And after reading worrying things about fragmentation of the LUA community [(in particular, about LUAJIT)](https://realmensch.org/2016/05/28/goodbye-lua/)...
 
 I went looking for another implementation method. I tried coffeescript back in 2010 and was afraid it would be a temporary
 fad.
 But since then:
 
-- the [coffeescript changelog](http://coffeescript.org/v2/#changelog)  remains active and healthy;
-- and the [language  keeps being updated](http://coffeescript.org/v2/#coffeescript-2);
+- The [coffeescript changelog](http://coffeescript.org/v2/#changelog)  remains active and healthy;
+- And the [language  keeps being updated](http://coffeescript.org/v2/#coffeescript-2);
 
 Also:
 
