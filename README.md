@@ -29,7 +29,8 @@ and that looked promising. However...
 - After a month of writing `local` in front of everything... 
 - And after reading worrying things about fragmentation of the LUA community [(in particular, about LUAJIT)](https://realmensch.org/2016/05/28/goodbye-lua/)...
 
-I went looking for another implementation method. I tried coffeescript back in 2010 and was afraid it would be a temporary
+... I went looking for another implementation method. I 
+dabbled in Coffeescript back in 2010 and was afraid it would be a temporary
 fad.
 But since then:
 
@@ -42,4 +43,5 @@ Also:
 - The literate programming tools in CS are so well integrated into my standard toolchain (Vim and Github) that I
   can't pass that up.
 
-So, I'm porting all the LUA stuff here.  
+So, I'm porting all the LUA stuff here (plus doing some extensions).
+Watch this space. 
