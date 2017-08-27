@@ -38,9 +38,8 @@ But since then:
 Also:
 
 - Coffeescript is just Javascript so as the JS community improves, so does CS;
-- The Coffeescript language [is just so sane](http://coffeescript.org/) and succinct;
-- Jekyll has quirks (e.g. slow updates to its cached pages)
-  and the literate programming tools in CS are so well integrated into my standard toolchain (Vim and Github).
-  Can't pass that up.
+- The Coffeescript language [is just so sane](http://coffeescript.org/) and [lib/rand.coffee.md](succinct);
+- The literate programming tools in CS are so well integrated into my standard toolchain (Vim and Github) that I
+  can't pass that up.
 
-So, I'm moving all the LUA stuff here.  
+So, I'm porting all the LUA stuff here.  
