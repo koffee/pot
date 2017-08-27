@@ -15,7 +15,7 @@ This generator a so-called 'Lehmer random number generator' which returns a pseu
 
 Also, the raw random number generator is wrapped in a 97 table to increase randomness.
 
-Standard usage
+## Standard usage
 
 ```coffeescript
 rand = require('./rand').rand
@@ -25,6 +25,8 @@ r= new rand
 for [1..10**1]
   console.log(r.next())
 ```
+
+## Code
 
     class rand
       @seed0: 10013
