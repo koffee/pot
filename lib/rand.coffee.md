@@ -13,8 +13,6 @@ This generator a so-called 'Lehmer random number generator' which returns a pseu
 
 - _Random Number Generators: Good Ones Are Hard To Find_ Steve Park and Keith Miller Communications of the ACM, October 1988
 
-Also, the raw random number generator is wrapped in a 97 table to increase randomness.
-
 ## Standard usage
 
 ```coffeescript
@@ -33,8 +31,9 @@ for [1..10**1]
       @mult:  16807
       @mod:   2147483647
 
-With this constructor, if initialized many times using `new rand`, it will generate the same sequence
-of random numbers each time.
+With this constructor, if initialized many times using `new rand` then, each time,
+it will generate the same sequence
+of random numbers.
 
       constructor: (n = rand.seed0) ->
         @reset(n)
@@ -57,7 +56,9 @@ Primitive generator:
         @seed = (rand.mult * @seed) % rand.mod
         @seed / rand.mod
 
-The generator you should call to get the next random number:
+The generator you should call to get the next random number. 
+As is recommended practice,
+the raw random number generator is wrapped in a 97 table to increase randomness.
 
       next: () ->
         @some = @some or (@one() for [1..97])
