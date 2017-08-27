@@ -15,9 +15,17 @@
       constructor: (file, action) ->
         [ @_useful, @cache ] = [ [],[] ]
         @action  = action
+
+If we can compile a string to a number, use that number. Else, use the string as-is.
+
       prep: (s) ->
         t = +s
         if Number.isNan(t) then s else t
+
+Kill white space and comments. If any line ends with "," then merge to the next line.
+Split the line into cells. Ignore any column that contains the magic `the.ignore` chanracter.
+Pass the un-ignored cells to the `@action` function.
+
       add: (s) ->
         s = s.replace csv./\s/g,''
         s = s.replace csv./#.*/,''
