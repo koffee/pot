@@ -11,6 +11,9 @@
     lines = require('./lines').lines
     the   = require('./the')
 
+`csv` does not store data. Rather, it parses lines of comma-seperated values
+and thows each line, one at a time, at `@action`.
+
     class csv
       constructor: (file, action) ->
         [ @_useful, @cache ] = [ [],[] ]
@@ -41,5 +44,7 @@ Pass the un-ignored cells to the `@action` function.
                 @_useful.push i unless the.ignore in cell
             if cells.length then
               action (@prep cells[i] for i in @_useful)
+
+## Expert control
 
     this.csv = csv
