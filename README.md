@@ -23,17 +23,18 @@ Recently we've had much success using "data miners" as sub-routines to achieve t
 
 
 But there is not reference implementation contain all these ideas  in one place. 
-To fix that, I started [lua](https://lualure.github.io/info/)
-and that looks promising. Hoewever...
+To fix that, I started [lualure](https://lualure.github.io/info/)
+and that looks promising. However...
 
-- a month of writing `local` in front of everything, 
-- after reading some worrying things about fragmentation of the LUA community [(in particular, about LUAJIT)](https://realmensch.org/2016/05/28/goodbye-lua/)
+- after a month of writing `local` in front of everything... 
+- and after reading worrying things about fragmentation of the LUA community [(in particular, about LUAJIT)](https://realmensch.org/2016/05/28/goodbye-lua/)
 
-I went looking for another implementation method. I tried coffeescript back in 2010 and was afraid it would be a one-night-stand fad.
-However, I was wrong:
+I went looking for another implementation method. I tried coffeescript back in 2010 and was afraid it would be a temporary
+fad.
+But since then:
 
-- the [coffeescript changelog](http://coffeescript.org/v2/#changelog)  looks healthy;
-- and the [language  keeps being update](http://coffeescript.org/v2/#coffeescript-2);
+- the [coffeescript changelog](http://coffeescript.org/v2/#changelog)  remains active and healthy;
+- and the [language  keeps being updated](http://coffeescript.org/v2/#coffeescript-2);
 
 Also:
 
@@ -43,4 +44,4 @@ Also:
   and the literate programming tools in CS are so well integrated into my standard toolchain (Vim and Github).
   Can't pass that up.
 
-Accordingly, I'm moving all the LUA stuff here.  
+So, I'm moving all the LUA stuff here.  
