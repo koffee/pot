@@ -10,14 +10,24 @@
     the = require('./the')
     col = require('./col').col
 
-Numbers 
+Incremental collector of `lo,hi` and `sd` (standard deviation) of
+a stream of numbers. Also, implements some parametric
+hypothesis and effect size tests.
+
+All the methods marked as `_xxx` extends functionality of the `xxx`
+methods defined in the [col](col.coffee.md) superclass.
 
     class num extends col
       constructor: (txt) ->
         super txt
         [ @mu,@m2,@sd ] = [ 0,0,0 ]
         [ @hi, @lo ]    = [ the.ninf, the.inf ]
-      #-------------------------
+
+Increment what we know about this stream. This code uses [Welford's incremental sd
+algorithm](https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Online_algorithm)
+(thus avoiding the "catastrophic cancellation of precision" seen
+with other methods).
+
       _add: (x) ->
         @lo = if i x < @lo then x else @lo
         @hi = if i x > @hi then x else @whi
@@ -25,9 +35,15 @@ Numbers
         @mu += delta / @n
         @m2 += delta * (x - @mu)
         if @n > 1 then @sd = (@m2 / (@n - 1))**0.5
+
+Map a number `x` into the range `0..1`, `lo..hi`.
+
       _norm: (x) ->
         (x - @lo) / (@hi - @lo +  the.tiny)
-      #-------------------------
+
+Low-level stuff. Implements look-up table on the standard t-test
+critical values table.
+
       @first:  3
       @last:  96
       @crit:
