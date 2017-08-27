@@ -11,23 +11,19 @@
     lines = require('./lines').lines
     the   = require('./the')
 
-`csv` does not store data. Rather, it parses lines of comma-seperated values
-and thows each line, one at a time, at `@action`.
+The `csv` class does not store data. Rather, it parses lines of
+comma-seperated values and thows each line, one at a time, at
+`@action`.
 
     class csv
       constructor: (file, action) ->
         [ @_useful, @cache ] = [ [],[] ]
         @action  = action
 
-If we can compile a string to a number, use that number. Else, use the string as-is.
-
-      prep: (s) ->
-        t = +s
-        if Number.isNan(t) then s else t
-
-Kill white space and comments. If any line ends with "," then merge to the next line.
-Split the line into cells. Ignore any column that contains the magic `the.ignore` chanracter.
-Pass the un-ignored cells to the `@action` function.
+Ignore any column that contains the magic `the.ignore` chanracter.
+Kill white space and comments. If any line ends with "," then merge
+to the next line.  Split the line into cells.  Pass the un-ignored
+cells to the `@action` function.
 
       add: (s) ->
         s = s.replace csv./\s/g,''
@@ -44,6 +40,13 @@ Pass the un-ignored cells to the `@action` function.
                 @_useful.push i unless the.ignore in cell
             if cells.length then
               action (@prep cells[i] for i in @_useful)
+
+As to prepping each cell in the line, if we can compile a string to a number,
+use that number. Else, use the string as-is.
+
+      prep: (s) ->
+        t = +s
+        if Number.isNan(t) then s else t
 
 ## Expert control
 
