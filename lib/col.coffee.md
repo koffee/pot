@@ -12,6 +12,8 @@ Implements some `mixin` behaviours where common patterns in
 method `xxx` is handled by subclass methods `_xxx`.
 
      the = require("./the")
+     
+     class @col
 
 All [`col`]s have:
 
@@ -19,9 +21,8 @@ All [`col`]s have:
 - `@w`: a weight of 1 (and some cols will be -1 if, eg., they are goals to minimize);
 - `@txt`: a text name.
 
-as defined below:
+as defined below by the following constructor:
 
-     class @col
        constructor: (txt) ->
          @n   = 0
          @w   = 1
