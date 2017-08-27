@@ -19,6 +19,7 @@ All [`col`]s have:
 - `@w`: a weight of 1 (and some cols will be -1 if, eg., they are goals to minimize);
 - `@txt`: a text name.
 
+:
      class @col
        constructor: (txt) ->
          @n   = 0
