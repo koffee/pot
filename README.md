@@ -18,7 +18,9 @@ Data miners summarize landscapes. So why not combine them?
 
 Recently we've had much success using "data miners" as sub-routines to achieve tasks like planning
 [[1]](https://arxiv.org/pdf/1609.03614.pdf), [[2]](https://arxiv.org/pdf/1708.05442.pdf) and
-multi-opbjective optimization [[3]](https://arxiv.org/pdf/1705.05018.pdf).
+multi-opbjective optimization [[3]](https://arxiv.org/pdf/1705.05018.pdf). The resulting
+systems are blazzing fast, generate succinct models, and offer novel services that are unsupported by most other optimizer/data miners.
+
 But there is no reference implementation contain all these ideas  in one place. 
 To fix that, I started [lualure](https://lualure.github.io/info/)
 and that looks promising. However...
