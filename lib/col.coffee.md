@@ -8,7 +8,7 @@
 # COL
 
 Abstract superclass for [`num`](num.coffee.md) and [`sym`](sym.coffee.md).
-Implements some `mixin` behaviours where common patterns in 
+Implements some _mixin_ behaviours where common patterns in 
 method `xxx` is handled by subclass methods `_xxx`.
 
      the = require("./the")
@@ -39,7 +39,7 @@ Add many things, mabye filtering them through the `f` function.
 
        adds: (a,f) ->
          f = f or (x) -> x  # the default `f` is "do nothing" 
-         (add(f(x)) for x in a)
+         (@add(f(x)) for x in a)
 
 Normalize things, unless they are things to be `ignored`.
 
