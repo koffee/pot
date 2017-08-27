@@ -7,9 +7,11 @@
 
 ## Shared Constants
 
-    @inf    = Number.MAX_SAFE_INTEGER
     @ninf   = -1 * (Number.MAX_SAFE_INTEGER - 1)
+    @inf    = Number.MAX_SAFE_INTEGER
+    @tiny   = 1 / @inf
     @ignore = '?'
+    @conf   = 95
 
 ## Shared functions
 
@@ -20,6 +22,4 @@
         w(sep+ x)
         sep=", "
       w("\n")
-
-## Mixins
 

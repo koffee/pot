@@ -4,11 +4,10 @@
 [src](https://github.com/koffee/script/tree/master/lib) |
 [tour](https://github.com/koffee/script/blob/master/docs/TOUR.md) |
 [style](https://github.com/koffee/script/blob/master/docs/STYLE.md) 
-:w
 
 # NUM 
 
-    the = require './the'
+    the = require('./the')
     col = require('./col').col
 
 asdassdsaasdasasdsassasa
@@ -20,10 +19,23 @@ asdassdsaasdasasdsassasa
       @crit:
         95: {3:3.182, 6:2.447, 12:2.179, 24:2.064, 48:2.011, 96:1.985}
         99: {3:5.841, 6:3.707, 12:3.055, 24:2.797, 48:2.682, 96:2.625}
+      #-------------------------
       constructor: (txt) ->
-        @name = txt
-        @min  = the.inf
-        @max  = the.ninf
+        super txt
+        [ @mu,@m2,@sd ] = [ 0,0,0 ]
+        [ @hi, @lo ]    = [ the.ninf, the.inf ]
+      #-------------------------
+      _add: (x) ->
+        @lo = if i x < @lo then x else @lo
+        @hi = if i x > @hi then x else @whi
+        delta = x - @mu
+        @mu += delta / @n
+        @m2 += delta * (x - @mu) 
+        if @n > 1 then 
+           @sd = (@m2 / (@n - 1))**0.5 
+      _norm: (x) ->
+        (x - @lo) / (@hi - @lo +  the.tiny) 
+      #-------------------------
       tTestThreshold: (x, a=num.crit[num.cert] ) ->
         y = (i) ->
           j = i*2
@@ -36,6 +48,3 @@ asdassdsaasdasasdsassasa
 ## Export control
 
     @num = num
-
-
-
