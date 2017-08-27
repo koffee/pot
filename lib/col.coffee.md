@@ -7,13 +7,12 @@
 
 # COL
 
-Abstract superclass for [`num`](num.coffee.md) and [`sym`](sym.coffee.md).  
+Abstract superclass for [`num`](num.coffee.md) and [`sym`](sym.coffee.md).
 Implements some `mixin` behaviours where common patterns in 
 method `xxx` is handled by subclass methods `_xxx`.
 
      the = require("./the")
-     
-     class @col
+     class col
 
 All [`col`]s have:
 
