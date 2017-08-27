@@ -5,7 +5,7 @@
 [tour](https://github.com/koffee/script/blob/master/docs/TOUR.md) |
 [style](https://github.com/koffee/script/blob/master/docs/STYLE.md) 
 
-# RANDOM
+# RAND
 
 For test portabilty, I need a random number generator that produces the same numbers on different platforms.
 
@@ -67,6 +67,6 @@ The generator you should call to get the next random number:
         x
 
 ## Export control
-#
+
     this.rand = rand
 
