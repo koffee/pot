@@ -4,28 +4,38 @@
 [src](https://github.com/koffee/script/tree/master/lib) |
 [tour](https://github.com/koffee/script/blob/master/docs/TOUR.md) |
 [style](https://github.com/koffee/script/blob/master/docs/STYLE.md) 
+:w
 
+# NUM 
 
+    the = require './the'
+    col = require('./col').col
 
+asdassdsaasdasasdsassasa
 
-
-
-
-
-
-
-
-    class num
+    class num extends col
+      @cert:  95
+      @first:  3
+      @last:  96
+      @crit:
+        95: {3:3.182, 6:2.447, 12:2.179, 24:2.064, 48:2.011, 96:1.985}
+        99: {3:5.841, 6:3.707, 12:3.055, 24:2.797, 48:2.682, 96:2.625}
       constructor: (txt) ->
-        @name : word
-        @min  : our.inf
-        @max  : our.ninf
-      prep : (x,h) -> asNum x,h}  
-    asNum = (x,h) -> 
-      y = +x  # coerce string to num
-      h.min = y if y < h.min
-      h.max = y if y > h.max
-      y
-    
-    numHeader = (word) -> {
-   
+        @name = txt
+        @min  = the.inf
+        @max  = the.ninf
+      tTestThreshold: (x, a=num.crit[num.cert] ) ->
+        y = (i) ->
+          j = i*2
+          if x in [i..j] then a[i] + (a[j]-a[i]) * (x-i) / (j-i) else y(j)
+        switch
+          when x <= num.first then a[ num.first ]
+          when x >= num.last  then a[ num.last  ]
+          else y(num.first)
+
+## Export control
+
+    @num = num
+
+
+

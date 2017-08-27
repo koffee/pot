@@ -85,9 +85,6 @@ vi() { ## FILE ## edit files using the KOFFEE config stuff ## editor
     vim -u "$Here/etc/vimrc" $*
     echo "Done!"
 }
-ok() { ## STEM ## shorthand for koffee STEMok.coffee.md ## programming
-  coffee ${1}ok.coffee.md
-}
 show() { ## FUN ## display definition of FUN ## shell
   type $1
 }
@@ -118,7 +115,7 @@ bye() { ## ## push all to on-line repo ## git
   gitting
 	git status
 	git commit -am "saving"
- git push origin master
+  git push origin master
 }
 hi() { ## ## pull updates from on-line repo ## git
   gitting
@@ -217,8 +214,11 @@ alexy() { ## ## about Alexy Leonev ## misc
 }
 here() { cd $1; basename "$PWD"; }
 
-k() { ## FILE ## call "luajit FILE" in this environment (.lua optional) ## lua
-  coffee -M $1.coffee.md
+k() { ## STEM ## call coffee FILE.coffee.md ## programming
+  coffee ${1}.coffee.md
+}
+ok() { ## STEM ## call coffee FILEok.coffee.md ## programming
+  coffee ${1}ok.coffee.md
 }
 setup() {
 #  echo -e "\033]6;1;bg;red;brightness;40\a"

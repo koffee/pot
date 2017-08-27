@@ -5,20 +5,12 @@
 [tour](https://github.com/koffee/script/blob/master/docs/TOUR.md) |
 [style](https://github.com/koffee/script/blob/master/docs/STYLE.md) 
 
-
-
-
-
-
-
-
-
-
+# asdsa
 
     require './our'
-    r0= require './rand' 
+    rand = require('./rand').rand
  
-    r= new r0.rand
+    r= new rand
     r.fromOS()
     for [1..10**1]
       console.log(r.next())

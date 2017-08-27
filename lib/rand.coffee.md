@@ -14,15 +14,16 @@ if created without a seed, uses current time as seed
       @seed0: 10013
       @mult:  16807
       @mod:   2147483647
-      constructor: (n) -> @reset(n)
+      constructor: (n = rand.seed0) ->
+        @reset(n)
       #--------------------
       reset: (n) ->
         @some = null
-        @seed = n or rand.seed0
+        @seed = n % rand.mod
       #--------------------
       fromOS: () ->
-        @reset( (new Date().valueOf() *
-                 new Date().getMilliseconds()) % rand.mod)
+        d= new Date()
+        @reset( (d.valueOf() * d.getMilliseconds()))
       #--------------------
       one: () ->
         @seed = (rand.mult * @seed) % rand.mod

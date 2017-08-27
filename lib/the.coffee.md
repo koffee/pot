@@ -5,24 +5,21 @@
 [tour](https://github.com/koffee/script/blob/master/docs/TOUR.md) |
 [style](https://github.com/koffee/script/blob/master/docs/STYLE.md) 
 
-
-
-
-
-
-
-
-
-
-
 ## Shared Constants
 
-    inf  = Number.MAX_SAFE_INTEGER
-    ninf = -1 * (Number.MAX_SAFE_INTEGER - 1)
+    @inf    = Number.MAX_SAFE_INTEGER
+    @ninf   = -1 * (Number.MAX_SAFE_INTEGER - 1)
+    @ignore = '?'
 
 ## Shared functions
 
-    say = (f) -> console.log(f); f
-    say(inf)
+    @say = (l...) -> 
+      sep=" "
+      w = (s) -> process.stdout.write(s)
+      for x in l
+        w(sep+ x)
+        sep=", "
+      w("\n")
 
+## Mixins
 
