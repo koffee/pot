@@ -12,6 +12,7 @@
     @tiny   = 1 / @inf
     @ignore = '?'
     @conf   = 95
+    @data   = process.env["$Koffee"] + "/data" or "../data" 
 
 ## Shared functions
 
@@ -22,4 +23,9 @@
         w(sep+ x)
         sep=", "
       w("\n")
+
+## Magic
+
+    String::last = ->
+      this[ this.length - 1]
 
