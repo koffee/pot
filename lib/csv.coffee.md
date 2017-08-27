@@ -28,7 +28,7 @@ cells to the `@action` function.
       add: (s) ->
         s = s.replace csv./\s/g,''
         s = s.replace csv./#.*/,''
-        if s.length then
+        if s.length then    # ignore empty lines
           if   s.last() is ','
           then @cache.push s
           else
