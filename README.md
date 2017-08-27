@@ -16,6 +16,7 @@
 Optimizers explore a landscape looking for pathways to better solutions.
 Data miners summarize landscapes. So why not combine them?
 
+Turns out, this is a very sueful strategy.
 Recently we've had much success using "data miners" as sub-routines to achieve tasks like planning
 [[1]](https://arxiv.org/pdf/1609.03614.pdf), [[2]](https://arxiv.org/pdf/1708.05442.pdf) and
 multi-opbjective optimization [[3]](https://arxiv.org/pdf/1705.05018.pdf). The resulting
