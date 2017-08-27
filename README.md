@@ -8,8 +8,8 @@
 <img src="http://www.backcountryengineering.com/wp-content/uploads/2016/11/workinprogress1.jpg" align=right width=400>
 
 
-(This code ports and extends
-[lualure](https://lualure.github.io/info/). Work in progress. Check back in sometime in October'17.)
+<em>(This code ports and extends
+[lualure](https://lualure.github.io/info/). Work in progress. Check back in sometime in October'17.)</em>
 
 # README 
 
