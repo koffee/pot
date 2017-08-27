@@ -5,24 +5,14 @@
 [tour](https://github.com/koffee/script/blob/master/docs/TOUR.md) |
 [style](https://github.com/koffee/script/blob/master/docs/STYLE.md) 
 
+# LINES
 
-
-
-
-
-
-
-
-
-
-asdasas as asd asda sdas dasd asa
+Read a file, pass one line at a time to some `action` handler.
 
     readline  = require 'readline'
     fs        = require 'fs'
    
-    say = (f) -> console.log(f)
-
-    lines_of = ( file, action ) ->
+    lines = ( file, action ) ->
       stream = readline.createInterface
         input:    fs.createReadStream file
         output:   process.stdout
@@ -30,6 +20,3 @@ asdasas as asd asda sdas dasd asa
       stream.on 'close',           -> action null, null
       stream.on 'error', ( error ) -> action error
       stream.on 'line',  ( line  ) -> action null, line
-
-    lines_of "aa.coffee.md" , (_,l) -> 
-      if l? then say(l)

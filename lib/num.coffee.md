@@ -10,16 +10,9 @@
     the = require('./the')
     col = require('./col').col
 
-asdassdsaasdasasdsassasa
+Numbers 
 
     class num extends col
-      @cert:  95
-      @first:  3
-      @last:  96
-      @crit:
-        95: {3:3.182, 6:2.447, 12:2.179, 24:2.064, 48:2.011, 96:1.985}
-        99: {3:5.841, 6:3.707, 12:3.055, 24:2.797, 48:2.682, 96:2.625}
-      #-------------------------
       constructor: (txt) ->
         super txt
         [ @mu,@m2,@sd ] = [ 0,0,0 ]
@@ -30,12 +23,16 @@ asdassdsaasdasasdsassasa
         @hi = if i x > @hi then x else @whi
         delta = x - @mu
         @mu += delta / @n
-        @m2 += delta * (x - @mu) 
-        if @n > 1 then 
-           @sd = (@m2 / (@n - 1))**0.5 
+        @m2 += delta * (x - @mu)
+        if @n > 1 then @sd = (@m2 / (@n - 1))**0.5
       _norm: (x) ->
-        (x - @lo) / (@hi - @lo +  the.tiny) 
+        (x - @lo) / (@hi - @lo +  the.tiny)
       #-------------------------
+      @first:  3
+      @last:  96
+      @crit:
+        95: {3:3.182, 6:2.447, 12:2.179, 24:2.064, 48:2.011, 96:1.985}
+        99: {3:5.841, 6:3.707, 12:3.055, 24:2.797, 48:2.682, 96:2.625}
       tTestThreshold: (x, a=num.crit[num.cert] ) ->
         y = (i) ->
           j = i*2

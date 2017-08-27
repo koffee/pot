@@ -215,7 +215,7 @@ alexy() { ## ## about Alexy Leonev ## misc
 here() { cd $1; basename "$PWD"; }
 
 k() { ## STEM ## call coffee FILE.coffee.md ## programming
-  coffee ${1}.coffee.md
+  Koffee="$Here" coffee ${1}.coffee.md
 }
 ok() { ## STEM ## call coffee FILEok.coffee.md ## programming
   coffee ${1}ok.coffee.md
