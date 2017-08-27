@@ -20,6 +20,7 @@ All [`col`]s have:
 - `@txt`: a text name.
 
 :
+
      class @col
        constructor: (txt) ->
          @n   = 0
