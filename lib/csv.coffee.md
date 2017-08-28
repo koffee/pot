@@ -50,7 +50,7 @@ to the next line.  Split the final merged into cells.
 Pass the useable  cells to the `action` function.
 Cells are useful if row1's cell did not contain `the.ignore`
 
-      act:  (cells) ->
+      act: (cells) ->
         if cells.length
           @use or= (i for c,i in cells when the.ignore not in c)
           @action (@prep cells[i] for i in @use)
