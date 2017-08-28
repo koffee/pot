@@ -19,4 +19,12 @@ Read a file, pass one line at a time to some `action` handler.
         terminal: false
       stream.on 'close',           -> action null, null
       stream.on 'error', ( error ) -> action error
-      stream.on 'line',  ( line  ) -> action null, line
+      stream.on 'line',  ( line  ) -> action line 
+
+
+    #if require.main == module
+    # lines '../data/weather2.csv',(t) ->
+    #   console.log t
+
+    this.lines = lines
+

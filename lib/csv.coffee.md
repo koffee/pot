@@ -5,7 +5,6 @@
 [tour](https://github.com/koffee/script/blob/master/docs/TOUR.md) |
 [style](https://github.com/koffee/script/blob/master/docs/STYLE.md) 
 
-
 # CSV reader
 
     lines = require('./lines').lines
@@ -28,19 +27,24 @@ none) of the columns are to be ignored.  Such columns have words in
 column one contain the character `the.ignore`.
 
     class csv
+
       constructor: (file, action) ->
-        @_useable = []
-        @memo     = []
-        @action   = action
-        lines file, (s) ->
-          @line s
+        @_usable = []
+        @memo    = []
+        @action  = action
+        lines file, (s) =>
+          if s
+            @line s
 
 Kill whitespace. Kill comments. Ignore empty lines.
 
       line: (s) ->
-        s = s.replace /\s/g,'' 
-        s = s.replace /#.*/,'' 
-        @merge s if s.length
+        console.log(900)
+        the.say 1,s
+        s = s.replace /\s/g,''
+        s = s.replace /#.*/,''
+        if s.length
+          @merge s
 
 Ignore any column that contains the magic `the.ignore` chanracter.
 If any line ends with "," then merge
@@ -48,24 +52,15 @@ to the next line.  Split the final merged into cells.
 
       merge: (s) ->
         @memo.push s
-        if   s.last() isnt ','
-        then
+        if s.last() != ','
           @add  @memo.join().split '.'
           @memo = []
 
 Pass the useable  cells to the `action` function.
 
-      add:  (cells) -> 
-        if cells.length then
-          @action (@prep cells[i] for i in @useable(cells))
-
-Cells are useful if row1's cell did not contain `the.ignore`
-
-      useable: (cells) ->
-        if not @_usable then
-          for i,cell in cells
-            @_usable.push i unless the.ignore in cell
-        @_usable
+      add:  (cells) ->
+        if cells.length
+          @action (@prep cells[i] for i in @usable(cells))
 
 To prep each cell, if we can compile a string to a number,
 use that number. Else, use the string as-is.
@@ -74,6 +69,22 @@ use that number. Else, use the string as-is.
         t = +s
         if Number.isNan(t) then s else t
 
-## Expert control
+Cells are useful if row1's cell did not contain `the.ignore`
+
+      usable: (cells) ->
+        if not @_usable 
+          for i,cell in cells
+            @_usable.push i unless the.ignore in cell
+        @_usable
+
+    ## Expert control
 
     this.csv = csv
+
+## test cases
+
+    if require.main == module
+      new csv(the.data + '/weather2.csv',(s) ->
+        the.say(20)
+        console.log(s))
+

@@ -12,11 +12,11 @@
     @tiny   = 1 / @inf
     @ignore = '?'
     @conf   = 95
-    @data   = process.env["$Koffee"] + "/data" or "../data" 
+    @data   = process.env["Koffee"] + "/data" or "../data"
 
 ## Shared functions
 
-    @say = (l...) -> 
+    @say = (l...) ->
       sep=" "
       w = (s) -> process.stdout.write(s)
       for x in l
