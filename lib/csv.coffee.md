@@ -27,7 +27,6 @@ some `action`.
     the   = require('./the')
 
     class csv
-
       constructor: (file, action) ->
         @_use    = []
         @memo    = []
