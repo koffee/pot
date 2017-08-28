@@ -32,7 +32,7 @@ some `action`.
         @memo    = []
         @action  = action
         lines file, (s) =>
-          if s    # ignore eof
+          if s                      # ignore eof
             s = s.replace /\s/g,''  # kill whitespace
             s = s.replace /#.*/,''  # kill comments
             if s.length             # if anything left
