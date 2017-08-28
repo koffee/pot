@@ -44,15 +44,15 @@ to the next line.  Split the final merged into cells.
       merge: (s) ->
         @memo.push s                   # always add to memo
         if s.last() isnt ','             # if we dont need tp merge with next
-          @add  @memo.join().split ',' # merge memos, split on comma, pass to "add"
+          @act  @memo.join().split ',' # merge memos, split on comma, pass to "add"
           @memo = []                   # wipe knowledge of old lines
 
 Pass the useable  cells to the `action` function.
 Cells are useful if row1's cell did not contain `the.ignore`
 
-      add:  (cells) ->
+      act:  (cells) ->
         if cells.length
-          @use or= (i for cell,i in cells when the.ignore not in cell)
+          @use or= (i for c,i in cells when the.ignore not in c)
           @action (@prep cells[i] for i in @use)
 
 To prep each cell, if we can compile a string to a number,
