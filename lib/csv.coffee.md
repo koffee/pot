@@ -53,7 +53,7 @@ to the next line.  Split the final merged into cells.
       merge: (s) ->
         @memo.push s                   # always add to memo
         if s.last() != ','             # if we dont need tp merge with next
-          @add  @memo.join().split ',' # pass line to "add"
+          @add  @memo.join().split ',' # merge memos, split of comma, pass to "add"
           @memo = []                   # wipe knowledge of old lines
 
 Pass the useable  cells to the `action` function.
