@@ -38,8 +38,8 @@ column one contain the character `the.ignore`.
 Kill whitespace. Kill comments. Ignore empty lines.
 
       line: (s) ->
-        s = s.replace csv./\s/g,'' 
-        s = s.replace csv./#.*/,'' 
+        s = s.replace /\s/g,'' 
+        s = s.replace /#.*/,'' 
         @merge s if s.length
 
 Ignore any column that contains the magic `the.ignore` chanracter.
