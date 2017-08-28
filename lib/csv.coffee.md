@@ -7,7 +7,6 @@
 
 # CSV reader
 
-
 This `csv` class does not store data. Rather, it parses lines of
 comma-seperated values and thows each line, one at a time, to
 some `action`.
@@ -22,7 +21,7 @@ some `action`.
 Print the 3 column of a csv file:
 
     eg1 = (file) -> 
-      new csv file, (s) -> the.say s[3] 
+      new csv file, (s) -> the.say(s[3])
 
 ## Code
 
