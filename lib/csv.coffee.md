@@ -23,15 +23,15 @@ some `action`.
 
 ## Code
 
-    lines = require('./lines').lines
+    reader = require('./lines').lines
     the   = require('./the')
 
     class csv
       constructor: (file, action) ->
         @use     = null
-        @memo    = []
+        @lines    = []
         @action  = action
-        lines file, (s) =>
+        reader file, (s) =>
           if s                      # ignore eof
             s = s.replace /\s/g,''  # kill whitespace
             s = s.replace /#.*/,''  # kill comments
@@ -42,10 +42,10 @@ If any line ends with "," then merge
 to the next line.  Split the final merged into cells.  
 
       merge: (s) ->
-        @memo.push s                   # always add to memo
-        if s.last() isnt ','           # if we dont need tp merge with next
-          @act  @memo.join().split ',' # merge memos, split on comma, pass to "add"
-          @memo = []                   # wipe knowledge of old lines
+        @lines.push s                   # always add to memo
+        if s.last() isnt ','            # if we dont need tp merge with next
+          @act  @lines.join().split ',' # merge memos, split on comma, pass to "add"
+          @lines = []                   # wipe knowledge of old lines
 
 Pass the useable  cells to the `action` function.
 Cells are useful if row1's cell did not contain `the.ignore`
