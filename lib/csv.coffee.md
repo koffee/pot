@@ -21,6 +21,14 @@ some `action`.
     printColumn3 = (file) -> 
       new csv file, (row) -> the.say row[3]
 
+    countRows = (file) -> 
+      n=[0]
+      inc = (_) ->  ++n[0]
+      new csv file, inc
+      the.say n[0]
+      n[0]
+
+
 ## Code
 
     reader = require('./lines').lines
@@ -66,4 +74,6 @@ use that number. Else, use the string as-is.
 
     this.csv = csv
     if require.main == module
-      printColumn3 the.data + '/weather2.csv'
+      #printColumn3 the.data + '/weather2.csv'
+      the.say(countRows(the.data + '/POM3A_short.csv'))
+      #printColumn3 the.data + '/POM3A.csv'
