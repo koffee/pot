@@ -25,6 +25,7 @@ some `action`.
       n=[0]
       inc = (_) ->  ++n[0]
       new csv file, inc
+      say.the 11
       the.say n[0]
       n[0]
 
@@ -33,7 +34,6 @@ some `action`.
 
     reader = require('./lines').lines
     the   = require('./the')
-
     class csv
       constructor: (file, action) ->
         @use     = null
