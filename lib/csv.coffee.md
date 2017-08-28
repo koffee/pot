@@ -77,7 +77,7 @@ Cells are useful if row1's cell did not contain `the.ignore`
             @_use.push i unless the.ignore in cell
         @_use
 
-    ## Expert control
+## Expert control
 
     this.csv = csv
 
