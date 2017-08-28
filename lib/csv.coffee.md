@@ -26,6 +26,13 @@ The  code that line one contain words indicating that some (perhaps
 none) of the columns are to be ignored.  Such columns have words in
 column one contain the character `the.ignore`.
 
+## Examples
+
+Print the 3 column of a csv file:
+
+    eg1 = (file) -> 
+      new csv file, (s) -> the.say s[3] 
+
 ## Code
 
     class csv
@@ -77,14 +84,8 @@ Cells are useful if row1's cell did not contain `the.ignore`
             @_use.push i unless the.ignore in cell
         @_use
 
-## Expert control
+## End 
 
     this.csv = csv
-
-## Examples
-
     if require.main == module
-      new csv the.data + '/weather2.csv',(s) ->
-        the.say(s)
-
-
+      eg1 the.data + '/weather2.csv'

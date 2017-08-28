@@ -215,10 +215,14 @@ alexy() { ## ## about Alexy Leonev ## misc
 here() { cd $1; basename "$PWD"; }
 
 k() { ## STEM ## call coffee FILE.coffee.md ## programming
-  Koffee="$Here" coffee ${1}.coffee.md
+  if [ -f "${1}.coffee" ]; then
+    Koffee="$Here" coffee -M ${1}.coffee
+  else
+    Koffee="$Here" coffee -M ${1}.coffee.md
+  fi
 }
 ok() { ## STEM ## call coffee FILEok.coffee.md ## programming
-  coffee ${1}ok.coffee.md
+  k ${1}ok
 }
 setup() {
 #  echo -e "\033]6;1;bg;red;brightness;40\a"
