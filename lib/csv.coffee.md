@@ -18,9 +18,7 @@ some `action`.
 
 ## Examples
 
-Print the 3 column of a csv file:
-
-    eg1 = (file) -> 
+    printColumn3 = (file) -> 
       new csv file, (s) -> the.say(s[3])
 
 ## Code
@@ -81,4 +79,4 @@ Cells are useful if row1's cell did not contain `the.ignore`
 
     this.csv = csv
     if require.main == module
-      eg1 the.data + '/weather2.csv'
+      printColumn3 the.data + '/weather2.csv'
