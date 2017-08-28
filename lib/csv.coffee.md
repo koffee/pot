@@ -7,8 +7,6 @@
 
 # CSV reader
 
-    lines = require('./lines').lines
-    the   = require('./the')
 
 This `csv` class does not store data. Rather, it parses lines of
 comma-seperated values and thows each line, one at a time, to
@@ -27,6 +25,9 @@ Print the 3 column of a csv file:
       new csv file, (s) -> the.say s[3] 
 
 ## Code
+
+    lines = require('./lines').lines
+    the   = require('./the')
 
     class csv
 
