@@ -62,10 +62,10 @@ Pass the useable  cells to the `action` function.
 Cells are useful if row1's cell did not contain `the.ignore`
 
       useable: (cells) ->
-        if not @_useusable then
+        if not @_usable then
           for i,cell in cells
-            @_useful.push i unless the.ignore in cell
-        @_useful
+            @_usable.push i unless the.ignore in cell
+        @_usable
 
 To prep each cell, if we can compile a string to a number,
 use that number. Else, use the string as-is.
