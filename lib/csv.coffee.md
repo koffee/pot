@@ -22,12 +22,10 @@ some `action`.
       new csv file, (row) -> the.say row[3]
 
     countRows = (file) -> 
-      n=[0]
-      inc = (_) ->  ++n[0]
-      new csv file, inc
-      say.the 11
-      the.say n[0]
-      n[0]
+      n=0
+      new csv file, (_) -> ++n
+      n
+
 
 
 ## Code
@@ -46,8 +44,9 @@ some `action`.
             if s.length             #  anything left?
               @merge s
 
-If any line ends with "," then merge
-to the next line.  Split the final merged into cells.  
+Until the line does not end with "," keep adding the row to a `memo`
+of previous lines. Then, merge all the memos, split on ",", the
+send the result to `act`.
 
       merge: (s) ->
         @lines.push s                   # always add to memo
@@ -75,5 +74,5 @@ use that number. Else, use the string as-is.
     this.csv = csv
     if require.main == module
       #printColumn3 the.data + '/weather2.csv'
-      the.say(countRows(the.data + '/POM3A_short.csv'))
+      the.say(countRows(the.data + '/weather2.csv'))
       #printColumn3 the.data + '/POM3A.csv'
