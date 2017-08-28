@@ -19,7 +19,7 @@ some `action`.
 ## Examples
 
     printColumn3 = (file) -> 
-      new csv file, (s) -> the.say(s[3])
+      new csv file, (row) -> the.say row[3]
 
 ## Code
 
@@ -36,13 +36,12 @@ some `action`.
             s = s.replace /\s/g,''  # kill whitespace
             s = s.replace /#.*/,''  # kill comments
             if s.length             # if anything left
-              @line s
+              @merge s
 
-Ignore any column that contains the magic `the.ignore` chanracter.
 If any line ends with "," then merge
 to the next line.  Split the final merged into cells.  
 
-      line: (s) ->
+      merge: (s) ->
         @memo.push s                   # always add to memo
         if s.last() != ','             # if we dont need tp merge with next
           @add  @memo.join().split ',' # merge memos, split on comma, pass to "add"
