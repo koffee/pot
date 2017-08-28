@@ -10,21 +10,14 @@
     lines = require('./lines').lines
     the   = require('./the')
 
-The `csv` class does not store data. Rather, it parses lines of
+This `csv` class does not store data. Rather, it parses lines of
 comma-seperated values and thows each line, one at a time, to
-`action`.
+some `action`.
 
-- csv contructior passes the `line` method to the  `lines` reader;
-- `line` kills dull characters and passes non-empty strings to `merge`.
-- `merge` combines any lines that end with a comma into the next line
-- `usable` looks for "?" characters on line one and, if there,
-  makes a memo that that column is to be ignored
-- `add` coerces strings to numbers, if needed. then
-  passes the the usable coerced cells to `action`.
-
-The  code that line one contain words indicating that some (perhaps
-none) of the columns are to be ignored.  Such columns have words in
-column one contain the character `the.ignore`.
+- In row1 of the file, if any column contains "?", then that column is ignored.
+- If any row ends in ",", it is combined with the next.
+- Strings containing numbers are coerced into numbers.
+- Whitespace and comments (anything after "#") are deleted.
 
 ## Examples
 
