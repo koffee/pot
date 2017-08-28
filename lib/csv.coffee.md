@@ -32,22 +32,17 @@ some `action`.
         @memo    = []
         @action  = action
         lines file, (s) =>
-          if s
-            @line s
-
-Kill whitespace. Kill comments. Ignore empty lines.
-
-      line: (s) ->
-        s = s.replace /\s/g,''
-        s = s.replace /#.*/,''
-        if s.length
-          @merge s
+          if s    # ignore eof
+            s = s.replace /\s/g,''  # kill whitespace
+            s = s.replace /#.*/,''  # kill comments
+            if s.length             # if anything left
+              @line s
 
 Ignore any column that contains the magic `the.ignore` chanracter.
 If any line ends with "," then merge
 to the next line.  Split the final merged into cells.  
 
-      merge: (s) ->
+      line: (s) ->
         @memo.push s                   # always add to memo
         if s.last() != ','             # if we dont need tp merge with next
           @add  @memo.join().split ',' # merge memos, split on comma, pass to "add"
