@@ -43,7 +43,7 @@ to the next line.  Split the final merged into cells.
 
       merge: (s) ->
         @memo.push s                   # always add to memo
-        if s.last() isnt ','             # if we dont need tp merge with next
+        if s.last() isnt ','           # if we dont need tp merge with next
           @act  @memo.join().split ',' # merge memos, split on comma, pass to "add"
           @memo = []                   # wipe knowledge of old lines
 
