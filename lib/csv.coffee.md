@@ -26,10 +26,12 @@ The  code that line one contain words indicating that some (perhaps
 none) of the columns are to be ignored.  Such columns have words in
 column one contain the character `the.ignore`.
 
+## Code
+
     class csv
 
       constructor: (file, action) ->
-        @_usable = []
+        @_use    = []
         @memo    = []
         @action  = action
         lines file, (s) =>
@@ -39,8 +41,6 @@ column one contain the character `the.ignore`.
 Kill whitespace. Kill comments. Ignore empty lines.
 
       line: (s) ->
-        console.log(900)
-        the.say 1,s
         s = s.replace /\s/g,''
         s = s.replace /#.*/,''
         if s.length
@@ -53,38 +53,38 @@ to the next line.  Split the final merged into cells.
       merge: (s) ->
         @memo.push s
         if s.last() != ','
-          @add  @memo.join().split '.'
+          @add  @memo.join().split ','
           @memo = []
 
 Pass the useable  cells to the `action` function.
 
       add:  (cells) ->
         if cells.length
-          @action (@prep cells[i] for i in @usable(cells))
+          @action (@prep cells[i] for i in @use(cells))
 
 To prep each cell, if we can compile a string to a number,
 use that number. Else, use the string as-is.
 
       prep: (s) ->
         t = +s
-        if Number.isNan(t) then s else t
+        if Number.isNaN(t) then s else t
 
 Cells are useful if row1's cell did not contain `the.ignore`
 
-      usable: (cells) ->
-        if not @_usable 
-          for i,cell in cells
-            @_usable.push i unless the.ignore in cell
-        @_usable
+      use: (cells) ->
+        if not @_use.length
+          for cell,i in cells
+            @_use.push i unless the.ignore in cell
+        @_use
 
     ## Expert control
 
     this.csv = csv
 
-## test cases
+## Examples
 
     if require.main == module
-      new csv(the.data + '/weather2.csv',(s) ->
-        the.say(20)
-        console.log(s))
+      new csv the.data + '/weather2.csv',(s) ->
+        the.say(s)
+
 
