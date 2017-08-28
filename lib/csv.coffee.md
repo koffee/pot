@@ -35,7 +35,7 @@ some `action`.
           if s                      # ignore eof
             s = s.replace /\s/g,''  # kill whitespace
             s = s.replace /#.*/,''  # kill comments
-            if s.length             # if anything left
+            if s.length             #  anything left?
               @merge s
 
 If any line ends with "," then merge
