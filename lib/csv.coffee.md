@@ -23,26 +23,29 @@ some `action`.
 
     countRows = (file) -> 
       n=0
-      new csv file, (_) -> ++n
-      n
-
-
+      inc = -> ++n
+      end = -> the.say "rows: " + n
+      new csv file, inc, end
 
 ## Code
 
     reader = require('./lines').lines
     the   = require('./the')
     class csv
-      constructor: (file, action) ->
+      constructor: (file, action, over) ->
         @use     = null
         @lines    = []
         @action  = action
-        reader file, (s) =>
-          if s                      # ignore eof
-            s = s.replace /\s/g,''  # kill whitespace
-            s = s.replace /#.*/,''  # kill comments
-            if s.length             #  anything left?
-              @merge s
+        reader file, @line, over or @done
+        
+      line: (s) =>
+        if s                      # ignore eof
+          s = s.replace /\s/g,''  # kill whitespace
+          s = s.replace /#.*/,''  # kill comments
+          if s.length             #  anything left?
+            @merge s
+
+      done: () ->
 
 Until the line does not end with "," keep adding the row to a `memo`
 of previous lines. Then, merge all the memos, split on ",", the
@@ -73,6 +76,6 @@ use that number. Else, use the string as-is.
 
     this.csv = csv
     if require.main == module
-      #printColumn3 the.data + '/weather2.csv'
+      printColumn3 the.data + '/weather2.csv'
       the.say(countRows(the.data + '/weather2.csv'))
       #printColumn3 the.data + '/POM3A.csv'
