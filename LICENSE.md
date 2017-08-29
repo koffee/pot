@@ -8,7 +8,7 @@
 
 
 
-![](http://image1.redbull.com/rbcom/010/2014-10-28/1331686993079_2/0001/1/560/2/unlicensed-logo-560.png)
+<img width=500 align=left src="http://image1.redbull.com/rbcom/010/2014-10-28/1331686993079_2/0001/1/560/2/unlicensed-logo-560.png">
 
 This is free and unencumbered software released into the
 public domain.
