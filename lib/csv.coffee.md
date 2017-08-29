@@ -56,7 +56,7 @@ Ignore eof, kill whitepace and comments. If anything left, called `merge`.
           if s.length
             @merge s
 
-### Merge lines ending with "," to the next line.
+### Merge lines ending with "," to the next line
 
 Split the result into cells then send the result to `act`.
 
@@ -66,7 +66,7 @@ Split the result into cells then send the result to `act`.
           @act @lines.join().split ','
           @lines = []
 
-### Act on each line. 
+### Act on each line 
 
 Pass the useable  cells to the `action` function.
 Cells are useful if row1's cell did not contain `the.ignore`
@@ -76,7 +76,7 @@ Cells are useful if row1's cell did not contain `the.ignore`
           @use or= (i for c,i in cells when the.ignore not in c)
           @action (@prep cells[i] for i in @use)
 
-### Prep each cell. 
+### Prep each cell 
 
 If we can compile a string to a number,
 use that number. Else, use the string as-is.
