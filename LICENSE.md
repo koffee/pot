@@ -8,7 +8,7 @@
 
 
 
-# (un)LICENSE
+![](http://image1.redbull.com/rbcom/010/2014-10-28/1331686993079_2/0001/1/560/2/unlicensed-logo-560.png)
 
 This is free and unencumbered software released into the
 public domain.
@@ -28,7 +28,6 @@ dedication to be an overt act of relinquishment in
 perpetuity of all present and future rights to this software
 under copyright law.
 
-<img align=right width=500 src="http://image1.redbull.com/rbcom/010/2014-10-28/1331686993079_2/0001/1/560/2/unlicensed-logo-560.png">
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
 KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
