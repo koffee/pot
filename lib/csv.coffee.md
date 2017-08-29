@@ -9,7 +9,8 @@
 
 This `csv` class does not store data. Rather, it parses lines of
 comma-seperated values and thows each line, one at a time, to
-some `action`.
+some `action`. 
+
 
 - In row1 of the file, if any column contains "?", then that column is ignored.
 - If any row ends in ",", it is combined with the next.
@@ -18,14 +19,17 @@ some `action`.
 
 ## Examples
 
-    printColumn3 = (file) -> 
+    printColumn3 = (file) ->
       new csv file, (row) -> the.say row[3]
 
-    countRows = (file) -> 
+Optionally, the `csv` constructor accepts an second argument defininf
+an action to be executed at end of file.
+
+    countRows = (file) ->
       n=0
-      inc = -> ++n
-      end = -> the.say "rows: " + n
-      new csv file, inc, end
+      new csv file,
+          (-> ++n),
+          (-> the.say "rows: " + n)
 
 ## Code
 
@@ -77,5 +81,4 @@ use that number. Else, use the string as-is.
     this.csv = csv
     if require.main == module
       printColumn3 the.data + '/weather2.csv'
-      the.say(countRows(the.data + '/weather2.csv'))
-      #printColumn3 the.data + '/POM3A.csv'
+      countRows    the.data + '/POM3A.csv'
