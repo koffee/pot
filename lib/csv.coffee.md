@@ -45,6 +45,8 @@ argument defining what to do at end of file.
         @action  = action
         reader file, @line, over or ->
 
+### Process each line 
+
 Ignore eof, kill whitepace and comments. If anything left, called `merge`.
 
       line: (s) =>
@@ -54,15 +56,17 @@ Ignore eof, kill whitepace and comments. If anything left, called `merge`.
           if s.length
             @merge s
 
-Until the line does not end with "," keep adding the row to a `memo`
-of previous lines. Then, merge all the memos, split on ",", the
-send the result to `act`.
+### Merge lines ending with "," to the next line.
+
+Split the result into cells then send the result to `act`.
 
       merge: (s) ->
         @lines.push s
         if s.last() isnt ','
           @act @lines.join().split ','
           @lines = []
+
+### Act on each line. 
 
 Pass the useable  cells to the `action` function.
 Cells are useful if row1's cell did not contain `the.ignore`
@@ -72,7 +76,9 @@ Cells are useful if row1's cell did not contain `the.ignore`
           @use or= (i for c,i in cells when the.ignore not in c)
           @action (@prep cells[i] for i in @use)
 
-To prep each cell, if we can compile a string to a number,
+### Prep each cell. 
+
+If we can compile a string to a number,
 use that number. Else, use the string as-is.
 
       prep: (s) ->
