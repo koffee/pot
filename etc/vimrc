@@ -60,5 +60,8 @@ let g:airline_theme='serebe'
 "set ruler
 "set rulerformat=%-14.(%l,%c%V%)\ %P
 
+"Remove all trailing whitespace by pressing F5
+nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
+
 syntax enable
 filetype plugin indent on

@@ -3,13 +3,13 @@
 [<img width=900 src=https://raw.githubusercontent.com/koffee/script/master/img/head.jpg>](http://tiny.cc/koff)<br>
 [src](https://github.com/koffee/script/tree/master/lib) |
 [tour](https://github.com/koffee/script/blob/master/docs/TOUR.md) |
-[style](https://github.com/koffee/script/blob/master/docs/STYLE.md) 
+[style](https://github.com/koffee/script/blob/master/docs/STYLE.md)
 
 # CSV reader
 
 This `csv` class does not store data. Rather, it parses lines of
 comma-seperated values and thows each line, one at a time, to
-some `action`. 
+some `action`.
 
 
 - In row1 of the file, if any column contains "?", then that column is ignored.
@@ -25,7 +25,7 @@ The csv constructor accepts an action to be run on every line.
       new csv file,
               (row) -> the.say row[3]
 
-Optionally, the `csv` constructor accepts an second 
+Optionally, the `csv` constructor accepts an second
 argument defining what to do at end of file.
 
     countRows = (file) ->
@@ -44,12 +44,14 @@ argument defining what to do at end of file.
         @lines    = []
         @action  = action
         reader file, @line, over or @done
-        
+
+Ignore eof, kill whitepace and comments. If anything left, called `merge`.
+
       line: (s) =>
-        if s                      # ignore eof
-          s = s.replace /\s/g,''  # kill whitespace
-          s = s.replace /#.*/,''  # kill comments
-          if s.length             #  anything left?
+        if s
+          s = s.replace /\s/g,''
+          s = s.replace /#.*/,''
+          if s.length
             @merge s
 
       done: () ->
@@ -79,7 +81,7 @@ use that number. Else, use the string as-is.
         t = +s
         if Number.isNaN(t) then s else t
 
-## End 
+## End
 
     this.csv = csv
     if require.main == module
