@@ -19,6 +19,8 @@ some `action`.
 
 ## Examples
 
+The csv constructor accepts an action to be run on every line.
+
     printColumn3 = (file) ->
       new csv file,
               (row) -> the.say row[3]
