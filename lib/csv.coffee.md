@@ -61,10 +61,10 @@ of previous lines. Then, merge all the memos, split on ",", the
 send the result to `act`.
 
       merge: (s) ->
-        @lines.push s                  # always add to memo
-        if s.last() isnt ','           # if no merge needed
-          @act @lines.join().split ',' # merge and split on comma
-          @lines = []                  # wipe knowledge of old lines
+        @lines.push s
+        if s.last() isnt ','
+          @act @lines.join().split ','
+          @lines = []
 
 Pass the useable  cells to the `action` function.
 Cells are useful if row1's cell did not contain `the.ignore`
