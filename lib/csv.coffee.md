@@ -25,8 +25,8 @@ The csv constructor accepts an action to be run on every line.
       new csv file,
               (row) -> the.say row[3]
 
-Optionally, the `csv` constructor accepts an second argument defininf
-an action to be executed at end of file.
+Optionally, the `csv` constructor accepts an second 
+argument defining what to do at end of file.
 
     countRows = (file) ->
       n=0
