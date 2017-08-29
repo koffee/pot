@@ -84,7 +84,7 @@ use that number. Else, use the string as-is.
         t = +s
         if Number.isNaN(t) then s else t
 
-**End**
+## End stuff
 
     this.csv = csv
     if require.main == module
