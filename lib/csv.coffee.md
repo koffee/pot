@@ -20,7 +20,8 @@ some `action`.
 ## Examples
 
     printColumn3 = (file) ->
-      new csv file, (row) -> the.say row[3]
+      new csv file,
+              (row) -> the.say row[3]
 
 Optionally, the `csv` constructor accepts an second argument defininf
 an action to be executed at end of file.
