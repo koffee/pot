@@ -6,7 +6,7 @@
 [style](https://github.com/koffee/script/blob/master/docs/STYLE.md) 
 
 
-<img align=left width="http://image1.redbull.com/rbcom/010/2014-10-28/1331686993079_2/0001/1/560/2/unlicensed-logo-560.png">
+<img align=left src="http://image1.redbull.com/rbcom/010/2014-10-28/1331686993079_2/0001/1/560/2/unlicensed-logo-560.png">
 
 
 # (un)LICENSE
