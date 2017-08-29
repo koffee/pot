@@ -36,8 +36,13 @@ argument defining what to do at end of file.
 
 ## Code
 
+### Requires
+
     reader = require('./lines').lines
     the   = require('./the')
+
+### Constructor
+
     class csv
       constructor: (file, action, over) ->
         @use     = null
