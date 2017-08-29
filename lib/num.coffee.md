@@ -58,6 +58,9 @@ critical values table.
           when x >= num.last  then a[ num.last  ]
           else y(num.first)
 
-## Export control
+## End stuff
 
     @num = num
+    if require.main == module
+      printColumn3 the.data + '/weather2.csv'
+      countRows    the.data + '/POM3A.csv'
