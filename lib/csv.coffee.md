@@ -43,7 +43,7 @@ argument defining what to do at end of file.
         @use     = null
         @lines    = []
         @action  = action
-        reader file, @line, over or @done
+        reader file, @line, over or ->
 
 Ignore eof, kill whitepace and comments. If anything left, called `merge`.
 
@@ -53,8 +53,6 @@ Ignore eof, kill whitepace and comments. If anything left, called `merge`.
           s = s.replace /#.*/,''
           if s.length
             @merge s
-
-      done: () ->
 
 Until the line does not end with "," keep adding the row to a `memo`
 of previous lines. Then, merge all the memos, split on ",", the
