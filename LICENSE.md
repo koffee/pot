@@ -18,7 +18,6 @@ or distribute this software, either in source code form or
 as a compiled binary, for any purpose, commercial or
 non-commercial, and by any means.
 
-<img align=right width=500 src="http://image1.redbull.com/rbcom/010/2014-10-28/1331686993079_2/0001/1/560/2/unlicensed-logo-560.png">
 
 In jurisdictions that recognize copyright laws, the author
 or authors of this software dedicate any and all copyright
@@ -28,6 +27,8 @@ detriment of our heirs and successors. We intend this
 dedication to be an overt act of relinquishment in
 perpetuity of all present and future rights to this software
 under copyright law.
+
+<img align=right width=500 src="http://image1.redbull.com/rbcom/010/2014-10-28/1331686993079_2/0001/1/560/2/unlicensed-logo-560.png">
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
 KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
