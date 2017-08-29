@@ -31,8 +31,8 @@ an action to be executed at end of file.
     countRows = (file) ->
       n=0
       new csv file,
-          (-> ++n),
-          (-> the.say "rows: " + n)
+          -> ++n,
+          -> the.say "rows: " + n
 
 ## Code
 
