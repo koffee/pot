@@ -3,50 +3,50 @@
 [<img width=900 src=https://raw.githubusercontent.com/koffee/script/master/img/head.jpg>](http://tiny.cc/koff)<br>
 [src](https://github.com/koffee/script/tree/master/lib) |
 [tour](https://github.com/koffee/script/blob/master/docs/TOUR.md) |
-[style](https://github.com/koffee/script/blob/master/docs/STYLE.md) 
+[style](https://github.com/koffee/script/blob/master/docs/STYLE.md)
 
 # COL
 
 Abstract superclass for [`num`](num.coffee.md) and [`sym`](sym.coffee.md).
-Implements some _mixin_ behaviours where common patterns in 
-method `xxx` is handled by subclass methods `_xxx`.
+Implements some _mixin_ behaviours where common patterns in
+method `xxx` is handled by subclass methods `xxx1`.
 
-     the = require("./the")
-     class col
+    _ = require("./_")
+    class col
 
 All [`col`]s have:
 
-- `@n`: number of items seen;   
+- `@n`: number of items seen;
 - `@w`: a weight of 1 (and some cols will be -1 if, eg., they are goals to minimize);
 - `@txt`: a text name.
 
 as defined below by the following constructor:
 
-       constructor: (txt) ->
+      constructor: (txt) ->
          @n   = 0
          @w   = 1
          @txt = txt
 
 Only add things that should not be `ignore`d.
 
-       add: (x) ->
-         if x isnt the.ignore 
+      add: (x) ->
+         if x isnt _.ignore
            @n++
-           @_add x
+           @add1 x
          x
 
 Add many things, mabye filtering them through the `f` function.
 
-       adds: (a,f) ->
-         f = f or (x) -> x  # the default `f` is "do nothing" 
+      adds: (a,f) ->
+         f = f or (x) -> x  # the default `f` is "do nothing"
          (@add(f(x)) for x in a)
 
 Normalize things, unless they are things to be `ignored`.
 
-       norm: (x) ->
-         if x isnt the.ignore then @_norm x else x
+      norm: (x) ->
+         if x isnt _.ignore then @norm1 x else x
 
 ## Export control
 
-    this.col = col
+    @col = col
 

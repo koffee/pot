@@ -11,19 +11,31 @@ Incremental collector of `lo,hi` and `sd` (standard deviation) of
 a stream of numbers. Also, implements some parametric
 hypothesis and effect size tests.
 
+## Examples
+
+    eg1 = -> 
+      n = new num
+      (n.add x for x in [9,2,5,4,12,7,8,11,9,3,7,4,12,5,4,10,9,6,9,4])
+      _.hi(n.mu)
+ 
+    eg2 = ->
+      n = new num
+      n.adds([9,2,5,4,12,7,8,11,9,3,7,4,12,5,4,10,9,6,9,4])
+      _.hi n.mu,n.sd
+
 ## Code
 
 All the methods marked as `_xxx` extends functionality of the `xxx`
 methods defined in the [col](col.coffee.md) superclass.
 
-    the = require('./the')
+    _ = require('./_')
     col = require('./col').col
 
     class num extends col
       constructor: (txt) ->
         super txt
         [ @mu,@m2,@sd ] = [ 0,0,0 ]
-        [ @hi, @lo ]    = [ the.ninf, the.inf ]
+        [ @hi, @lo ]    = [ _.ninf, _.inf ]
 
 **_add a value to this collector**.
 Uses [Welford's incremental sd
@@ -31,9 +43,9 @@ algorithm](https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Onl
 (thus avoiding the "catastrophic cancellation of precision" seen
 with other methods).
 
-      _add: (x) ->
-        @lo = if i x < @lo then x else @lo
-        @hi = if i x > @hi then x else @whi
+      add1: (x) ->
+        @lo = if x < @lo then x else @lo
+        @hi = if x > @hi then x else @whi
         delta = x - @mu
         @mu += delta / @n
         @m2 += delta * (x - @mu)
@@ -41,8 +53,8 @@ with other methods).
 
 **_normalize a number**  `x` into the range `0..1`, `lo..hi`.
 
-      _norm: (x) ->
-        (x - @lo) / (@hi - @lo +  the.tiny)
+      norm1: (x) ->
+        (x - @lo) / (@hi - @lo +  _.tiny)
 
 **tTestThreshold** Low-level stuff. Implements look-up table on the
 standard t-test critical values table.
@@ -65,5 +77,5 @@ standard t-test critical values table.
 
     @num = num
     if require.main == module
-      printColumn3 the.data + '/weather2.csv'
-      countRows    the.data + '/POM3A.csv'
+      eg1()
+      eg2()

@@ -23,7 +23,7 @@ The csv constructor accepts an action to be run on every line.
 
     printColumn3 = (file) ->
       new csv file,
-              (row) -> the.say row[3]
+              (row) -> _.hi row[3]
 
 Optionally, the `csv` constructor accepts an second
 argument defining what to do at end of file.
@@ -32,12 +32,12 @@ argument defining what to do at end of file.
       n=0
       new csv file,
           -> ++n,
-          -> the.say "rows: " + n
+          -> _.hi "rows: " + n
 
 ## Code
 
     reader = require('./lines').lines
-    the   = require('./the')
+    _ = require('./_')
 
 **Constructor**
 
@@ -73,7 +73,7 @@ Cells are useful if row1's cell did not contain `the.ignore`
 
       act: (cells) ->
         if cells.length
-          @use or= (i for c,i in cells when the.ignore not in c)
+          @use or= (i for c,i in cells when _.ignore not in c)
           @action (@prep cells[i] for i in @use)
 
 **Prep each cell.**
@@ -87,6 +87,6 @@ use that number. Else, use the string as-is.
 ## End stuff
 
     if require.main == module
-      printColumn3 the.data + '/weather2.csv'
-      countRows    the.data + '/POM3A.csv'
+      printColumn3 _.data + '/weather2.csv'
+      countRows    _.data + '/POM3A.csv'
     this.csv = csv
