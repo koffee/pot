@@ -3,7 +3,7 @@
 [<img width=900 src=https://raw.githubusercontent.com/koffee/script/master/img/head.jpg>](http://tiny.cc/koff)<br>
 [src](https://github.com/koffee/script/tree/master/lib) |
 [tour](https://github.com/koffee/script/blob/master/docs/TOUR.md) |
-[style](https://github.com/koffee/script/blob/master/docs/STYLE.md) 
+[style](https://github.com/koffee/script/blob/master/docs/STYLE.md)
 
 # RAND
 
@@ -13,16 +13,16 @@ This generator is a so-called 'Lehmer random number generator' which returns a p
 
 - _Random Number Generators: Good Ones Are Hard To Find_ Steve Park and Keith Miller Communications of the ACM, October 1988
 
-## Standard usage
+## Examples
 
-```coffeescript
-rand = require('./rand').rand
+    fiveRandomNumbers = ->
+      r= new rand
+      console.log  ( r.next().toFixed(5) for  [1..5] ).join(', ')
 
-r= new rand
-# r.fromOS() # uncomment this line to initialize from operating system
-for [1..10**1]
-  console.log(r.next())
-```
+    recreateRandomNumbers = (max=10) ->
+      # should the print the same rands, twice
+      fiveRandomNumbers()
+      fiveRandomNumbers()
 
 ## Code
 
@@ -31,9 +31,9 @@ for [1..10**1]
       @mult:  16807
       @mod:   2147483647
 
-With this constructor, if initialized many times using `new rand` then, each time,
-it will generate the same sequence
-of random numbers.
+With this constructor, if initialized many times using `new rand`
+then, each time, it will generate the same sequence of random
+numbers.
 
       constructor: (n = rand.seed0) ->
         @reset(n)
@@ -56,9 +56,9 @@ Primitive generator:
         @seed = (rand.mult * @seed) % rand.mod
         @seed / rand.mod
 
-The generator you should call to get the next random number. 
-As is recommended practice,
-the raw random number generator is wrapped in a 97 table to increase randomness.
+The generator you should call to get the next random number.  As
+is recommended practice, the raw random number generator is wrapped
+in a 97 table to increase randomness.
 
       next: () ->
         @some = @some or (@one() for [1..97])
@@ -67,7 +67,9 @@ the raw random number generator is wrapped in a 97 table to increase randomness.
         [ x,@some[i] ] = [ @some[i],x ]
         x
 
-## Export control
+## End
 
     this.rand = rand
-
+    if require.main == module
+      fiveRandomNumbers()
+      recreateRandomNumbers()

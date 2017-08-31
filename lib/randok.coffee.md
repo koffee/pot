@@ -7,7 +7,6 @@
 
 # asdsa
 
-    require './our'
     rand = require('./rand').rand
  
     r= new rand
