@@ -53,9 +53,11 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'croaker/mustang-vim'
 "Plugin 'enricobacis/vim-airline-clock'
 
-let g:airline_theme='serebe'
+let g:airline_theme='behlit'
 "set noshowmode
-"let g:airline_section_z = airline#section#create(['windowswap', '%3p%% ', 'linenr', ':%3v'])
+let g:airline_section_z = airline#section#create(['windowswap', '%3p%% ', 'linenr'])
+"let g:airline_section_z = airline#section#create(['windowswap',  'linenr', ':%3v'])
+
 "set invlist
 "set ruler
 "set rulerformat=%-14.(%l,%c%V%)\ %P

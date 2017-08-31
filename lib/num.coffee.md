@@ -3,9 +3,9 @@
 [<img width=900 src=https://raw.githubusercontent.com/koffee/script/master/img/head.jpg>](http://tiny.cc/koff)<br>
 [src](https://github.com/koffee/script/tree/master/lib) |
 [tour](https://github.com/koffee/script/blob/master/docs/TOUR.md) |
-[style](https://github.com/koffee/script/blob/master/docs/STYLE.md) 
+[style](https://github.com/koffee/script/blob/master/docs/STYLE.md)
 
-# NUM 
+# NUM
 
 Incremental collector of `lo,hi` and `sd` (standard deviation) of
 a stream of numbers. Also, implements some parametric
@@ -13,11 +13,11 @@ hypothesis and effect size tests.
 
 ## Examples
 
-    eg1 = -> 
+    eg1 = ->
       n = new num
       (n.add x for x in [9,2,5,4,12,7,8,11,9,3,7,4,12,5,4,10,9,6,9,4])
-      _.hi(n.mu)
- 
+      _.hi n.mu
+
     eg2 = ->
       n = new num
       n.adds([9,2,5,4,12,7,8,11,9,3,7,4,12,5,4,10,9,6,9,4])
