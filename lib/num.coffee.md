@@ -16,12 +16,12 @@ hypothesis and effect size tests.
     eg1 = ->
       n = new num
       (n.add x for x in [9,2,5,4,12,7,8,11,9,3,7,4,12,5,4,10,9,6,9,4])
-      _.hi n.mu
+      _.say n.mu
 
     eg2 = ->
       n = new num
       n.adds([9,2,5,4,12,7,8,11,9,3,7,4,12,5,4,10,9,6,9,4])
-      _.hi n.mu,n.sd
+      _.say n.mu,n.sd
 
 ## Code
 
