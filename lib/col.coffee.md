@@ -11,7 +11,7 @@ Abstract superclass for [`num`](num.coffee.md) and [`sym`](sym.coffee.md).
 Implements some _mixin_ behaviours where common patterns in
 method `xxx` is handled by subclass methods `xxx1`.
 
-    _ = require("./_")
+    _ = require("./our")
     class col
 
 All [`col`]s have:

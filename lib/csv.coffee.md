@@ -23,7 +23,7 @@ The csv constructor accepts an action to be run on every line.
 
     printColumn3 = (file) ->
       new csv file,
-              (row) -> _.hi row[3]
+              (row) -> _.say row[3]
 
 Optionally, the `csv` constructor accepts an second
 argument defining what to do at end of file.
@@ -32,12 +32,12 @@ argument defining what to do at end of file.
       n=0
       new csv file,
           -> ++n,
-          -> _.hi "rows: " + n
+          -> _.say "rows: " + n
 
 ## Code
 
     reader = require('./lines').lines
-    _ = require('./_')
+    _ = require('./our')
 
 **Constructor**
 

@@ -7,7 +7,7 @@
 
 # SYM 
 
-    the = require('./the')
+    _ = require('./out')
     col = require('./col').col
 
 asdassdsaasdasasdsassasa

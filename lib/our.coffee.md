@@ -18,7 +18,7 @@
 
 Print a list of things.
 
-    @hi = (l...) ->
+    say = (l...) ->
       sep=" "
       w = (s) -> process.stdout.write(s)
       for x in l
@@ -28,22 +28,27 @@ Print a list of things.
 
 Unit test 
 
-    assert= (f) -> throw new Error if not f
+    assert= (f,t) -> throw new Error t or "" if not f
 
     class o
       @tries=0
       @failed=0
       @k: (funs...) ->
-        _.hi funst
+        say funs
         (o.test(f) for f in funs)
       @test: (f) ->
         o.tries++
         try
             f()
         catch error
+            console.log error
             o.failed++
       @darn : ->
         fail =  o.tries - o.fail
+        f  = (x)  -> Math.floor(100*x)
+        console.log
+           pass: f (o.tries - o.failed)/o.tries
+           fail: f o.failed/o.tries
 
 ## Magic
 
@@ -52,5 +57,11 @@ Unit test
 
 # END
  
+     this.say = say
+     this.o   = o
      if require.main == module
-       o.k -> assert(false)
+       xx = (a) -> assert(a> 0,"should be positive")
+       o.k -> assert(false, "false things")
+       o.k -> assert(true,"true things")
+       o.k -> assert(xx(0), "should not crash")
+       o.darn()

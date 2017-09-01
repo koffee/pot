@@ -28,7 +28,7 @@ hypothesis and effect size tests.
 All the methods marked as `_xxx` extends functionality of the `xxx`
 methods defined in the [col](col.coffee.md) superclass.
 
-    _ = require('./_')
+    _ = require('./our')
     col = require('./col').col
 
     class num extends col
