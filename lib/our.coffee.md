@@ -5,6 +5,8 @@
 [tour](https://github.com/koffee/script/blob/master/docs/TOUR.md) |
 [style](https://github.com/koffee/script/blob/master/docs/STYLE.md) 
 
+# Our Shared Stuff
+
 ## Shared Constants
 
     @ninf   = -1 * (Number.MAX_SAFE_INTEGER - 1)
@@ -25,6 +27,14 @@ Print a list of things.
         w(sep+ x)
         sep=", "
       w("\n")
+
+Memoize
+
+    memoize = (func) ->
+      memo = {}
+      (arg, args...) ->
+        memo[arg] = func arg,args... unless  memo[arg]
+        memo[arg]
 
 Unit test 
 
@@ -60,8 +70,11 @@ Unit test
      this.say = say
      this.o   = o
      if require.main == module
+       fib = memoize (n) ->
+         if n < 2 then n else
+             fib(n-1) + fib(n-2)
+       o.k -> assert fib(40,1,10) is  102334155,"wrong value"
        xx = (a) -> assert(a> 0,"should be positive")
        o.k -> assert(false, "false things")
-       o.k -> assert(true,"true things")
        o.k -> assert(xx(0), "should not crash")
        o.darn()

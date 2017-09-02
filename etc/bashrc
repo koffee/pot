@@ -251,7 +251,7 @@ promptcom() {
 banner() {
   echo -n "${ltyl}" 
   cat <<'EOF'
-                           KOFFEE / script v1.0
+  
          {       
       {   }                Should I kill myself?
        }_{ __{             Or have a cup of coffee?
@@ -259,10 +259,10 @@ banner() {
    (   }     {   )         
    |`-.._____..-'|         A morning without 
    |             ;--.      coffee is like sleep.
-   |            (__  \     -- Unknown  
-   |             | )  )    
+   |   KOFFEE/   (__  \     -- Unknown  
+   |   script    | )  )    
    |             |/  /     What goes best with
-   |             /  /      coffee? Another cup.
+   |     v1      /  /      coffee? Another cup.
    |            (  /       -- Henry Rollins
    \             y'   
     `-.._____..-'  -Feix Lee      

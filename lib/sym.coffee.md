@@ -7,23 +7,23 @@
 
 # SYM 
 
-    _ = require('./out')
+    _ = require('./the')
     col = require('./col').col
 
 asdassdsaasdasasdsassasa
 
     class sym extends col
-      constructor: (txt) ->
-        super txt
+      constructor: (args...) ->
+        super args...
         [ @counts,@most,@mode ] = [ [],0,null ]
       #-------------------------
-      _add: (x) ->
-        if not x in @counts then @counts[x] = 0
+      add1: (x) ->
+        @counts[x] = 0 unless @counts[x]
         seen = ++@counts[x]
         if seen > @most then
           [ @most,@mode ] = [ seen,x ] 
       #-------------------------
-      _norm: (x) -> x
+      norm1: (x) -> x
 
 ## Export control
 
