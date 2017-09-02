@@ -32,8 +32,8 @@ methods defined in the [col](col.coffee.md) superclass.
     col = require('./col').col
 
     class num extends col
-      constructor: (txt) ->
-        super txt
+      constructor: (args...) ->
+        super args...
         [ @mu,@m2,@sd ] = [ 0,0,0 ]
         [ @hi, @lo ]    = [ _.ninf, _.inf ]
 
