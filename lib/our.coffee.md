@@ -31,10 +31,14 @@ Print a list of things.
 Memoize
 
     memoize = (func) ->
+      # if called with no args, resets the memos
       memo = {}
       (arg, args...) ->
-        memo[arg] = func arg,args... unless  memo[arg]
-        memo[arg]
+        if arg is null 
+          memo={}
+        else
+          memo[arg] = func arg,args... unless  memo[arg]
+          memo[arg]
 
 Unit test 
 

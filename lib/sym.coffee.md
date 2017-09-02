@@ -7,7 +7,7 @@
 
 # SYM 
 
-    _ = require('./the')
+    _ = require('./our')
     col = require('./col').col
 
 asdassdsaasdasasdsassasa
@@ -20,8 +20,7 @@ asdassdsaasdasasdsassasa
       add1: (x) ->
         @counts[x] = 0 unless @counts[x]
         seen = ++@counts[x]
-        if seen > @most then
-          [ @most,@mode ] = [ seen,x ] 
+        [ @most,@mode ] = [ seen,x ] if seen > @most
       #-------------------------
       norm1: (x) -> x
 
