@@ -15,12 +15,17 @@ asdassdsaasdasasdsassasa
     class sym extends col
       constructor: (args...) ->
         super args...
-        [ @counts,@most,@mode ] = [ [],0,null ]
+        [ @counts,@most,@mode,@_ent ] = [ [],0,null,null ]
       #-------------------------
       add1: (x) ->
+        @_ent = null
         @counts[x] = 0 unless @counts[x]
         seen = ++@counts[x]
         [ @most,@mode ] = [ seen,x ] if seen > @most
+      ent: ->
+        for x in @counts
+          p = x/@n
+          e -= Math
       #-------------------------
       norm1: (x) -> x
 
