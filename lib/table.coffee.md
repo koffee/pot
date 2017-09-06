@@ -5,29 +5,15 @@
 [tour](https://github.com/koffee/script/blob/master/docs/TOUR.md) |
 [style](https://github.com/koffee/script/blob/master/docs/STYLE.md)
 
-# CSV reader
+# Table reader
 
-This `csv` class does not store data. Rather, it parses lines of
-comma-seperated values and thows each line, one at a time, to
-some `action`.
+    csv= require('./csv')
 
-
-- In row1 of the file, if any column contains "?", then that column is ignored.
-- If any row ends in ",", it is combined with the next.
-- Strings containing numbers are coerced into numbers.
-- Whitespace and comments (anything after "#") are deleted.
-
-## Examples
-
-The csv constructor accepts an action to be run on every line.
-
-    printColumn3 = (file) ->
-      new csv file,
-              (row) -> _.say row[3]
-
-Optionally, the `csv` constructor accepts an second
-argument defining what to do at end of file.
-
+    file2table=(file) ->
+      t = new table
+      reader = csv file, (row) ->  t.update(row), -> t=t
+      t
+        
     countRows = (file) ->
       n=0
       new csv file,

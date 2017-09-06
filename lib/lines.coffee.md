@@ -13,6 +13,7 @@ Read a file, pass one line at a time to some `action` handler.
     fs        = require 'fs'
    
     lines = ( file, action, done ) ->
+      done or= ->
       stream = readline.createInterface
         input:    fs.createReadStream file
         output:   process.stdout
@@ -22,9 +23,8 @@ Read a file, pass one line at a time to some `action` handler.
       stream.on 'line',  ( line  ) -> action line 
 
 
-    #if require.main == module
-    # lines '../data/weather2.csv',(t) ->
-    #   console.log t
+    if require.main == module
+       lines '../data/weather2.csv',(t) ->  console.log(t)
 
-    this.lines = lines
+    @lines = lines
 

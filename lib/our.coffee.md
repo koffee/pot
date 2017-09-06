@@ -71,14 +71,14 @@ Unit test
 
 # END
  
-     this.say = say
-     this.o   = o
+     @say = say
+     @o   = o
      if require.main == module
        fib = memoize (n) ->
          if n < 2 then n else
              fib(n-1) + fib(n-2)
        o.k -> assert fib(40,1,10) is  102334155,"wrong value"
-       xx = (a) -> assert(a> 0,"should be positive")
-       o.k -> assert(false, "false things")
-       o.k -> assert(xx(0), "should not crash")
+       xx = (a) -> assert a> 0,"should be positive"
+       o.k -> xx(1)
+       o.k -> xx(0)
        o.darn()

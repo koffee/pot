@@ -69,7 +69,7 @@ in a 97 table to increase randomness.
 
 ## End
 
-    this.rand = rand
+    @rand = rand
     if require.main == module
       fiveRandomNumbers()
       recreateRandomNumbers()
