@@ -8,6 +8,48 @@
 # Table reader
 
     csv= require('./csv')
+    row= require('./row')
+
+    class table
+      constructor: (spec) ->
+        @cols= {all: [], nums:[], syms: []}
+        @x   = {all: [], nums:[], syms: []}
+        @y   = {all: [], nums:[], syms: [],
+                klasses: [], less: [], more: []}
+        @spec=[]
+        @rows=[]
+        (@header txt,pos for txt,pos in spec) if spec
+      copy: (rows) -> # shares internal data
+        rows or= @rows
+        t = new table @spec
+        (t.data row for row in rows)
+        t
+      deepCopy: (rows) -> # all seperate data
+        rows or= @rows
+        t = new table @spec
+        (t.data( new row row.cells ) for row in rows)
+        t
+      add: (cells) ->
+        if @spec.length
+          @data(new row cells)
+        else
+          (@header txt,pos for txt,pos in cells)
+      data: (row) ->
+        @rows.push row
+        (col.add row.cells[col.pos] for col in @cols.all)
+      header: (txt,pos)
+        create = (col,w, theres...) ->
+          col.pos = pos
+          col.w   = w
+          col.txt = txt
+          @spec.push txt
+          @cols.all.push col
+          (here.push col for here in theres)
+        if      ">" in txt create(new num,  1, @all.nums, @y.nums, @y.more)
+        else if "<" in txt create(new num, -1, @all.nums, @y.nums, @y.less)
+        else if "!" in txt create(new sym,  1, @all.syms, @y.syms, @y.klasses)
+        else if "$" in txt create(new num,  1, @all.nums, @x.nums)
+        else               create(new sym,  1, @all.syms, @x.syms)
 
     file2table=(file) ->
       t = new table
