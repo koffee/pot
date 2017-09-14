@@ -29,18 +29,19 @@
       headers: (cells) ->
         (@header txt,pos for txt,pos in cells)
       header: (txt,pos) ->
-        head = (what,w,theres) =>
+        h = (what,w,theres) =>
           @spec.push txt
           col = new what txt,w,pos
           @xy.all.push col
           (here.push col for here in theres)
-        return head(num,  1, [@xy.nums, @y.nums, @y.more])    if "?" in txt
-        return head(num, -1, [@xy.nums, @y.nums, @y.less] )   if "<" in txt
-        return head(sym,  1, [@xy.syms, @y.syms, @y.klasses]) if "!" in txt
-        return head(num,  1, [@xy.nums, @x.nums])             if "$" in txt
-        return head(sym,  1, [@xy.syms, @x.syms])
+        return h(num,  1, [@xy.nums, @y.nums, @y.more    ]) if "?" in txt
+        return h(num, -1, [@xy.nums, @y.nums, @y.less    ]) if "<" in txt
+        return h(sym,  1, [@xy.syms, @y.syms, @y.klasses ]) if "!" in txt
+        return h(num,  1, [@xy.nums, @x.nums])              if "$" in txt
+        return h(sym,  1, [@xy.syms, @x.syms])
       from: (file, after = ->) ->
-        new csv file, (row) => @add row, => _.say t
+        _.say 12
+        new csv file, ((row) => @add row), after
       copy: (rows) -> # shares internal data
         t = new table @spec
         (t.data row for row in rows or @rows)
@@ -54,6 +55,5 @@
 
     if require.main == module
       t = new table
-      t.from _.data + '/weather2.csv' , => _.say t
+      t.from _.data + '/weather2.csv' , -> _.say t.xy.nums[1].sd
     @table = table
-
