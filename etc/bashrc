@@ -125,7 +125,7 @@ legal() { ## ## show copyright notice ## misc
 }
 help() { ## ## show help ## misc
   [[ ! (-x "$(command -v gawk)") ]] && brew install gawk
-  echo "${blue}"
+  echo -n "${blue}"
   grep '##' $Here/etc/bashrc | 
   sort -t\# -k 7  | 
   grep -v 'grep' |
@@ -249,12 +249,12 @@ banner() {
    (   }     {   )         
    |`-.._____..-'|         A morning without 
    |             ;--.      coffee is like sleep.
-   |   KOFFEE/   (__  \     -- Unknown  
-   |   script    | )  )    
-   |             |/  /     What goes best with
-   |     v1      /  /      coffee? Another cup.
-   |            (  /       -- Henry Rollins
-   \             y'   
+   |             (__  \     -- Unknown  
+   |   KOFFEE/    | )  )    
+   |   script     |/  /     What goes best with
+   |    (v1)      /  /      coffee? Another cup.
+   |             (  /       -- Henry Rollins
+   \              y'   
     `-.._____..-'  -Feix Lee      
 EOF
 echo -n "${white}"

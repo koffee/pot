@@ -86,7 +86,7 @@ use that number. Else, use the string as-is.
 
 ## End stuff
 
-    @csv = csv
     if require.main == module
       printColumn3 _.data + '/weather2.csv'
       countRows    _.data + '/POM3A.csv'
+    @csv = csv

@@ -22,9 +22,10 @@ All [`col`]s have:
 
 as defined below by the following constructor:
 
-      constructor: (txt) ->
+      constructor: (txt,w,pos) ->
          @n   = 0
-         @w   = 1
+         @w   = w or 1
+         @pos = pos
          @txt = txt
 
 Only add things that should not be `ignore`d.
