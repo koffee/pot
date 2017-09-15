@@ -28,25 +28,20 @@ Print a list of things.
         sep=", "
       w("\n")
 
-    show = (x,k, pad="  ", seen={},lvl=0) ->
-      if lvl > 10 
-        return ""
-      pre    = if k then k + ": " else k
+    rmap = (x,lvl=0, k) ->
+      return if lvl > 10
       prim   = (p) -> typeof p in ['number', 'sting', 'boolean']
       use    = (s) -> s[0] isnt "_"
-      if typeof x isnt 'function'
-        h = JSON.stringify(x)
-        if prim(x)
-          console.log pad + pre + x
-        else if seen[h]?
-          console.log pad + pre + '...'
-        else
-          seen[h] = h
-          for k,v of x when use(k) and prim(v)
-            show(v, k, pad + "  ", seen,lvl+1)
-          for k,v of x when use(k) and not prim(v)
-            show(v, k, pad + "  ", seen,lvl+1)
-  
+      if prim(x)
+        out = if k? then [k,x] else x
+      else if typeof x isnt 'function'
+        out=[]
+        for k,v of x when use(k) and prim(v)
+           out.push [k,v]
+        for k,v of x when use(k) and not prim(v)
+           out.push [k, rmap(v, lvl+1, k)]
+      out
+
 Memoize
 
     memoize = (func) ->
@@ -101,4 +96,4 @@ Unit test
        o.k -> xx(1)
        o.k -> xx(0)
        o.darn()
-       show({'aa','bb','cc'})
+       rmap({'aa','bb','cc'})
