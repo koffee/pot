@@ -32,14 +32,16 @@ Print a list of things.
       return if lvl > 10
       prim   = (p) -> typeof p in ['number', 'sting', 'boolean']
       use    = (s) -> s[0] isnt "_"
+      console.log ">>>", x, typeof x, prim(x)
       if prim(x)
         out = if k? then [k,x] else x
-      else if typeof x isnt 'function'
+      else 
+        return if typeof x is 'function'
         out=[]
         for k,v of x when use(k) and prim(v)
-           out.push [k,v]
+           out.push [1,k,v]
         for k,v of x when use(k) and not prim(v)
-           out.push [k, rmap(v, lvl+1, k)]
+           out.push [2, k, rmap(v, lvl+1, k)]
       out
 
 Memoize
@@ -96,4 +98,11 @@ Unit test
        o.k -> xx(1)
        o.k -> xx(0)
        o.darn()
-       rmap({'aa','bb','cc'})
+       x=
+         b: 23
+         c: 23
+         d: 
+           e: 2
+           g: 3
+       console.log x
+       console.log rmap x
