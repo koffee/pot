@@ -45,3 +45,23 @@ Also:
 
 So, I'm porting all the LUA stuff here (plus doing some extensions).
 Watch this space. 
+
+## Details
+
+Most of the files in `/lib` have demo suites so running those will show you what they 
+can do.
+
+My code needs two magic variables:
+
+- `NODE_PATH` to find the coffeescript modules;
+- `Koffee` to point to the root of these directories.
+
+Hemce, my recommeded usage is:
+
+    export Koffee="$PWD"                    # can also be set in .bashrc
+    export NODE_PATH="$PWD/lib:$NODE_PATH"  # can also be set in .bashrc
+    coffee lib/FILE.coffee.md
+
+Or, if you don't want to set globals in the envrionment:
+
+    NODE_PATH="$PWD/lib:$NODE_PATH" Koffee="$PWD" coffee lib/FILE.coffee.md

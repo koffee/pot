@@ -7,11 +7,12 @@
 
 # Table reader
 
-    _   = require('./our')
-    Csv = require('./csv').Csv
-    Row = require('./row').Row
-    Num = require('./num').Num
-    Sym = require('./sym').Sym
+    _   = require('our')
+    say = _.say
+    Csv = require('csv').Csv
+    Row = require('row').Row
+    Num = require('num').Num
+    Sym = require('sym').Sym
 
     class Table
       constructor: (spec) ->
@@ -29,18 +30,17 @@
       headers: (cells) ->
         (@header txt,pos for txt,pos in cells)
       header: (txt,pos) ->
-        h = (what,w,theres) =>
+        h = (what,w,there) =>
           @spec.push txt
           col = new what txt,w,pos
           @xy.all.push col
-          (here.push col for here in theres)
-        return h(Num,  1, [@xy.nums, @y.nums, @y.more    ]) if "?" in txt
-        return h(Num, -1, [@xy.nums, @y.nums, @y.less    ]) if "<" in txt
-        return h(Sym,  1, [@xy.syms, @y.syms, @y.klasses ]) if "!" in txt
-        return h(Num,  1, [@xy.nums, @x.nums])              if "$" in txt
-        return h(Sym,  1, [@xy.syms, @x.syms])
+          (here.push col for here in there)
+        return h(Num, 1,[@xy.nums,@y.nums,@y.more   ]) if "?" in txt
+        return h(Num,-1,[@xy.nums,@y.nums,@y.less   ]) if "<" in txt
+        return h(Sym, 1,[@xy.syms,@y.syms,@y.klasses]) if "!" in txt
+        return h(Num, 1,[@xy.nums,@x.nums])            if "$" in txt
+        return h(Sym, 1,[@xy.syms,@x.syms])
       from: (file, after = ->) ->
-        _.say 12
         new Csv file, ((row) => @add row), after
       copy: (rows) -> # shares internal data
         t = new Table @spec
@@ -55,5 +55,5 @@
 
     if require.main == module
       t = new Table
-      t.from _.data + '/weather2.csv' , -> _.say t.xy.nums[1].sd
+      t.from _.data + '/weather2.csv' , -> say t.xy.nums[1].sd
     @Table = Table

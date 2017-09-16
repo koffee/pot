@@ -7,6 +7,27 @@
 
 # Our Shared Stuff
 
+## How to call this code
+
+    Usage="""
+            
+      export Koffee="$PWD"                    # can also be set in .bashrc
+      export NODE_PATH="$PWD/lib:$NODE_PATH"  # can also be set in .bashrc
+      coffee lib/FILE.coffee.md
+
+    Or, if you don't want to set globals in the envrionment:
+
+      NODE_PATH="$PWD/lib:$NODE_PATH" Koffee="$PWD" coffee lib/FILE.coffee.md
+    """
+
+## Start up checks
+
+    for x in ['NODE_PATH', 'Koffee']
+      unless process.env[x]
+        console.log "Abort. No #{x} variable set."
+        console.log "Recommended usage: " + Usage
+        process.exit()
+
 ## Shared Constants
 
     @ninf   = -1 * (Number.MAX_SAFE_INTEGER - 1)
@@ -28,34 +49,32 @@ Print a list of things.
         sep=", "
       w("\n")
 
-Recursive print of things. Will crash on recursive contents
+Recursive print of things. Ignores attributes shose first symbol
+is "\_". Crashes on recursive contents
 (until I figure out how to hash coffeescript objects... anyone?)
 
-    rshow = (x,lvl=0) ->
+    rsay = (x,lvl=0,pad="") ->
       return if lvl > 10
       prim = (p) -> typeof p in ['number', 'sting', 'boolean']
-      use  = (s) -> s[0] isnt "_"
-      pad  = "  ".repeat(lvl)
       name = (v) ->
                tmp= v.constructor.name
                if tmp in ['Array','Object'] then "" else tmp
       if prim(x)
         console.log 100+pad + x
+      else if x.constructor.name is 'Array'
+        for v in x
+          if prim(v)
+            console.log pad + v
+          else
+            console.log pad +  name(v)
+            rsay(v,lvl+1, pad+"  ")
       else if typeof x isnt 'function'
-        if x.constructor.name is 'Array'
-          for v in x
-            if prim(v)
-              console.log pad + v
-            else
-              console.log pad +  name(v)
-              rshow(v,lvl+1)
-        else
-          for k,v of x when use(k)
-            if prim(v)
-              console.log pad + "#{k}: #{v}"
-            else
-              console.log pad + k + ": " + name(v)
-              rshow(v,lvl+1)
+        for k,v of x when k[0] isnt "_"
+          if prim(v)
+            console.log pad + "#{k}: #{v}"
+          else
+            console.log pad + k + ": " + name(v)
+            rsay(v,lvl+1,pad + "  ")
   
 Memoize
 
@@ -83,7 +102,9 @@ Unit test
         O.tries++
         try
             f()
+            console.log "\n-----| SUCCESS!! |--------------------\n"
         catch error
+            console.log "\n-----| FAILURE!! |--------------------\n"
             console.log error.stack.split('\n')[0..2].join("\n")
             O.failed++
       @darn : ->
@@ -100,27 +121,39 @@ Unit test
 
 # END
 
-     @say = say
-     @O   = O
-     if require.main == module
-       # memoization test
+## Some test/demo function
+
+     memoEg = ->
        fib = memoize (n) ->
-         if n < 2 then n else
-             fib(n-1) + fib(n-2)
+         if n < 2 then n else fib(n-1) + fib(n-2)
        O.k -> assert fib(40,1,10) is  102334155,"wrong value"
-       # testing the test ending
+
+    oEg = ->
        xx = (a) -> assert a> 0,"should be positive"
        O.k -> xx(1)
        O.k -> xx(0)
-       O.darn()
-       # recursive print demo
-       class Demo1 
+
+    rsayEg = ->
+       class Demo1
          constructor: (@c=41,@d=22) ->
-       class Demo 
+       class Demo
          constructor: (@a=41,@b=new Demo1) ->
-       rshow
+       rsay
          c: [1,2,3,new Demo]
          b: 23
-         d: 
+         d:
            e: new Demo
            g: {"aa":2, "bb":4}
+
+## And finally
+
+     @say = say
+     @rsay = rsay
+     @memoize = memoize
+     @O = O
+     if require.main == module
+       memoEg()
+       oEg()
+       rsayEg()
+       O.darn()
+       

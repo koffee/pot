@@ -7,8 +7,8 @@
 
 # SYM 
 
-    _ = require('./our')
-    Col = require('./col').Col
+    _ = require 'our'
+    Col = require('col').Col
 
 asdassdsaasdasasdsassasa
 

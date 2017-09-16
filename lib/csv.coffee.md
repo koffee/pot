@@ -36,8 +36,8 @@ argument defining what to do at end of file.
 
 ## Code
 
-    reader = require('./lines').lines
-    _ = require('./our')
+    reader = require('lines').lines
+    _ = require 'our'
 
 **Constructor**
 
