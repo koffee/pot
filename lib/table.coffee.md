@@ -8,12 +8,12 @@
 # Table reader
 
     _   = require('./our')
-    csv = require('./csv').csv
-    row = require('./row').row
-    num = require('./num').num
-    sym = require('./sym').sym
+    Csv = require('./csv').Csv
+    Row = require('./row').Row
+    Num = require('./num').Num
+    Sym = require('./sym').Sym
 
-    class table
+    class Table
       constructor: (spec) ->
         @xy  = {all: [], nums:[], syms: []}
         @x   = {all: [], nums:[], syms: []}
@@ -22,7 +22,7 @@
         @rows = []
         @headers spec if spec
       add: (cells) ->
-        if @spec.length then @data(new row cells) else @headers cells
+        if @spec.length then @data(new Row(cells)) else @headers cells
       data: (row) ->
         @rows.push row
         (col.add row.cells[col.pos] for col in @xy.all)
@@ -34,26 +34,26 @@
           col = new what txt,w,pos
           @xy.all.push col
           (here.push col for here in theres)
-        return h(num,  1, [@xy.nums, @y.nums, @y.more    ]) if "?" in txt
-        return h(num, -1, [@xy.nums, @y.nums, @y.less    ]) if "<" in txt
-        return h(sym,  1, [@xy.syms, @y.syms, @y.klasses ]) if "!" in txt
-        return h(num,  1, [@xy.nums, @x.nums])              if "$" in txt
-        return h(sym,  1, [@xy.syms, @x.syms])
+        return h(Num,  1, [@xy.nums, @y.nums, @y.more    ]) if "?" in txt
+        return h(Num, -1, [@xy.nums, @y.nums, @y.less    ]) if "<" in txt
+        return h(Sym,  1, [@xy.syms, @y.syms, @y.klasses ]) if "!" in txt
+        return h(Num,  1, [@xy.nums, @x.nums])              if "$" in txt
+        return h(Sym,  1, [@xy.syms, @x.syms])
       from: (file, after = ->) ->
         _.say 12
-        new csv file, ((row) => @add row), after
+        new Csv file, ((row) => @add row), after
       copy: (rows) -> # shares internal data
-        t = new table @spec
+        t = new Table @spec
         (t.data row for row in rows or @rows)
         t
       deepCopy: (rows) -> # all seperate data
-        t = new table @spec
-        (t.data( new row row.cells ) for row in rows or @rows)
+        t = new Table @spec
+        (t.data( new Row(row.cellsi)  ) for row in rows or @rows)
         t
 
 ## End stuff
 
     if require.main == module
-      t = new table
+      t = new Table
       t.from _.data + '/weather2.csv' , -> _.say t.xy.nums[1].sd
-    @table = table
+    @Table = Table

@@ -8,11 +8,11 @@
 # SYM 
 
     _ = require('./our')
-    col = require('./col').col
+    Col = require('./col').Col
 
 asdassdsaasdasasdsassasa
 
-    class sym extends col
+    class Sym extends Col
       constructor: (args...) ->
         super args...
         [ @counts,@most,@mode,@_ent ] = [ [],0,null,null ]
@@ -31,4 +31,4 @@ asdassdsaasdasasdsassasa
 
 ## Export control
 
-    @sym = sym
+    @Sym = Sym

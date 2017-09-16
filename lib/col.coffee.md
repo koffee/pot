@@ -12,12 +12,12 @@ Implements some _mixin_ behaviours where common patterns in
 method `xxx` is handled by subclass methods `xxx1`.
 
     _ = require("./our")
-    class col
+    class Col
 
-All [`col`]s have:
+All [`Col`]s have:
 
 - `@n`: number of items seen;
-- `@w`: a weight of 1 (and some cols will be -1 if, eg., they are goals to minimize);
+- `@w`: a weight of 1 (and some Cols will be -1 if, eg., they are goals to minimize);
 - `@txt`: a text name.
 
 as defined below by the following constructor:
@@ -49,5 +49,5 @@ Normalize things, unless they are things to be `ignored`.
 
 ## Export control
 
-    @col = col
+    @Col = Col
 

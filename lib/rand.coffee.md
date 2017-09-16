@@ -16,7 +16,7 @@ This generator is a so-called 'Lehmer random number generator' which returns a p
 ## Examples
 
     fiveRandomNumbers = ->
-      r= new rand
+      r= new Rand
       console.log  ( r.next().toFixed(5) for  [1..5] ).join(', ')
 
     recreateRandomNumbers = (max=10) ->
@@ -26,7 +26,7 @@ This generator is a so-called 'Lehmer random number generator' which returns a p
 
 ## Code
 
-    class rand
+    class Rand
       @seed0: 10013
       @mult:  16807
       @mod:   2147483647
@@ -35,14 +35,14 @@ With this constructor, if initialized many times using `new rand`
 then, each time, it will generate the same sequence of random
 numbers.
 
-      constructor: (n = rand.seed0) ->
+      constructor: (n = Rand.seed0) ->
         @reset(n)
 
 The `reset` method blasts the table and resets the seed.
 
       reset: (n) ->
         @some = null
-        @seed = n % rand.mod
+        @seed = n % Rand.mod
 
 If asked, we can `reset` the seed from the current time.
 
@@ -53,8 +53,8 @@ If asked, we can `reset` the seed from the current time.
 Primitive generator:
 
       one: () ->
-        @seed = (rand.mult * @seed) % rand.mod
-        @seed / rand.mod
+        @seed = (Rand.mult * @seed) % Rand.mod
+        @seed / Rand.mod
 
 The generator you should call to get the next random number.  As
 is recommended practice, the raw random number generator is wrapped
@@ -69,7 +69,7 @@ in a 97 table to increase randomness.
 
 ## End
 
-    @rand = rand
+    @Rand = Rand
     if require.main == module
       fiveRandomNumbers()
       recreateRandomNumbers()

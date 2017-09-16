@@ -22,15 +22,15 @@ some `action`.
 The csv constructor accepts an action to be run on every line.
 
     printColumn3 = (file) ->
-      new csv file,
+      new Csv file,
               (row) -> _.say row[3]
 
-Optionally, the `csv` constructor accepts an second
+Optionally, the `Csv` constructor accepts an second
 argument defining what to do at end of file.
 
     countRows = (file) ->
       n=0
-      new csv file,
+      new Csv file,
           -> ++n,
           -> _.say "rows: " + n
 
@@ -41,7 +41,7 @@ argument defining what to do at end of file.
 
 **Constructor**
 
-    class csv
+    class Csv
       constructor: (file, action, over) ->
         @use     = null
         @lines    = []
@@ -89,4 +89,4 @@ use that number. Else, use the string as-is.
     if require.main == module
       printColumn3 _.data + '/weather2.csv'
       countRows    _.data + '/POM3A.csv'
-    @csv = csv
+    @Csv = Csv

@@ -7,10 +7,10 @@
 
 # Table rows reader
 
-    class row
+    class Row
       @id: 0
       constructor: (cells,t) ->
         @cells= (cell for cell in cells)
         @id   = ++@id
 
-    @row = row
+    @Row = Row
