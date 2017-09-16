@@ -40,7 +40,7 @@ Recursive print of things. Will crash on recursive contents
                tmp= v.constructor.name
                if tmp in ['Array','Object'] then "" else tmp
       if prim(x)
-        console.log pad + x
+        console.log 100+pad + x
       else if typeof x isnt 'function'
         if x.constructor.name is 'Array'
           for v in x
