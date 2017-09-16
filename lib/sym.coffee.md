@@ -7,7 +7,7 @@
 
 # SYM 
 
-    _ = require 'our'
+    the = require 'our'
     Col = require('col').Col
 
 asdassdsaasdasasdsassasa

@@ -16,26 +16,26 @@ hypothesis and effect size tests.
     eg1 = ->
       n = new Num
       (n.add x for x in [9,2,5,4,12,7,8,11,9,3,7,4,12,5,4,10,9,6,9,4])
-      _.say n.mu
+      the.say n.mu
 
     eg2 = ->
       n = new Num
       n.adds([9,2,5,4,12,7,8,11,9,3,7,4,12,5,4,10,9,6,9,4])
-      _.say n.mu,n.sd
+      the.say n.mu,n.sd
 
 ## Code
 
 All the methods marked as `_xxx` extends functionality of the `xxx`
 methods defined in the [Col](col.coffee.md) superclass.
 
-    _ = require 'our'
+    the = require 'our'
     Col = require('col').Col
 
     class Num extends Col
       constructor: (args...) ->
         super args...
-        [ @mu,@m2,@sd ] = [ 0,0,0 ]
-        [ @hi, @lo ]    = [ _.ninf, _.inf ]
+        [ @mu,@m2,@sd ] = [ 0,0,0,0 ]
+        [ @hi, @lo ]    = [ the.ninf, the.inf ]
 
 **_add a value to this collector**.
 Uses [Welford's incremental sd
@@ -45,7 +45,7 @@ with other methods).
 
       add1: (x) ->
         @lo = if x < @lo then x else @lo
-        @hi = if x > @hi then x else @whi
+        @hi = if x > @hi then x else @hi
         delta = x - @mu
         @mu += delta / @n
         @m2 += delta * (x - @mu)
@@ -55,6 +55,11 @@ with other methods).
 
       norm1: (x) ->
         (x - @lo) / (@hi - @lo +  _.tiny)
+
+**Print** contents.
+
+      toString: ->
+        "#{@lo}..#{@hi}"
 
 **tTestThreshold** Low-level stuff. Implements look-up table on the
 standard t-test critical values table.

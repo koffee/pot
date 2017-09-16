@@ -7,8 +7,8 @@
 
 # Table reader
 
-    _   = require('our')
-    say = _.say
+    the = require('our')
+    say = the.say
     Csv = require('csv').Csv
     Row = require('row').Row
     Num = require('num').Num
@@ -16,9 +16,9 @@
 
     class Table
       constructor: (spec) ->
-        @xy  = {all: [], nums:[], syms: []}
-        @x   = {all: [], nums:[], syms: []}
-        @y   = {all: [], nums:[], syms: [], klasses: [], less: [], more: []}
+        @xy= {all:[], nums:[], syms:[]}
+        @x = {all:[], nums:[], syms:[]}
+        @y = {all:[], nums:[], syms:[], klasses:[], less:[], more:[]}
         @spec = []
         @rows = []
         @headers spec if spec
@@ -55,5 +55,5 @@
 
     if require.main == module
       t = new Table
-      t.from _.data + '/weather2.csv' , -> say t.xy.nums[1].sd
+      t.from the.data + '/weather2.csv' , -> say t.xy.nums[1].sd
     @Table = Table
