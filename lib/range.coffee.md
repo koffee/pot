@@ -11,43 +11,83 @@
     say = the.say
     Range = require('range').Range
     Num   = require('num').Num
+    Sym   = require('num').Sym
     Rand  = require('rand').Rand
 
-    ranges = (lst0,
-              x      = (z) -> z,
-              cohen  = 0.2,
-              nsize  = 0.5,
-              enough = (num) -> num.n**nsize,
-              epsilon= (num) -> num.sd*cohen) ->
+    xRanges = (lst0, opt={}) ->
+      # setting defaults
+      opt.x       ?= (z) -> z
+      opt.cohen   ?= 0.2
+      opt.nsize   ?= 0.5
+      opt.enough  ?= (num) -> num.n**opt.nsize
+      opt.epsilon ?= (num) -> num.sd*opt.cohen
+      # useful shortcuts
+      now    = -> tmp= new Num; tmp.seen=[]; tmp
+      enoughs = (j)    -> r.n > nough     and j < all.n - nough
+      large   = (xval) -> r.hi - r.lo > e and xval + e < all.hi
+      # initializations
       [all, out, lst, last] = [new Num, [], []]
-      for a0 in lst0
-        a = x(a0)
-        if a isnt the.ignore
-          all.add a
-          lst.push a
-      [e, nough] = [epsilon(all), enough(all)]
-      r = new Num
-                      # _____above______  and ____below_____
-      enoughs  = (j) -> j < all.n - nough and r.n > nough
-      epsilons = (a) -> a + e < all.hi    and r.hi - r.lo > e
-      for a,j in lst.sort((x,y) -> x - y)
-        if enoughs(j) and epsilons(a) and a > last
-          out.push r
-          r = new Num
-        r.add a
-        last = a
+      # pre-scan 
+      for one in lst0
+        xval = opt.x(one)
+        if xval isnt the.ignore
+          all.add xval
+          lst.push [xval,one]
+      # more initializations (that use pre-scan results)
+      e     = opt.epsilon(all)
+      nough = opt.enough(all)
+      lst   = lst.sort( (z1,z2) -> z1[0] - z2[0] )
+      # scanning, push each item to a current range 'r' 
+      r = now() 
+      for [xval,one],j in lst
+        if enoughs(j) and large(xval) and xval > last
+          out.push r  # save old range
+          r = now()   # start a new one
+        r.add xval
+        r.seen.push one
+        last = xval
+      # and done
       return out
 
-    superRanges = (lst0,
-                   x      = (z) -> z[0],
-                   y      = (z) -> z[1],
-                   nump   = true,
-                   cohen  = 0.2,
-                   nsize  = 0.5,
-                   enough = (num) -> num.n**nsize,
-                   epsilon= (num) -> num.sd*cohen) ->
-      unsup = ranges(lst0,x, cohen, nsize, enough, epsilon)
-      
+    xyRanges = (lst0, opt={}) ->
+       opt.x    ?= (z) -> z[0]
+       opt.y    ?= (z) -> z[1]
+       opt.nump ?=  true
+       # shortcuts
+       next   = ->     if opt.nump then new Num else new Sym
+       purity = (z) -> if opt.nump then z.sd    else z.ent()
+       # cache a frequent computation
+       summarize  = (here, stop,   t) ->
+         inc = if stop > here then 1 else -1
+         if here isnt stop 
+           now = clone summarize(here+inc, stop, t)
+         else
+           now = next()
+         t[here] = now.adds ranges[here].seen, opt.y
+       # assign bins to ranges
+       breaks = (all,lo=0, hi=all.length=1,
+                     b=1, lvl=0,
+                     cut,lbest,rbest,ls={},rs={}) ->
+         best = purity(all)
+         summarize(hi,lo,ls)  # summarize i+1 using i
+         summarize(lo,hi,rls) # summarize i using i+1
+         for j in [lo.. hi-1]
+           [l,r] = [ls[j], rs[j+1]]
+           tmp = l.n/all.n * purity(l) + r.n/all.n*purity(r)
+           if tmp < best
+             [cut,best]    = [j,tmp]
+             [lbest,rbest] = [clone l, clone r]
+         if cut
+           b = 1 + breaks(lbest, lo,    cut, b, lvl+1) 
+           b =     breaks(rbest, cut+1,  hi, b, lvl+1)
+         else
+           out[b] = ranges[hi].hi
+         return b
+       # get the ranges, then break them up
+       out = []
+       ranges = xRanges(lst0,opt)
+       breaks( summarize(0, ranges.length-1, {}) )
+       out
 
 ## End stuff
 
@@ -55,6 +95,6 @@
     @Range  = Range
     if require.main == module
       r   = new Rand
-      lst = for i in [1 .. 64*64]
-              Math.round(100*r.next()**0.5) 
-      (say r for r in ranges(lst))
+      lst = for i in [1 .. 10**5]
+              Math.round(100*r.next()**0.5)
+      (say r for r in xRanges(lst))

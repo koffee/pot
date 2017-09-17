@@ -75,7 +75,18 @@ is "\_". Crashes on recursive contents
           else
             console.log pad + k + ": " + name(v)
             rsay(v,lvl+1,pad + "  ")
-  
+
+Clone. Deep copy. Simplified version of the
+one in the Coffeescript cookbook https://goo.gl/pojT3E.
+
+    clone = (obj) ->
+      if not obj? or typeof obj isnt 'object'
+        return obj
+      out = new obj.constructor()
+      for key of obj
+        out[key] = clone obj[key]
+      return out
+    
 Memoize
 
     memoize = (func) ->
@@ -133,27 +144,39 @@ Unit test
        O.k -> xx(1)
        O.k -> xx(0)
 
+    class Demo1
+      constructor: (@c=41,@d=22) ->
+    class Demo
+      constructor: (@a=41,@b=new Demo1) ->
+    rThing = ->
+      c: [1,2,3,new Demo]
+      b: 23
+      d:
+        e: new Demo
+        g: {"aa":2, "bb":4}
+
     rsayEg = ->
-       class Demo1
-         constructor: (@c=41,@d=22) ->
-       class Demo
-         constructor: (@a=41,@b=new Demo1) ->
-       rsay
-         c: [1,2,3,new Demo]
-         b: 23
-         d:
-           e: new Demo
-           g: {"aa":2, "bb":4}
+       rsay rThing()
+
+    cloneEg = ->
+       old= rThing()
+       now= clone old
+       now.d.e.a= 10000
+       now.c[0] = 10000
+       O.k -> assert(now.d.e.a isnt old.d.e.a,
+                     "should be different")
 
 ## And finally
 
      @say = say
      @rsay = rsay
      @memoize = memoize
+     @clone = clone
      @O = O
      if require.main == module
        memoEg()
        oEg()
        rsayEg()
+       cloneEg()
        O.darn()
        
