@@ -71,7 +71,7 @@ yranges(ranges, opt)
          t[here] = now.adds ranges[here].seen, opt.y
        # assign bins to ranges
        recurse = (all,lo=0, hi=all.length=1,
-                     b=1, lvl=0,
+                     b=0, lvl=0,
                      cut,lhs={},rhs={}) ->
          best = purity(all)
          summarize(hi,lo,lhs)  # summarize i+1 using i
