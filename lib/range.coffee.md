@@ -16,7 +16,8 @@
     ranges = (lst0,
               x      = (z) -> z,
               cohen  = 0.2,
-              enough = (num) -> num.n**0.5,
+              nsize  = 0.5,
+              enough = (num) -> num.n**nsize,
               epsilon= (num) -> num.sd*cohen) ->
       [all, out, lst, last] = [new Num, [], []]
       for a0 in lst0
@@ -26,17 +27,27 @@
           lst.push a
       [e, nough] = [epsilon(all), enough(all)]
       r = new Num
-                      # above             and below
-                      # -----------------     -----------
+                      # _____above______  and ____below_____
       enoughs  = (j) -> j < all.n - nough and r.n > nough
       epsilons = (a) -> a + e < all.hi    and r.hi - r.lo > e
       for a,j in lst.sort((x,y) -> x - y)
-        r.add a
-        if enoughs(j) and epsilons(a) and a > last+e
+        if enoughs(j) and epsilons(a) and a > last
           out.push r
           r = new Num
+        r.add a
         last = a
       return out
+
+    superRanges = (lst0,
+                   x      = (z) -> z[0],
+                   y      = (z) -> z[1],
+                   nump   = true,
+                   cohen  = 0.2,
+                   nsize  = 0.5,
+                   enough = (num) -> num.n**nsize,
+                   epsilon= (num) -> num.sd*cohen) ->
+      unsup = ranges(lst0,x, cohen, nsize, enough, epsilon)
+      
 
 ## End stuff
 
@@ -44,6 +55,6 @@
     @Range  = Range
     if require.main == module
       r   = new Rand
-      lst = for i in [1 .. 32]
-              Math.round(10*r.next()) 
-      say ranges(lst)
+      lst = for i in [1 .. 64*64]
+              Math.round(100*r.next()**0.5) 
+      (say r for r in ranges(lst))

@@ -59,7 +59,7 @@ with other methods).
 **Print** contents.
 
       toString: ->
-        "#{@lo}..#{@hi}"
+        " #{@n}:#{@lo}..#{@hi}"
 
 **tTestThreshold** Low-level stuff. Implements look-up table on the
 standard t-test critical values table.
