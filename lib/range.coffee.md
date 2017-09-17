@@ -5,6 +5,8 @@
 [tour](https://github.com/koffee/script/blob/master/docs/TOUR.md) |
 [style](https://github.com/koffee/script/blob/master/docs/STYLE.md)
 
+todo: is out[b] wrong? need another method
+
 # Unsupervised  discretizer
 
     the = require 'our'
