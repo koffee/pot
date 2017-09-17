@@ -51,7 +51,10 @@ todo: is out[b] wrong? need another method
       # and done
       return out
 
-    xyRanges = (lst0, opt={}) ->
+ranges = xRanges(lst,opt)
+yranges(ranges, opt)
+
+    yRanges = (ranges, opt={}, out=[]) ->
        opt.x    ?= (z) -> z[0]
        opt.y    ?= (z) -> z[1]
        opt.nump ?=  true
@@ -61,34 +64,31 @@ todo: is out[b] wrong? need another method
        # cache a frequent computation
        summarize  = (here, stop,   t) ->
          inc = if stop > here then 1 else -1
-         if here isnt stop 
+         if here isnt stop
            now = clone summarize(here+inc, stop, t)
          else
            now = next()
          t[here] = now.adds ranges[here].seen, opt.y
        # assign bins to ranges
-       breaks = (all,lo=0, hi=all.length=1,
+       recurse = (all,lo=0, hi=all.length=1,
                      b=1, lvl=0,
-                     cut,lbest,rbest,ls={},rs={}) ->
+                     cut,lhs={},rhs={}) ->
          best = purity(all)
-         summarize(hi,lo,ls)  # summarize i+1 using i
-         summarize(lo,hi,rls) # summarize i using i+1
+         summarize(hi,lo,lhs)  # summarize i+1 using i
+         summarize(lo,hi,rhs) # summarize i using i+1
          for j in [lo.. hi-1]
-           [l,r] = [ls[j], rs[j+1]]
+           [l,r] = [lhs[j], rhs[j+1]]
            tmp = l.n/all.n * purity(l) + r.n/all.n*purity(r)
            if tmp < best
-             [cut,best]    = [j,tmp]
-             [lbest,rbest] = [clone l, clone r]
+             [cut,best] = [j,tmp]
          if cut
-           b = 1 + breaks(lbest, lo,    cut, b, lvl+1) 
-           b =     breaks(rbest, cut+1,  hi, b, lvl+1)
+           b = 1 + recurse(lhs[cut],   lo,    cut, b, lvl+1)
+           b =     recurse(rhs[cut+1], cut+1,  hi, b, lvl+1)
          else
            out[b] = ranges[hi].hi
          return b
        # get the ranges, then break them up
-       out = []
-       ranges = xRanges(lst0,opt)
-       breaks( summarize(0, ranges.length-1, {}) )
+       recurse( summarize(0, ranges.length-1, {}) )
        out
 
 ## End stuff
