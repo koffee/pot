@@ -7,34 +7,19 @@
 
 # ARGS
 
-
-      args= (settings,ignore,updates=process.argv) ->
-         for flag,i in updates
+     do
+       egs = ->
+         for x,y of this
+           console.log x
+         for x,y of this when typeof y is 'function' and x.match(/Eg$/)
+           console.log x,y
            
-return function (settings,ignore, updates)
-  updates = updates or arg
-  -- Usually, read all the args.
-  ignore = ignore or {}
-  local i = 1
-  while updates[i] ~= nil  do
-    local flag = updates[i]
-    local b4   = #flag
-    flag = flag:gsub("^[-]+","")
-    if not member(flag,ignore) then
-      -- Complain if no old value to override
-      if settings[flag] == nil then
-        error("unknown flag '" .. flag .. "'")
-      else
-        -- If no arg to this flag, then set a boolean.
-        if b4 - #flag == 2 then
-          settings[flag] = true
-        -- If there is an arg then....
-        elseif b4 - #flag == 1 then
-          local a1 = updates[i+1]
-          local a2 = tonumber(a1)
-          -- Set either a number of a string
-          settings[flag] = a2  or a1
-          i = i + 1 
-    end end end
-    i = i + 1
-  end
+       a = () -> console.log 'a'
+       b = () -> console.log 'b'
+       c = 231
+  
+       xEga = () -> console.log 'd'
+       xEg  = () -> console.log 'e'
+  
+     if require.main == module
+       egs()
