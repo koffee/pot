@@ -74,7 +74,7 @@ Also:
 Also, I asked [Geoffrey Booth](https://github.com/GeoffreyBooth) about the health of CoffeeScript and his reply convinced
 me that this was a viable approach:
 
-- Hi Tim,
+- Hi Tim,     
   CoffeeScript is “just JavaScript,” as the docs say, so in some
   sense it’s part of the JavaScript ecosystem just like ES6 through
   ES2017 are and TypeScript is. When new features are added to ES,
@@ -119,7 +119,7 @@ human-readable JS including your comments, and there are tools like
 Decaffeinate that attempt to go further in making that generated
 JavaScript look more like idiomatic ES6. Unlike a truly separate
 language, CoffeeScript doesn’t lock you in.  
-- Best of luck with your project,     
+- Best of luck with your project,         
   Geoffrey
 
 
