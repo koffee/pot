@@ -70,9 +70,7 @@ yranges(ranges, opt)
            now = next()
          t[here] = now.adds ranges[here].seen, opt.y
        # assign bins to ranges
-       recurse = (all,lo=0, hi=all.length=1,
-                     b=0, lvl=0,
-                     cut,lhs={},rhs={}) ->
+       recurse = (all,lo=0, hi=all.length-1, b=0, lvl=0,cut,lhs={},rhs={}) ->
          best = purity(all)
          summarize(hi,lo,lhs)  # summarize i+1 using i
          summarize(lo,hi,rhs) # summarize i using i+1
@@ -98,5 +96,15 @@ yranges(ranges, opt)
     if require.main == module
       r   = new Rand
       lst = for i in [1 .. 10**5]
-              Math.round(100*r.next()**0.5)
-      (say r for r in xRanges(lst))
+              tmp=Math.round(100*r.next()**0.5)
+              if tmp < 0.2 
+                [tmp,0.2]
+              else if tmp < 0.6 
+                ptmp,0.6]
+              else [tmp,0.2]
+      opt= 
+        x: (z) -> [0]
+        y: (z) -> [1]
+      ranges = xRanges(lst,opt)
+      (say r for r in ranes)
+

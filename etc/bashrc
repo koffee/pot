@@ -94,8 +94,8 @@ doco() {
 	find . -name '*litcoffee' -exec $Here/etc/para1 {} \;
 }
 oks() { ## ## run all the X.coffee.md files ## programming
-  cd $Here/lib
-  for f in ${Here}/lib/*.coffee.md; do
+  cd $Here/src
+  for f in ${Here}/src/*.coffee.md; do
     printf "\n\n----| $f |--------------------------\n\n"
     k $(basename $f ".coffee.md")
   done
@@ -204,7 +204,7 @@ alexy() { ## ## about Alexy Leonev ## misc
 here() { cd $1; basename "$PWD"; }
 
 k() { ## STEM ## call coffee FILE.coffee.md ## programming
-  Path="$Here/lib:$NODE_PATH"
+  Path="$Here/src:$NODE_PATH"
   if [ -f "${1}.coffee" ]; then
     NODE_PATH="$Path" Koffee="$Here" coffee ${1}.coffee
   else
