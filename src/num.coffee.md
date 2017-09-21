@@ -78,6 +78,26 @@ standard t-test critical values table.
           when x >= Num.last  then a[ Num.last  ]
           else y(Num.first)
 
+      max = (x,y) -> if x > y then x else y
+      abs = (x,y) ->  if x >= 0 then x else -1*x
+
+      ttest= (i,j) ->
+        #  Debugged using https://goo.gl/CRl1Bz
+        t  = (i.mu - j.mu) / max(10**-64, i.sd**2/i.n + j.sd**2/j.n)**0.5
+        a  = i.sd**2/i.n
+        b  = j.sd**2/j.n
+        df = (a + b)**2 / (10**-64 + a**2/(i.n-1) + b**2/(j.n - 1))
+        abs(t) > ttest1(df) 
+ 
+      hedges= (i,j) ->
+        # https://goo.gl/w62iIL
+        nom   = (i.n - 1)*i.sd**2 + (j.n - 1)*j.sd^2
+        denom = (i.n - 1)        + (j.n - 1)
+        sp    = ( nom / denom )**0.5
+        g     = abs(i.mu - j.mu) / sp
+        c     = 1 - 3.0 / (4*(i.n + j.n - 2) - 1) 
+        g * c > the.num.small  ## what to put here?
+
 ## End stuff
 
     @Num = Num
