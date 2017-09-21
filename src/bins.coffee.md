@@ -23,36 +23,37 @@ simple
         return 0 if x2 is opt.no
         return x1 - x2
 
-    next = () ->
+    next = (opt) ->
       [xs, ys] = [new Num, if opt.nump then Num else Sym]
       [xs.seen, ys.seen] = [[], []]
       [xs,ys]
 
-    now = (z) ->
+    now = (z,opt) ->
       [x, y] = [opt.x(z), opt.y(z)]
       xs add x; xs.seen.push x
       ys add y; ys.seen.push y
       [x,y]
 
-    some = (lst,opt,e)  ->
-      [xs, ys, last] = next()
+    some = (lst,opt,epsilon,enough)  ->
+      last= null
+      [xs, ys,] = next(opt)
       for z in order(lst)
-        [x, y] = now(z),
-        if xs.hi - xs.lo > e and xs.n > lst.length**opt.nsize
+        [x, y] = now(z,opt),
+        if xs.hi - xs.lo > epsilon and xs.n > enough
           yield [xs,ys]
-          [xs, ys] = next()
+          [xs, ys] = next(opt)
         last = x
 
     reange = (lst,opt) ->
-      opt.nump  ?= true
-      opt.cohen ?= 0.2
-      opt.nsize ?= 0.5
-      opt.x     ?= (z) -> z[0]
-      opt.y     ?= (z) -> z[1]
-      epsilon   ?= -> ((new Num).adds lst[1..128], opt.x).sd*opt.cohen
-      e  = epsilon()
+      opt.nump    ?= true
+      opt.cohen   ?= 0.2
+      opt.nsize   ?= 0.5
+      opt.x       ?= (z) -> z[0]
+      opt.y       ?= (z) -> z[1]
+      opt.epsilon ?= (lst) -> ((new Num).adds lst[1..128], opt.x).sd*opt.cohen
+      opt.enough  ?= (lst) -> lst.length**opt.nsize
       [xs0,ys0]  = []
-      for [xs,ys] from some(lst,opt,e)
+      for [xs,ys] from some(lst,opt,epsilon(all), enough(all))
         if xs0  
 
     xRanges = (all, opt={}) ->
