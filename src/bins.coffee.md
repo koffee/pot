@@ -14,9 +14,10 @@ simple
     Num   = require('num').Num
     Sym   = require('num').Sym
     Rand  = require('rand').Rand
- 
-    bins = (lst,opt) ->
+
+    bins = (lst,opt=[]) ->
       # defaults
+      opt.no      ?= "?"
       opt.nump    ?= true
       opt.cohen   ?= 0.2
       opt.nsize   ?= 0.5
@@ -25,7 +26,9 @@ simple
       opt.y       ?= (z) -> z[1]
       opt.enough  ?= (lst) -> lst.length**opt.nsize
       opt.epsilon ?= (lst) ->
-                     ((new Num).adds lst[1..opt.same], opt.x).sd*opt.cohen
+                      n = new Num
+                      n.adds lst[1..opt.some], opt.x
+                      n.sd*opt.cohen
       impurity = (z) -> if opt.nump then z.sd else z.ent()
       # sort order
       order = (lst) ->
@@ -34,44 +37,42 @@ simple
           return 0 if x1 is opt.no
           return 0 if x2 is opt.no
           return x1 - x2
-      # create a pair of collectors for x,y 
+      # create a pair of collectors for x,y
       next = ->
         [xs, ys] = [new Num, if opt.nump then new Num else new Sym]
         [xs.seen, ys.seen] = [[], []]
         [xs,ys]
       # add an item to our pairs of collectors
-      now = (z, xs, ys) ->
-        [x, y] = [opt.x(z), opt.y(z)]
+      now = (x,y, xs, ys) ->
         xs.add x; xs.seen.push x
         ys.add y; ys.seen.push y
         [x,y]
       # step thru the lst, yeilding one range at a time
-      bin = (epsilon,enough, b4)  ->
+      bin = (lst, most, epsilon, enough, b4)  ->
         [xs, ys,] = next()
-        lst  = order lst
-        most = opt.x lst.last()
         for z,j in lst
-          [x, y] = now(z, xs, ys)
+          [x, y] = [opt.x(z), opt.y(z)]
           if xs.hi - xs.lo > epsilon and xs.n > enough  # space here
-            if lst.length - j > enough and most - xs.hi > epsilon # space right
-              if x > b4 and # different
-                 yield [xs,ys]
+            if most - xs.hi > epsilon and lst.length - j > enough # space right
+              if x > b4 # different
+                yield [xs,ys]
                 [xs, ys] = next()
+          now(x,y, xs, ys)
           b4 = x
         yield [xs,ys]
       # step thru the lst, yeilding one range at a time
       last= null
-      [xs0,ys0]  = []
-      for [xs,ys] from bin( opt.epsilon(lst),
-                            opt.enough(lst))
-        console.log 1000, xs.lo, xs.hi
+      [xs,ys]  = next()
+      for [xs1,ys1] from bin(order lst,
+                             opt.x lst.last(),
+                             opt.epsilon(lst),
+                             opt.enough(lst))
+        tmp = ys.adds ys1.seen
+        if impurity(tmp,tp.n) > i
 
 ## End stuff
 
     if require.main == module
        r= new Rand
-       opt=
-         x:  (z) -> z
-         y:  (z) -> z
-       bins (x for x in [0..20]), opt
-
+       #bins (x for x in [0..20]), opt
+       bins ([x,Math.floor(x/4)] for x in [0..20])
