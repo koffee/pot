@@ -26,9 +26,9 @@ simple
       opt.y       ?= (z) -> z[1]
       opt.enough  ?= (lst) -> lst.length**opt.nsize
       opt.epsilon ?= (lst) ->
-                      n = new Num
-                      n.adds lst[1..opt.some], opt.x
-                      n.sd*opt.cohen
+                       n = new Num
+                       n.adds lst[1..opt.some], opt.x
+                       n.sd*opt.cohen
       impurity = (z) -> if opt.nump then z.sd else z.ent()
       # sort order
       order = (lst) ->
