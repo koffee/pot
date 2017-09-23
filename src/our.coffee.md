@@ -128,7 +128,10 @@ Unit test
 ## Magic
 
     String::last = ->
-      this[ this.length - 1]
+      this[ this.length - 1 ]
+
+    Object::last = ->
+      this[ this.length - 1 ]
 
 # END
 
@@ -179,4 +182,3 @@ Unit test
        rsayEg()
        cloneEg()
        O.darn()
-       
