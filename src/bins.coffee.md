@@ -15,60 +15,67 @@ simple
     Sym   = require('num').Sym
     Rand  = require('rand').Rand
 
-    bins = (lst,opt=[]) ->
-      # defaults
-      opt.no      ?= "?"
-      opt.nump    ?= true
-      opt.cohen   ?= 0.2
-      opt.nsize   ?= 0.5
-      opt.some    ?= 128
-      opt.x       ?= (z) -> z[0]
-      opt.y       ?= (z) -> z[1]
-      opt.enough  ?= (lst) -> lst.length**opt.nsize
-      opt.epsilon ?= (lst) ->
-                       n = new Num
-                       n.adds lst[1..opt.some], opt.x
-                       n.sd*opt.cohen
-      impurity = (z) -> if opt.nump then z.sd else z.ent()
-      # sort order
-      order = (lst) ->
+    class bins
+      constructor: (lst,o=[]) ->
+        @x     = o.x       or (z) -> z[0]
+        @y     = o.y       or (z) -> z[1]
+        @no    = o.no      or "?",
+        @nump  = o.true    or true,
+        cohen  = o.cohen   or 0.2,
+        some   = o.some    or 128
+        nsize  = o.nsize   or 0.5
+        enough = o.enough  or (lst) -> lst.length**opt.nsize
+        epsilon= o.epsilon or (lst) -> n = new Num
+                                       n.adds lst[1..some], opt.x
+                                       n.sd*opt.cohen
+        @lst   = lst.sort(@order)
+        @e     = epsilon(lst)
+        @min   = enough(lst)
+      impurity: (z,n) ->
+        z.n/n * if @nump then z.sd else z.ent()
+      order: (lst) ->
         lst.sort (z1,z2) ->
-          [x1, x2] = [opt.x(z1), opt.x(z2)]
-          return 0 if x1 is opt.no
-          return 0 if x2 is opt.no
+          [x1, x2] = [@x(z1), @x(z2)]
+          return 0 if x1 is @no
+          return 0 if x2 is @no
           return x1 - x2
-      # create a pair of collectors for x,y
-      next = ->
-        [xs, ys] = [new Num, if opt.nump then new Num else new Sym]
-        [xs.seen, ys.seen] = [[], []]
-        [xs,ys]
-      # add an item to our pairs of collectors
-      now = (x,y, xs, ys) ->
-        xs.add x; xs.seen.push x
-        ys.add y; ys.seen.push y
+      next: ->
+         [new Num, [],[]]
+      now:  (x,y,xnum, xall, yall) ->
+        xnum.add  x
+        yall.push y
+        xall.push x
         [x,y]
-      # step thru the lst, yeilding one range at a time
-      bin = (lst, most, epsilon, enough, b4)  ->
-        [xs, ys,] = next()
-        for z,j in lst
-          [x, y] = [opt.x(z), opt.y(z)]
-          if xs.hi - xs.lo > epsilon and xs.n > enough  # space here
-            if most - xs.hi > epsilon and lst.length - j > enough # space right
+      ranges: ->
+        for [xnum,xall,yall] from @xrange()
+          yield xnum
+      xrange: (b4)  ->
+        [xnum, xall, yall] = @next()
+        for z,j in @lst
+          [x, y] = [@x(z), @y(z)]
+          if   @e < xnum.hi - xnum.lo and @min < xnum.n  # space here
+            if @e < most - xnum.hi and @min < lst.length - j # space right
               if x > b4 # different
-                yield [xs,ys]
-                [xs, ys] = next()
-          now(x,y, xs, ys)
+                yield [xnum,yall]
+                [xnum, xall, yall] = @next()
+          @now(x,y, xnum, xall, yall)
           b4 = x
-        yield [xs,ys]
+        yield [xnum,yall]
       # step thru the lst, yeilding one range at a time
-      last= null
-      [xs,ys]  = next()
-      for [xs1,ys1] from bin(order lst,
-                             opt.x lst.last(),
-                             opt.epsilon(lst),
-                             opt.enough(lst))
-        tmp = ys.adds ys1.seen
-        if impurity(tmp,tp.n) > i
+      yrange: (b4, all=[]) ->
+        [xNum1, yNum1] = [new Num, @yThing()]
+        for [xnum,xall,yall] from @xrange()
+          yNum2 = @yThing(yall) # local n
+          yNum0 = clone ys0
+          yNum0.adds yall       # now aand before
+          n = ys2.n
+          if impurity(yNum1, n) + impurirty(yNum2, n) < impurity(yNum0, n)
+            Lw
+
+      yThing: (lst[]) ->
+        out = new if @nump then Num else Sym
+        out.add lst
+        out
 
 ## End stuff
 
