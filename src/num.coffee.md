@@ -9,7 +9,7 @@
 
 Incremental collector of `lo,hi` and `sd` (standard deviation) of
 a stream of numbers. Also, implements some parametric
-hypothesis and effect size tests.
+hypothesis and effect size tests.       
 
 ## Examples
 
