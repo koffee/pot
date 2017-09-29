@@ -55,6 +55,13 @@ simple
           [x, y] = [@x(z), @y(z)]
           if   @e < xnum.hi - xnum.lo and @min < xnum.n  # space here
             if @e < most - xnum.hi and @min < lst.length - j # space right
+              if x > b4 # different
+                yield [xnum,yall]
+                [xnum, xall, yall] = @next()
+          @now(x,y, xnum, xall, yall)
+          b4 = x
+        yield [xnum,yall]
+      # step thru the lst, yeilding one range at a time
       yrange: (b4, all=[]) ->
         [xNum1, yNum1] = [new Num, @yThing()]
         for [xnum,xall,yall] from @xrange()
@@ -75,5 +82,4 @@ simple
     if require.main == module
        r= new Rand
        #bins (x for x in [0..20]), opt
-       lst = [ [10,2],["?",4],[3,4],[-2,3], [5,6], ["?",20]]
-       bins lst # ([x,Math.floor(x/4)] for x in [0..20])
+       bins ([x,Math.floor(x/4)] for x in [0..20])
