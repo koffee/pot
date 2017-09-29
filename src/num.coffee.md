@@ -87,15 +87,15 @@ standard t-test critical values table.
         a  = i.sd**2/i.n
         b  = j.sd**2/j.n
         df = (a + b)**2 / (10**-64 + a**2/(i.n-1) + b**2/(j.n - 1))
-        abs(t) > ttest1(df) 
- 
+        abs(t) > ttest1(df)
+
       hedges= (i,j) ->
         # https://goo.gl/w62iIL
         nom   = (i.n - 1)*i.sd**2 + (j.n - 1)*j.sd^2
         denom = (i.n - 1)        + (j.n - 1)
         sp    = ( nom / denom )**0.5
         g     = abs(i.mu - j.mu) / sp
-        c     = 1 - 3.0 / (4*(i.n + j.n - 2) - 1) 
+        c     = 1 - 3.0 / (4*(i.n + j.n - 2) - 1)
         g * c > the.num.small  ## what to put here?
 
 ## End stuff
