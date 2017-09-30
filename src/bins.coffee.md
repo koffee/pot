@@ -7,7 +7,7 @@
 
 todo: is out[b] wrong? need another method
 
-simple
+simple    
 
     the = require './our'
     say = the.say
