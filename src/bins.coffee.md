@@ -9,7 +9,7 @@ todo: is out[b] wrong? need another method
 
 simple
 
-    the = require './our'  
+    the = require './our'
     say = the.say
     Num   = require('./num').Num
     Sym   = require('./num').Sym
@@ -18,7 +18,7 @@ simple
 `Sample`s keep track of `things` which can be `Num`s or `Sym`s.
 
     class Sample
-      constructor: (@contents=[],@what=Num) ->
+      constructor: (@contents=[],@what=Num) -> #sadsaas
         @things = @what()
         @seen   = []
         @adds @contents
