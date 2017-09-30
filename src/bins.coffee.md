@@ -13,7 +13,7 @@ simple
     say = the.say
     Num   = require('./num').Num
     Sym   = require('./num').Sym
-    Rand  = require('./rand').Rand
+    Rand  = require('./rand').Rand ###
 
 `Sample`s keep track of `things` which can be `Num`s or `Sym`s.
 
