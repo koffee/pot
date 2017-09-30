@@ -42,7 +42,7 @@ any xrange that does not change the `y` values are discarded.
            ((new Num) adds data[1..some], @x).sd*opt.cohen
         #--------------------
         # intiailizations
-        [ @e, @min, @data ] = [ epsilon(), enough(), @order(data) ]
+        [ @e, @min ] = [ epsilon(), enough() ]
 
 Here's how to sort data, being mindful on missing values
 
@@ -54,16 +54,18 @@ Here's how to sort data, being mindful on missing values
           return x1 - x2
 
 We can return a range when it is `full` of enough values (ranging
-over more than epsilon `e`) and when, to the right, there is space
-for at elast one more range.
+over more than epsilon `e`)...
 
       full: (xs) ->
         xs.has.h1 - xs.has.lo > @e and xs.has.n > @min
+
+...and when, to the right, there is space for at elast one more range.
+
       room4More: (xs,j,last) ->
         @x(last) - xs.has.hi > @e and @data.length - j > @min
 
-When walking over the ranges, we track the `x` numbers
-and, for the `y` values, either numbers or symbols.
+When walking over the ranges, we track the `x` numbers and, for the
+`y` values, either numbers or symbols.
 
       next: ->
         [Nums(), if @nump then Nums() else Syms()]
@@ -72,7 +74,7 @@ An `xrange` is the first set of numbers that satisfy `fill` and
 `room4More`.
 
       xrange: (b4)  ->
-        [..., last] = @data
+        @data = [..., last] = @order( @data )
         [xs, ys] = @next()
         for z,j in @data
           [x, y] = [@x(z), @y(z)]
