@@ -9,11 +9,40 @@ todo: is out[b] wrong? need another method
 
 simple
 
-    the = require 'our'
+    the = require './our'
     say = the.say
-    Num   = require('num').Num
-    Sym   = require('num').Sym
-    Rand  = require('rand').Rand
+    Num   = require('./num').Num
+    Sym   = require('./num').Sym
+    Rand  = require('./rand').Rand
+
+`Sample`s keep track of `things` which can be `Num`s or `Sym`s.
+
+    class Sample
+      constructor: (@contents=[],@what=Num) ->
+        @things = @what()
+        @seen   = []
+        @adds @contents
+      adds    : (lst=[]) ->
+        (@add x for x in lst)
+      xpect: (n=1)  ->
+        @things.n/n * @impurity()
+      clone   : (using=@seen) ->
+        Sample(using,@what)
+      add     : (thing)  ->
+        @seen.add thing
+        @things.add thing
+
+Regardless of the `thing` type, all `Sample`s can report their `impurity`
+(standard)
+
+    class Nums extends Sample
+      constructor(contents) -> super contents,Sym
+      impurity: -> @things.sd
+
+    class Syms extends Sample
+      constructor(contents) -> super contents,Sym
+      impurity: -> @things.ent()
+
 
     class bins
       constructor: (lst,o=[]) ->
