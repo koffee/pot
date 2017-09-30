@@ -7,9 +7,9 @@
 
 todo: is out[b] wrong? need another method
 
-simple    
+simple
 
-    the = require './our'
+    the = require './our'  
     say = the.say
     Num   = require('./num').Num
     Sym   = require('./num').Sym

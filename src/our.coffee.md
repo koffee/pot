@@ -3,14 +3,15 @@
 [<img width=900 src=https://raw.githubusercontent.com/koffee/script/master/img/head.jpg>](http://tiny.cc/koff)<br>
 [src](https://github.com/koffee/script/tree/master/lib) |
 [tour](https://github.com/koffee/script/blob/master/docs/TOUR.md) |
-[style](https://github.com/koffee/script/blob/master/docs/STYLE.md) 
+[style](https://github.com/koffee/script/blob/master/docs/STYLE.md)
 
 # Our Shared Stuff
 
 ## How to call this code
 
+
     Usage="""
-            
+
       export Koffee="$PWD"                    # can also be set in .bashrc
       export NODE_PATH="$PWD/lib:$NODE_PATH"  # can also be set in .bashrc
       coffee lib/FILE.coffee.md
@@ -86,20 +87,20 @@ one in the Coffeescript cookbook https://goo.gl/pojT3E.
       for key of obj
         out[key] = clone obj[key]
       return out
-    
+
 Memoize
 
     memoize = (func) ->
       # if called with no args, resets the memos
       memo = {}
       (arg, args...) ->
-        if arg is null 
+        if arg is null
           memo={}
         else
           memo[arg] = func arg,args... unless  memo[arg]
           memo[arg]
 
-Unit test 
+Unit test
 
     assert= (f,t) -> throw new Error t or "" if not f
 
