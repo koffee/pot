@@ -23,12 +23,12 @@
 
 ## Start up checks
 
-    for x in ['NODE_PATH', 'Koffee']
-      unless process.env[x]
-        console.log "Abort. No #{x} variable set."
-        console.log "Recommended usage: " + Usage
-        process.exit()
-
+#    for x in ['NODE_PATH', 'Koffee']
+#      unless process.env[x]
+#        console.log "Abort. No #{x} variable set."
+#        console.log "Recommended usage: " + Usage
+#        process.exit()
+#
 ## Shared Constants
 
     @ninf   = -1 * (Number.MAX_SAFE_INTEGER - 1)
