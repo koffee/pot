@@ -90,12 +90,9 @@ from one range to another.
       yrange: (b4, all=[]) ->
         [xs1, ys1] = [new Nums, @nexty()]
         for [xs2,ys2] from @xrange()
-          ys1 = the.clone ys1
-          ys1.adds ys2.seen, @y
-          say "n",ys1.has.n, ys1.has.sd
-        # ys0 = (ys1.clone).adds ys2.seen
-        # n = ys0.n
-        # if impurity(yNum1, n) + impurirty(yNum2, n) < impurity(yNum0, n)
+          ys0 = ys1.clone(ys2.seen,@x)
+          if ys1.xpect(n) + ys2.impurirty(n) < ys0.impurity()
+            
 
 ## Sample Class
 
@@ -103,10 +100,14 @@ from one range to another.
 as either a `Num` or a `Sym`, then added to a list of `seen` things.
 
     class Sample
-      constructor:  (inits=[],@has=@ako()) -> @seen= []; @adds inits
-      adds:         (data=[])              -> (@add x for x in data)
-      add:          (x)                    -> @seen.push (@has.add x)
-      xpect:        (n=1)                  -> @has.n/n * @impurity()
+      constructor: (inits=[],@has=@ako()) -> @seen= []; @adds inits
+      adds:        (data=[])              -> (@add x for x in data)
+      add:         (x)                    -> @seen.push (@has.add x)
+      xpect:       (n=1)                  -> @has.n/n * @impurity()
+      clone:       (inits=[],f=(z) -> z)  ->
+        x= new @constructor(@seen,@ako())
+        x.adds inits,f
+        x
 
 All `Sample`s can report their `impurity`
 which is either standard deviaon or entropy for `Nums` or `Syms` respectively.
@@ -125,7 +126,7 @@ which is either standard deviaon or entropy for `Nums` or `Syms` respectively.
         Rand  = require('./rand').Rand
         r= new Rand
         f= Math.floor
-        b= new Bins( ([r.next()**2, 1 ] for x in [0..1000]) )
+        b= new Bins( ([r.next()**2,  x ] for x in [0..1000]) )
         b.yrange()
 
 
