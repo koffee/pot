@@ -28,8 +28,10 @@ hypothesis and effect size tests.
 All the methods marked as `_xxx` extends functionality of the `xxx`
 methods defined in the [Col](col.coffee.md) superclass.
 
-    the = require 'our'
-    Col = require('col').Col
+    requires = (f) -> require(process.env.PWD + "/" + f )
+
+    the = requires 'our'
+    Col = requires('col').Col
 
     class Num extends Col
       constructor: (args...) ->

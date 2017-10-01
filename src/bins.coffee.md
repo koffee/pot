@@ -13,10 +13,13 @@ functions we can customise).
 
 ## Set up
 
-    the = require './our'
+    requires = (f) -> 
+      require(process.env.PWD + "/" + f + '.coffee.md')
+
+    the = requires 'our'
     say = the.say
-    Num   = require('./num').Num
-    Sym   = require('./num').Sym
+    Num   = requires('num').Num
+    Sym   = requires('sym').Sym
 
 ## Range class
 
