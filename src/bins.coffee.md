@@ -7,7 +7,9 @@
 
 # BINS
 
-Divide up numbers in some data
+The `Bins` class divides numeric data into `Range`s. Each data item can be an any object from which
+we can extract an `x` value and (optionally) a `y` value (where `x,y` are selector
+functions we can customise).
 
 ## Set up
 
@@ -15,6 +17,34 @@ Divide up numbers in some data
     say = the.say
     Num   = require('./num').Num
     Sym   = require('./num').Sym
+
+## Range class
+
+`Range`s are either numeric or symbolic, denoted `Nums` and `Syms`.
+Each range is a pair  of `<seen,has>` where
+`seen` are the values in that range and `has` is a summary `Num` or `Sym`
+object for that range.
+
+    class Range
+      constructor: (inits=[],@has=@ako()) -> @seen= []; @adds inits
+      adds:        (data=[])              -> (@add x for x in data)
+      add:         (x)                    -> @seen.push (@has.add x)
+      xpect:       (n=1)                  -> @has.n/n * @impurity()
+      clone:       (inits=[])  ->
+        x= new @constructor(@seen,@ako())
+        x.adds inits
+        x
+
+All `Ranges`s can report their `impurity`
+which is either standard deviation or entropy for `Nums` or `Syms` respectively.
+
+    class Nums extends Range
+      ako:      -> new Num
+      impurity: -> @has.sd
+
+    class Syms extends Range
+      ako:      -> new Sym
+      impurity: -> @has.ent()
 
 ## Bins Class
 
@@ -84,58 +114,37 @@ An `xrange` is the first set of numbers that satisfy `fill` and
           b4 = x
         yield [xs,ys]
 
-A `yrange` are the `xrange`s where the `y` values change significantly
-from one range to another.
+A `yrange` are the `xrange`s but after merging any adjacent ranges where the `y`
+value stays.
 
       yrange: (b4) ->
         [xs1, ys1] = [new Nums, @nexty()]
-        i=0
         for [xs2,ys2] from @xrange()
-          say i
           ys = ys1.clone(ys2.seen)
           n = ys.has.n
           if ys1.xpect(n) + ys2.xpect(n) < ys.xpect() 
              yield [xs1,ys1]
-             xs1,ys1= [new Nums, @nexty()]
+             [xs1,ys1] = [xs2,ys2]
           else
             xs1.adds xs2.seen
             ys1=ys
         if xs1.has.n
           yield [xs1,ys1]
 
-## Sample Class
-
-`Sample`s are a set of things. Anything added to a sample is summarized
-as either a `Num` or a `Sym`, then added to a list of `seen` things.
-
-    class Sample
-      constructor: (inits=[],@has=@ako()) -> @seen= []; @adds inits
-      adds:        (data=[])              -> (@add x for x in data)
-      add:         (x)                    -> @seen.push (@has.add x)
-      xpect:       (n=1)                  -> @has.n/n * @impurity()
-      clone:       (inits=[])  ->
-        x= new @constructor(@seen,@ako())
-        x.adds inits,f
-        x
-
-All `Sample`s can report their `impurity`
-which is either standard deviaon or entropy for `Nums` or `Syms` respectively.
-
-    class Nums extends Sample
-      ako:      -> new Num
-      impurity: -> @has.sd
-
-    class Syms extends Sample
-      ako:      -> new Sym
-      impurity: -> @has.ent()
-
 ## End stuff
 
     if require.main == module
         Rand  = require('./rand').Rand
         r= new Rand
-        f= Math.floor
-        b= new Bins( ([r.next()**2,  x ] for x in [0..1000]) )
-        b.yrange()
-
-
+        pairs = (x) ->
+          x = Math.floor(x * 100)
+          switch
+            when x < 20 then  [x,10]
+            when x < 60 then  [x,40]
+            else [x,80]
+        b= new Bins (pairs(r.next()**2)  for x in [0..10000]) 
+        for [x,y] from b.xrange()
+          say "unper>",x.has.n,x.has.lo,x.has.hi ,y.has.lo,y.has.hi
+        say ""
+        for [x,y] from b.yrange()
+          say "super>",x.has.n,x.has.lo,x.has.hi,y.has.lo,y.has.hi
