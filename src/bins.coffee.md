@@ -87,12 +87,21 @@ An `xrange` is the first set of numbers that satisfy `fill` and
 A `yrange` are the `xrange`s where the `y` values change significantly
 from one range to another.
 
-      yrange: (b4, all=[]) ->
+      yrange: (b4) ->
         [xs1, ys1] = [new Nums, @nexty()]
+        i=0
         for [xs2,ys2] from @xrange()
-          ys0 = ys1.clone(ys2.seen,@x)
-          if ys1.xpect(n) + ys2.impurirty(n) < ys0.impurity()
-            
+          say i
+          ys = ys1.clone(ys2.seen)
+          n = ys.has.n
+          if ys1.xpect(n) + ys2.xpect(n) < ys.xpect() 
+             yield [xs1,ys1]
+             xs1,ys1= [new Nums, @nexty()]
+          else
+            xs1.adds xs2.seen
+            ys1=ys
+        if xs1.has.n
+          yield [xs1,ys1]
 
 ## Sample Class
 
@@ -104,7 +113,7 @@ as either a `Num` or a `Sym`, then added to a list of `seen` things.
       adds:        (data=[])              -> (@add x for x in data)
       add:         (x)                    -> @seen.push (@has.add x)
       xpect:       (n=1)                  -> @has.n/n * @impurity()
-      clone:       (inits=[],f=(z) -> z)  ->
+      clone:       (inits=[])  ->
         x= new @constructor(@seen,@ako())
         x.adds inits,f
         x
