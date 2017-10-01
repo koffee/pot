@@ -99,20 +99,20 @@ over more than epsilon `e`)...
 When walking over the ranges, we track the `x` numbers and, for the
 `y` values, either numbers or symbols.
 
-      nexty: ->
-        new if @nump then Nums else Syms
+      next: ->
+        [new Nums, new (if @nump then Nums else Syms)]
 
 An `xrange` is the first set of numbers that satisfy `fill` and
 `room4More`.
 
       xrange: (b4)  ->
         @data = [..., last] = @order( @data )
-        [xs, ys] = [new Nums, @nexty()]
+        [xs, ys] = @next()
         for z,j in @data
           [x, y] = [@x(z), @y(z)]
           if @full(xs) and @room2right(xs,j, @x(last)) and x > b4
             yield [xs,ys]
-            [xs, ys] = [new Nums, @nexty()]
+            [xs, ys] = @next()
           xs.add x; ys.add y
           b4 = x
         yield [xs,ys]
@@ -121,16 +121,16 @@ A `yrange` are the `xrange`s but after merging any adjacent ranges where the `y`
 value stays.
 
       yrange: (b4) ->
-        [xs1, ys1] = [new Nums, @nexty()]
+        [xs1, ys1] = @next()
         for [xs2,ys2] from @xrange()
-          ys = ys1.clone(ys2.seen)
-          n = ys.has.n
-          if ys1.xpect(n) + ys2.xpect(n) < ys.xpect() 
+          ys12 = ys1.clone(ys2.seen)
+          n = ys12.has.n
+          if ys1.xpect(n) + ys2.xpect(n) < ys12.xpect()
              yield [xs1,ys1]
              [xs1,ys1] = [xs2,ys2]
           else
             xs1.adds xs2.seen
-            ys1=ys
+            ys1=ys12
         if xs1.has.n
           yield [xs1,ys1]
 
@@ -138,14 +138,16 @@ value stays.
 
     if require.main == module
         Rand  = require('./rand').Rand
-        r= new Rand
-        pairs = (x) ->
+        r= new Rand(1)
+        pair = () ->
+          x = r.next()**2
           x = Math.floor(x * 100)
           switch
             when x < 20 then  [x,10]
             when x < 60 then  [x,40]
             else [x,80]
-        b= new Bins (pairs(r.next()**2)  for x in [0..10000]) 
+        pairs= (pair()  for x in [0..10000]) 
+        b= new Bins(pairs)
         for [x,y] from b.xrange()
           say "unper>",x.has.n,x.has.lo,x.has.hi ,y.has.lo,y.has.hi
         say ""

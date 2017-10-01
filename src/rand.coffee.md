@@ -13,6 +13,8 @@ This generator is a so-called 'Lehmer random number generator' which returns a p
 
 - _Random Number Generators: Good Ones Are Hard To Find_ Steve Park and Keith Miller Communications of the ACM, October 1988
 
+This generator is **ABSOLUTELY NOT** acceptable for cryptographic purposes!
+
 ## Examples
 
     fiveRandomNumbers = ->
