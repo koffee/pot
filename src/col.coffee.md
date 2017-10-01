@@ -40,7 +40,7 @@ Add many things, mabye filtering them through the `f` function.
 
       adds: (a,f) ->
          f = f or (x) -> x  # the default `f` is "do nothing"
-         (@add(f(x)) for x in a)
+         (@add f(x) for x in a)
          this
 
 Normalize things, unless they are things to be `ignored`.
@@ -51,4 +51,3 @@ Normalize things, unless they are things to be `ignored`.
 ## Export control
 
     @Col = Col
-

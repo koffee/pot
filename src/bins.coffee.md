@@ -15,7 +15,6 @@ Divide up numbers in some data
     say = the.say
     Num   = require('./num').Num
     Sym   = require('./num').Sym
-    Rand  = require('./rand').Rand
 
 ## Bins Class
 
@@ -23,31 +22,31 @@ Divide up numbers in some data
 found by these code use some `x` value taken from each item in
 `data`.  Optionally, each data item may also include a `y` value
 in which case the `yranges` are a subset of the `xranges`, where
-any xrange that does not change the `y` values are discarded.
+any xrange that does not change the `y` value are discarded.
 
     class Bins
-      constructor: (data,o=[]) ->
+      constructor: (@data=[], o=[]) ->
         #-------------------
         # set config options 
-        @x     = o.x       or (z) -> z[0] # where to find the `x` values
-        @y     = o.y       or (z) -> z[1] # where to find the `y` values
-        @no    = o.no      or "?"         # what marks missing values
-        @nump  = o.nump    or true        # are the `y` values Nums or Syms?
-        cohen  = o.cohen   or 0.2         # if epsilon missing, use (say) 20% of the sd
-        some   = o.some    or 128         # if epsilon missing, compute it from (say) 128 items
-        nsize  = o.nsize   or 0.5         # if enough missing, use portion of the list length
-        enough = o.enough  or (data) ->   # ranges must have enough items
-           data.length**opt.nsize
-        epsilon= o.epsilon or (data) ->   # (hi - lo) in ranges must be over epsilon
-           ((new Num) adds data[1..some], @x).sd*opt.cohen
+        @x     = o.x     or ((z) => z[0]) # where to find the `x` values
+        @y     = o.y     or ((z) => z[1]) # where to find the `y` values
+        @no    = o.no    or "?"           # what marks missing values
+        @nump  = o.nump  or true          # are the `y` values Nums or Syms?
+        cohen  = o.cohen or 0.2           # if epsilon missing, use (say) 20% of the sd
+        some   = o.some  or 128           # if epsilon missing, compute it from (say) 128 items
+        nsize  = o.nsize or 0.5           # if enough missing, use portion of the list length
+        # ranges must have enough items
+        enough = o.enough  or ((data) => data.length**nsize)
+        # (hi - lo) in ranges must be over epsilon
+        epsilon= o.epsilon or ((data,x) => ((new Num).adds data[1..some], x).sd*cohen)
         #--------------------
         # intiailizations
-        [ @e, @min ] = [ epsilon(), enough() ]
+        [ @e, @min ] = [ epsilon(@data,@x), enough @data ]
 
 Here's how to sort data, being mindful on missing values
 
       order: (data) ->
-        data.sort (z1,z2) ->
+        data.sort (z1,z2) =>
           [x1, x2] = [@x(z1), @x(z2)]
           return 0 if x1 is @no
           return 0 if x2 is @no
@@ -57,30 +56,30 @@ We can return a range when it is `full` of enough values (ranging
 over more than epsilon `e`)...
 
       full: (xs) ->
-        xs.has.h1 - xs.has.lo > @e and xs.has.n > @min
+        xs.has.hi - xs.has.lo > @e and xs.has.n > @min
 
 ...and when, to the right, there is space for at elast one more range.
 
-      room4More: (xs,j,last) ->
-        @x(last) - xs.has.hi > @e and @data.length - j > @min
+      room2right: (xs,j, xlast) ->
+        xlast - xs.has.hi > @e and @data.length - j > @min
 
 When walking over the ranges, we track the `x` numbers and, for the
 `y` values, either numbers or symbols.
 
-      next: ->
-        [Nums(), if @nump then Nums() else Syms()]
+      nexty: ->
+        new if @nump then Nums else Syms
 
 An `xrange` is the first set of numbers that satisfy `fill` and
 `room4More`.
 
       xrange: (b4)  ->
         @data = [..., last] = @order( @data )
-        [xs, ys] = @next()
+        [xs, ys] = [new Nums, @nexty()]
         for z,j in @data
           [x, y] = [@x(z), @y(z)]
-          if @full(xs) and @room4More(xs,j,last) and x > b4
+          if @full(xs) and @room2right(xs,j, @x(last)) and x > b4
             yield [xs,ys]
-            [xs, ys] = @next()
+            [xs, ys] = [new Nums, @nexty()]
           xs.add x; ys.add y
           b4 = x
         yield [xs,ys]
@@ -88,15 +87,15 @@ An `xrange` is the first set of numbers that satisfy `fill` and
 A `yrange` are the `xrange`s where the `y` values change significantly
 from one range to another.
 
-#      yrange: (b4, all=[]) ->
-#        [xNum1, yNum1] = [new Num, @yThing()]
-#        for [xnum,xall,yall] from @xrange()
-#          yNum2 = @yThing(yall) # local n
-#          yNum0 = clone ys0
-#          yNum0.adds yall       # now aand before
-#          n = ys2.n
-#          if impurity(yNum1, n) + impurirty(yNum2, n) < impurity(yNum0, n)
-#            Lw
+      yrange: (b4, all=[]) ->
+        [xs1, ys1] = [new Nums, @nexty()]
+        for [xs2,ys2] from @xrange()
+          ys1 = the.clone ys1
+          ys1.adds ys2.seen, @y
+          say "n",ys1.has.n, ys1.has.sd
+        # ys0 = (ys1.clone).adds ys2.seen
+        # n = ys0.n
+        # if impurity(yNum1, n) + impurirty(yNum2, n) < impurity(yNum0, n)
 
 ## Sample Class
 
@@ -104,27 +103,29 @@ from one range to another.
 as either a `Num` or a `Sym`, then added to a list of `seen` things.
 
     class Sample
-      constructor: (inits=[],@has=@ako()) -> @adds inits
-      adds:        (lst=[])               -> (@add x for x in lst)
-      add:         (x)                    -> @seen.push (@has.add x)
-      xpect:       (n=1)                  -> @has.n/n * @impurity()
-      clone:       (items=@seen)          -> @constructor items,@ako()
+      constructor:  (inits=[],@has=@ako()) -> @seen= []; @adds inits
+      adds:         (data=[])              -> (@add x for x in data)
+      add:          (x)                    -> @seen.push (@has.add x)
+      xpect:        (n=1)                  -> @has.n/n * @impurity()
 
 All `Sample`s can report their `impurity`
 which is either standard deviaon or entropy for `Nums` or `Syms` respectively.
 
     class Nums extends Sample
-      ako:      -> Num()
+      ako:      -> new Num
       impurity: -> @has.sd
 
     class Syms extends Sample
-      ako:      -> Sym()
+      ako:      -> new Sym
       impurity: -> @has.ent()
 
 ## End stuff
 
     if require.main == module
-        console.log 1
-#       r= new Rand
-#       #bins (x for x in [0..20]), opt
-#       bins ([x,Math.floor(x/4)] for x in [0..20])
+        Rand  = require('./rand').Rand
+        r= new Rand
+        f= Math.floor
+        b= new Bins( ([r.next()**2, 1 ] for x in [0..1000]) )
+        b.yrange()
+
+

@@ -20,7 +20,7 @@ hypothesis and effect size tests.
 
     eg2 = ->
       n = new Num
-      n.adds([9,2,5,4,12,7,8,11,9,3,7,4,12,5,4,10,9,6,9,4])
+      n.adds [9,2,5,4,12,7,8,11,9,3,7,4,12,5,4,10,9,6,9,4], (x) -> 0.1*x
       the.say n.mu,n.sd
 
 ## Code
@@ -69,7 +69,7 @@ standard t-test critical values table.
       @crit:
         95: {3:3.182, 6:2.447, 12:2.179, 24:2.064, 48:2.011, 96:1.985}
         99: {3:5.841, 6:3.707, 12:3.055, 24:2.797, 48:2.682, 96:2.625}
-      tTestThreshold: (x, a=Num.crit[Num.cert] ) ->
+      ttest1: (x, a=Num.crit[Num.cert] ) ->
         y = (i) ->
           j = i*2
           if x in [i..j] then a[i] + (a[j]-a[i]) * (x-i) / (j-i) else y(j)
@@ -87,7 +87,7 @@ standard t-test critical values table.
         a  = i.sd**2/i.n
         b  = j.sd**2/j.n
         df = (a + b)**2 / (10**-64 + a**2/(i.n-1) + b**2/(j.n - 1))
-        abs(t) > ttest1(df)
+        abs(t) > @ttest1(df)
 
       hedges= (i,j) ->
         # https://goo.gl/w62iIL
