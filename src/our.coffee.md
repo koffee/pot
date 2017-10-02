@@ -36,7 +36,6 @@
     @tiny   = 1 / @inf
     @ignore = '?'
     @conf   = 95
-    @data   = process.env["Koffee"] + "/data" or "../data"
 
 ## Shared functions
 

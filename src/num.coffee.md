@@ -23,15 +23,23 @@ hypothesis and effect size tests.
       n.adds [9,2,5,4,12,7,8,11,9,3,7,4,12,5,4,10,9,6,9,4], (x) -> 0.1*x
       the.say n.mu,n.sd
 
+    eg3 ->
+		 Rand=(requre my+'rand').Rand
+		 r=new Rand(1)
+		 [n1,n2] = [new Num, new Num]
+		 for i in [1..20]
+		    s = r()
+				n1.add i
+				n2.add i + s/10
+     		 
 ## Code
 
 All the methods marked as `_xxx` extends functionality of the `xxx`
 methods defined in the [Col](col.coffee.md) superclass.
 
-    requires = (f) -> require(process.env.PWD + "/" + f )
-
-    the = requires 'our'
-    Col = requires('col').Col
+    my  = process.env.PWD + "/" 
+    the = require my+'our'
+    Col = require(my+'col').Col
 
     class Num extends Col
       constructor: (args...) ->
@@ -61,7 +69,7 @@ with other methods).
 **Print** contents.
 
       toString: ->
-        " #{@n}:#{@lo}..#{@hi}"
+         " #{@n}:#{@lo}..#{@hi}"
 
 **tTestThreshold** Low-level stuff. Implements look-up table on the
 standard t-test critical values table.
@@ -106,3 +114,4 @@ standard t-test critical values table.
     if require.main == module
       eg1()
       eg2()
+			eg3()

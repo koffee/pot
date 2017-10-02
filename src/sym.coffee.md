@@ -7,10 +7,9 @@
 
 # SYM 
 
-    requires = (f) -> require(process.env.PWD + "/" + f )
-
-    the = requires 'our'
-    Col = requires('col').Col
+    my  = process.env.PWD + "/" 
+    the = require my+'our'
+    Col = require(my+'col').Col
 
 asdassdsaasdasasdsassasa
 
