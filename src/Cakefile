@@ -18,12 +18,13 @@ task 'commit', 'Push back to  github', ->
   run "git commit -am 'committing'"
   run "git push"
 task 'inspire', "So you think you're so great?", -> console.log alexy
-#task 'setup', "Set stuff up (needs only to be run once", ->
-#    fs.exists ".gitignore", ( exists ) ->
-#      if not exists
-#         await fs.writeFile ".gitignore", gitignore+"\n", (error) ->
-#            console.error("Error writing file", error) if error
-#
+task 'setup', "Set stuff up (needs only to be run once", ->
+    fs.exists ".gitignore", (( exists ) ->
+      if not exists
+         fs.writeFile ".gitignore", gitignore+"\n", (error) ->
+            console.error("Error writing file", error) if error),
+      run "git add .gitignore"
+
 alexy="""
         The stars and the sun are everywhere… I did not expect all this.
         The silence struck me. I could hear my heart beating so clearly.
