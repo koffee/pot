@@ -11,8 +11,8 @@ Abstract superclass for [`num`](num.coffee.md) and [`sym`](sym.coffee.md).
 Implements some _mixin_ behaviours where common patterns in
 method `xxx` is handled by subclass methods `xxx1`.
 
-    my  = process.env.PWD + "/" 
-    the = require my+"our"
+    src  = process.env.PWD + "/../src/" 
+    the = require src+"our"
     class Col
 
 All [`Col`]s have:

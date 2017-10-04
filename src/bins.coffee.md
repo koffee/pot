@@ -1,7 +1,7 @@
 [home](http://tiny.cc/koff) |
 [copyright](https://github.com/koffee/script/blob/master/LICENSE.md) &copy;2017, tim&commat;menzies.us<br>
 [<img width=900 src=https://raw.githubusercontent.com/koffee/script/master/img/head.jpg>](http://tiny.cc/koff)<br>
-[src](https://github.com/koffee/script/tree/master/lib) |
+[src](https://github.com/koffee/script/tree/master/src) |
 [tour](https://github.com/koffee/script/blob/master/docs/TOUR.md) |
 [style](https://github.com/koffee/script/blob/master/docs/STYLE.md)
 
@@ -13,11 +13,11 @@ functions we can customise).
 
 ## Set up
 
-    my  = process.env.PWD + "/" 
-    the = require my+ 'our'
+    src  = process.env.PWD + "/../src/" 
+    the = require src+ 'our'
     say = the.say
-    Num   = require(my + 'num').Num
-    Sym   = require(my + 'sym').Sym
+    {Num} = require src + 'num'
+    {Sym} = require src + 'sym'
 
 ## Range class
 
@@ -133,26 +133,26 @@ value stays.
           yield [xs1,ys1]
 
     rank = (rxs...) ->
-		  abs = (x) -> if x >= 0 then x else -1*x
+      abs = (x) -> if x >= 0 then x else -1*x
       rx0 = (rx) -> 
         [txt,data...] = rx
         n= (new Nums).adds data
         n.txt=txt
         n
       lst = (rx0(rx) for rx in rxs)
-			[xs1,rest...] = lst.sort (z1,z2) -> z1.has.mu - z2.has.mu
-			r=0
-			for xs2 in rest
-			  xs12 = xs1.clone( xs2.seen)
-				if diff(xs1,xs2) 
-				  xs1.r = ++r
-				  yield xs1
-					xs1=xs2
-				else
-				  xs1.adds xs2.seen
-		  if xs1.has.n
-			  yield xs1
-			  
+      [xs1,rest...] = lst.sort (z1,z2) -> z1.has.mu - z2.has.mu
+      r=0
+      for xs2 in rest
+        xs12 = xs1.clone( xs2.seen)
+        if diff(xs1,xs2) 
+          xs1.r = ++r
+          yield xs1
+          xs1=xs2
+        else
+          xs1.adds xs2.seen
+      if xs1.has.n
+        yield xs1
+        
 ## End stuff
 
     if require.main == module

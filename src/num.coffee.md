@@ -1,7 +1,7 @@
 [home](http://tiny.cc/koff) |
 [copyright](https://github.com/koffee/script/blob/master/LICENSE.md) &copy;2017, tim&commat;menzies.us<br>
 [<img width=900 src=https://raw.githubusercontent.com/koffee/script/master/img/head.jpg>](http://tiny.cc/koff)<br>
-[src](https://github.com/koffee/script/tree/master/lib) |
+[src](https://github.com/koffee/script/tree/master/src) |
 [tour](https://github.com/koffee/script/blob/master/docs/TOUR.md) |
 [style](https://github.com/koffee/script/blob/master/docs/STYLE.md)
 
@@ -23,23 +23,23 @@ hypothesis and effect size tests.
       n.adds [9,2,5,4,12,7,8,11,9,3,7,4,12,5,4,10,9,6,9,4], (x) -> 0.1*x
       the.say n.mu,n.sd
 
-    eg3 ->
-		 Rand=(requre my+'rand').Rand
-		 r=new Rand(1)
-		 [n1,n2] = [new Num, new Num]
-		 for i in [1..20]
-		    s = r()
-				n1.add i
-				n2.add i + s/10
-     		 
+    eg3 = ->
+     {Rand} = requre src+'rand'
+     r=new Rand(1)
+     [n1,n2] = [new Num, new Num]
+     for i in [1..20]
+        s = r()
+        n1.add i
+        n2.add i + s/10
+          
 ## Code
 
 All the methods marked as `_xxx` extends functionality of the `xxx`
 methods defined in the [Col](col.coffee.md) superclass.
 
-    my  = process.env.PWD + "/" 
-    the = require my+'our'
-    Col = require(my+'col').Col
+    src   = process.env.PWD + "/../src/" 
+    the   = require src+'our'
+    {Col} = require src+'col'
 
     class Num extends Col
       constructor: (args...) ->
@@ -114,4 +114,4 @@ standard t-test critical values table.
     if require.main == module
       eg1()
       eg2()
-			eg3()
+      #eg3()

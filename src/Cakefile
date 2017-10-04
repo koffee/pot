@@ -1,4 +1,3 @@
-
 task 'setup', "Set stuff up (needs only to be sh once)", ->
   make ".gitignore", gitignore
 
