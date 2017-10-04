@@ -2,7 +2,7 @@ fs = require 'fs'
 
 {spawn} = require 'child_process'
 
-run = (coms...) ->
+run = (coms..., callback) ->
   coffee = spawn coms...
   coffee.stderr.on 'data', (data) ->
     process.stderr.write data.toString()
@@ -14,7 +14,7 @@ run = (coms...) ->
 
 update = (callback) -> run "git",["pull"]
 commit = (callback) -> 
- run "git",["commit","-am","committing"]
+ run "git",["commit","-am","committing"], (-> console.log 1)
  console.log 21
 
 task 'update', 'Update from github', -> update((-> run "ls"))
