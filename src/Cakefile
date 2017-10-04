@@ -16,8 +16,7 @@ task 'github', 'Setup for github', (the)->
    sh 'git config --global user.name '  + who
    sh 'git config --global user.email ' + elm
 
-task 'commit', 'Push back to  github',(o) ->
-  console.log o.environment or  21
+task 'commit', 'Push back to  github', ->
   sh "git status"
   sh "git commit -am 'committing'"
   sh "git push"
