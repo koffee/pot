@@ -1,9 +1,9 @@
 fs = require 'fs'
 
-{spawn} = require 'child_process'
+exec = require('child_process').exec
 
-run = (com, args=[], callback=((-> true))) ->
-  coffee = spawn com, args
+run = (com, callback=((-> true))) ->
+  coffee = exec com
   coffee.stderr.on 'data', (data) ->
     process.stderr.write data.toString()
   coffee.stdout.on 'data', (data) ->
@@ -11,13 +11,93 @@ run = (com, args=[], callback=((-> true))) ->
   coffee.on 'exit', (code) ->
     callback?() if code is 0
 
+pull = (callback) -> run "git pull"
+push = (callback) -> run "git push"
+commit = (callback) ->
+  run "git",["commit","-am","committing"], (-> push())
+  console.log 22
 
-pull = (callback) -> run "git",["pull"]
-push = (callback) -> run "git",["push"]
-commit = (callback) -> 
- run "git",["commit","-am","committing"], (-> push())
- console.log 22
+task 'update', 'Update from github', -> run "git pull"
+task 'commit', 'Push back to  github', -> run "git commit -am 'committing'; git push"
+task 'inspire', "So you think you're so great?", -> console.log alexy
+#task 'setup', "Set stuff up (needs only to be run once", ->
+#    fs.exists ".gitignore", ( exists ) ->
+#      if not exists
+#         await fs.writeFile ".gitignore", gitignore+"\n", (error) ->
+#            console.error("Error writing file", error) if error
+#
+alexy="""
+        The stars and the sun are everywhere… I did not expect all this.
+        The silence struck me. I could hear my heart beating so clearly.
+        I could hear my breath – it even hurt to think."
 
-task 'update', 'Update from github', -> update((-> run "ls"))
-task 'commit', 'Push back to  github', -> commit()
+         -- Alexy Leonev
 
+        On March 18, 1965, Alexey Leonov stepped outside the thin
+        metal shell of Voskhod-2 to float in the harsh void of
+        space. For 12 minutes and 9 seconds, Leonov opened the doors
+        on an entire new branch of exploration as the first
+        spacewalker. It was nearly a disaster.
+
+        Leonov’s spacesuit had bloated and stiffened in the vacuum,
+        and was too large and inflexible to reenter the airlock.  He
+        opened a valve to slowly release oxygen, depressurizing his
+        suit until it was small enough to squeeze within the
+        relative safety of the spacecraft.
+
+        His bad luck continued with a harrowing end to the Voskhod-2
+        mission. The craft malfunctioned during reentry and the
+        automatic re-entry system failed to fire, sending them
+        wildly off-course. Worse still, the orbital module failed to
+        separate, sending them tumbling. When they finally reached
+        solid ground, Leonov and fellow creman Belyayev were greeted
+        by wolves and bears when the spacecraft dropped them in the
+        middle of a thick forest during a snowstorm.
+
+        It was mating season, so the wolves and bears were even more
+        aggressive than usual. The forest was too thick for a rescue
+        helicopter to land. They’d opened the hatch with explosive
+        bolts on landing, leaving the cosmonauts exposed to the
+        storm and subzero temperatures. The electrical system
+        malfunctioned, knocking out the heater while the fans ran at
+        full blast. Sweat in their spacesuits threatened to freeze,
+        forcing them to wring the suits out to prevent frostbite. A
+        rescue party on skis finally reached them the second day,
+        chopping wood for a small log cabin and an enormous bonfire.
+        Most importantly, the rescuers brought brandy to celebrate
+        the triumphant mission. The next morning, the cosmonauts
+        skied several kilometres to a pickup location.
+
+        Postscript: At the time of this writing (August 2017), he is
+        still alive and kicking. Clearly, nothing can kill this guy.
+      """
+
+gitignore="""
+        #vimstuff
+        [._]*.s[a-w][a-z]
+        [._]s[a-w][a-z]
+        *.un~
+        Session.vim
+        netrwhist
+        *~
+        # sed stuff
+        *.bak
+        # doc stuff
+        docs
+        locco
+        # mac stuff
+        .DS_Store
+        # testing stuff
+        _allok.lua
+        * coffeescript stuff
+        raw
+        presentation
+        test.coffee
+        test*.coffee
+        test.coffee.md
+        test*.coffee.md
+        test/*.js
+        parser.output
+        /node_modules
+        npm-debug.log*
+        """
