@@ -7,11 +7,14 @@ task 'setup', "Set stuff up (needs only to be sh once)", ->
 task 'update', 'Update from github', ->
 	sh "git pull"
 
-task 'timm', 'setup for timm', ->
-   sh 'git config --global user.name "Tim Menzies"'
-   sh 'git config --global user.email tim.menzies@gmail.com'
+option '-w', '--who [GH Peson]', "set github user.name for 'github'"
+option '-e', '--elm [GH email]', "set github user.email for 'github'"
 
-option '-e', '--environment [ENVIRONMENT_NAME]', 'set the environment for `xxx`'
+task 'github', 'Setup for github', (the)->
+   who = the.who or "'Tim Menzies'"
+   elm = the.elm or "'tim.menzies@gmail.com'"
+   sh 'git config --global user.name '  + who
+   sh 'git config --global user.email ' + elm
 
 task 'commit', 'Push back to  github',(o) ->
   console.log o.environment or  21
