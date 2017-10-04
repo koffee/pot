@@ -11,7 +11,7 @@ task 'timm', 'setup for timm', ->
    sh 'git config --global user.name "Tim Menzies"'
    sh 'git config --global user.email tim.menzies@gmail.com'
 
-option '-e', '--environment [ENVIRONMENT_NAME]', 'set the environment for `fred`'
+option '-e', '--environment [ENVIRONMENT_NAME]', 'set the environment for `commit`'
 
 task 'commit', 'Push back to  github',(o) ->
   console.log o.environment or  21
