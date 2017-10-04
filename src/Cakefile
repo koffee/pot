@@ -15,6 +15,7 @@ run = (com, callback=((-> true))) ->
 
 task 'update', 'Update from github', -> run "git pull"
 task 'commit', 'Push back to  github', -> 
+  run "git status"
   run "git commit -am 'committing'"
   run "git push"
 task 'inspire', "So you think you're so great?", -> console.log alexy
