@@ -1,37 +1,32 @@
-fs = require 'fs'
+fs     = require 'fs'
+{exec} = require 'child_process'
 
-exec = require('child_process').exec
+task 'setup', "Set stuff up (needs only to be sh once)", ->
+  make ".gitignore", gitignore
 
-run = (com, callback=((-> true))) ->
-  console.log com
-  coffee = exec com
-  coffee.stderr.on 'data', (data) ->
-    process.stderr.write data.toString()
-  coffee.stdout.on 'data', (data) ->
-    console.log ">",data.toString()
-  coffee.on 'exit', (code) ->
-    callback?() if code is 0
+task 'update', 'Update from github', ->
+	sh "git pull"
 
+task 'timm', 'setup for timm', ->
+   sh 'git config --global user.name "Tim Menzies"'
+   sh 'git config --global user.email tim.menzies@gmail.com'
 
-task 'update', 'Update from github', -> run "git pull"
-task 'commit', 'Push back to  github', -> 
-  run "git status"
-  run "git commit -am 'committing'"
-  run "git push"
-task 'inspire', "So you think you're so great?", -> console.log alexy
-task 'setup', "Set stuff up (needs only to be run once", ->
-    fs.exists ".gitignore", (( exists ) ->
-      if not exists
-         fs.writeFile ".gitignore", gitignore+"\n", (error) ->
-            console.error("Error writing file", error) if error),
-      run "git add .gitignore"
+option '-e', '--environment [ENVIRONMENT_NAME]', 'set the environment for `fred`'
+
+task 'commit', 'Push back to  github',(o) ->
+  console.log o.environment or  21
+  sh "git status"
+  sh "git commit -am 'committing'"
+  sh "git push"
+
+task 'inspire', "So you think you're so great?", ->
+  console.log alexy
 
 alexy="""
-        The stars and the sun are everywhere… I did not expect all this.
+        'The stars and the sun are everywhere… I did not expect all this.
         The silence struck me. I could hear my heart beating so clearly.
-        I could hear my breath – it even hurt to think."
-
-         -- Alexy Leonev
+        I could hear my breath – it even hurt to think.'
+        -- Alexy Leonev
 
         On March 18, 1965, Alexey Leonov stepped outside the thin
         metal shell of Voskhod-2 to float in the harsh void of
@@ -100,4 +95,25 @@ gitignore="""
         parser.output
         /node_modules
         npm-debug.log*
+
         """
+#############################################
+
+sh = (com, callback=((-> true))) ->
+  console.log com
+  coffee = exec com
+  coffee.stderr.on 'data', (data) ->
+    process.stderr.write data.toString()
+  coffee.stdout.on 'data', (data) ->
+    console.log ">",data.toString()
+  coffee.on 'exit', (code) ->
+    callback?() if code is 0
+
+make = (file,str) ->
+    fs.exists file, (( exists ) ->
+      if not exists
+         fs.writeFile file , str, (error) ->
+            console.error("Error writing file", error) if error),
+      sh "git add " + file
+
+
