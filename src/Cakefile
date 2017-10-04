@@ -12,9 +12,10 @@ run = (coms..., callback) ->
     callback?() if code is 0
 
 
-update = (callback) -> run "git",["pull"]
+pull = (callback) -> run "git",["pull"]
+push = (callback) -> run "git",["push"]
 commit = (callback) -> 
- run "git",["commit","-am","committing"], (-> console.log 1)
+ run "git",["commit","-am","committing"], (-> push())
  console.log 21
 
 task 'update', 'Update from github', -> update((-> run "ls"))
