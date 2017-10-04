@@ -1,5 +1,3 @@
-fs     = require 'fs'
-{exec} = require 'child_process'
 
 task 'setup', "Set stuff up (needs only to be sh once)", ->
   make ".gitignore", gitignore
@@ -102,6 +100,7 @@ gitignore="""
 #############################################
 
 sh = (com, callback=((-> true))) ->
+  {exec} = require 'child_process'
   console.log com
   coffee = exec com
   coffee.stderr.on 'data', (data) ->
@@ -112,10 +111,11 @@ sh = (com, callback=((-> true))) ->
     callback?() if code is 0
 
 make = (file,str) ->
-    fs.exists file, (( exists ) ->
-      if not exists
-         fs.writeFile file , str, (error) ->
-            console.error("Error writing file", error) if error),
-      sh "git add " + file
+  fs     = require 'fs'
+  fs.exists file, (( exists ) ->
+    if not exists
+      fs.writeFile file , str, (error) ->
+        console.error("Error writing file", error) if error),
+    sh "git add " + file
 
 
