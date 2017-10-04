@@ -2,8 +2,8 @@ fs = require 'fs'
 
 {spawn} = require 'child_process'
 
-run = (coms..., callback) ->
-  coffee = spawn coms...
+run = (com, args=[], callback=((-> true))) ->
+  coffee = spawn com, args
   coffee.stderr.on 'data', (data) ->
     process.stderr.write data.toString()
   coffee.stdout.on 'data', (data) ->
