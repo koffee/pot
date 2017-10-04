@@ -12,11 +12,6 @@ run = (com, callback=((-> true))) ->
   coffee.on 'exit', (code) ->
     callback?() if code is 0
 
-pull = (callback) -> run "git pull"
-push = (callback) -> run "git push"
-commit = (callback) ->
-  run "git",["commit","-am","committing"], (-> push())
-  console.log 22
 
 task 'update', 'Update from github', -> run "git pull"
 task 'commit', 'Push back to  github', -> 
