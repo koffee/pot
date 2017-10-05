@@ -17,7 +17,9 @@ task 'github', 'Setup for github', (the)->
 
 task 'commit', 'Push back to  github', ->
   sh "git status"
+  sh "sleep 1"
   sh "git commit -am 'committing'"
+  sh "sleep 1"
   sh "git push"
 
 task 'inspire', "So you think you're so great?", ->
