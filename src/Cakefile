@@ -1,3 +1,5 @@
+# this file proves you can have your cake and eat it too
+
 task 'setup', "Set stuff up (needs only to be sh once)", ->
   make ".gitignore", gitignore
 
