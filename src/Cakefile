@@ -16,11 +16,7 @@ task 'github', 'Setup for github', (the)->
    sh 'git config --global user.email ' + elm
 
 task 'commit', 'Push back to  github', ->
-  sh "git status"
-  sh "sleep 1"
-  sh "git commit -am 'committing'"
-  sh "sleep 1"
-  sh "git push"
+  sh "git status; git commit -am 'committing'; git push"
 
 task 'inspire', "So you think you're so great?", ->
   console.log alexy
