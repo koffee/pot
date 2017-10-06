@@ -16,12 +16,14 @@ hypothesis and effect size tests.
     eg1 = ->
       n = new Num
       (n.add x for x in [9,2,5,4,12,7,8,11,9,3,7,4,12,5,4,10,9,6,9,4])
-      the.say n.mu
+      say n.mu
+      O.k -> assert n.mu==7
 
     eg2 = ->
       n = new Num
       n.adds [9,2,5,4,12,7,8,11,9,3,7,4,12,5,4,10,9,6,9,4], (x) -> 0.1*x
-      the.say n.mu,n.sd
+      say n.mu,n.sd
+      O.k -> assert n.sd.toFixed(3) == '0.306'
 
     eg3 = ->
      {Rand} = requre src+'rand'
@@ -38,14 +40,14 @@ All the methods marked as `_xxx` extends functionality of the `xxx`
 methods defined in the [Col](col.coffee.md) superclass.
 
     src   = process.env.PWD + "/../src/" 
-    the   = require src+'our'
+    {say,O,ninf,inf,assert} = require src+'our'
     {Col} = require src+'col'
 
     class Num extends Col
       constructor: (args...) ->
         super args...
         [ @mu,@m2,@sd ] = [ 0,0,0,0 ]
-        [ @hi, @lo ]    = [ the.ninf, the.inf ]
+        [ @hi, @lo ]    = [ ninf, inf ]
 
 **_add a value to this collector**.
 Uses [Welford's incremental sd
@@ -99,19 +101,16 @@ standard t-test critical values table.
         df = (a + b)**2 / (10**-64 + a**2/(i.n-1) + b**2/(j.n - 1))
         abs(t) > @ttest1(df)
 
-      hedges= (i,j) ->
+      hedges= (i,j,small=0.38) ->
         # https://goo.gl/w62iIL
         nom   = (i.n - 1)*i.sd**2 + (j.n - 1)*j.sd^2
         denom = (i.n - 1)        + (j.n - 1)
         sp    = ( nom / denom )**0.5
         g     = abs(i.mu - j.mu) / sp
         c     = 1 - 3.0 / (4*(i.n + j.n - 2) - 1)
-        g * c > the.num.small  ## what to put here?
+        g * c > small  ## what to put here?
 
 ## End stuff
 
     @Num = Num
-    if require.main == module
-      eg1()
-      eg2()
-      #eg3()
+    @tests=[eg1,eg2]

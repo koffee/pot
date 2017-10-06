@@ -1,5 +1,12 @@
 # this file proves you can have your cake and eat it too
 
+src    = process.env.PWD + "/../src/" 
+{O,say}= require src+'our'
+{exec} = require 'child_process'
+fs     = require 'fs'
+glob   = require "glob"
+
+
 task 'setup', "Set stuff up (needs only to be sh once)", ->
   make ".gitignore", gitignore
 
@@ -20,6 +27,14 @@ task 'commit', 'Push back to  github', ->
 
 task 'inspire', "So you think you're so great?", ->
   console.log alexy
+
+task 'tests','run all tests/*.coffee', ->
+  #process.chdir('../test')
+  codes = files '.coffee.md'
+  tests = files '.coffee','../test'
+  for code in codes
+    say code
+    {tests} = require src + code
 
 alexy="""
         'The stars and the sun are everywhere… I did not expect all this.
@@ -99,7 +114,6 @@ gitignore="""
 #############################################
 
 sh = (com, callback=((-> true))) ->
-  {exec} = require 'child_process'
   console.log com
   coffee = exec com
   coffee.stderr.on 'data', (data) ->
@@ -110,11 +124,14 @@ sh = (com, callback=((-> true))) ->
     callback?() if code is 0
 
 make = (file,str) ->
-  fs     = require 'fs'
   fs.exists file, (( exists ) ->
     if not exists
       fs.writeFile file , str, (error) ->
         console.error("Error writing file", error) if error),
     sh "git add " + file
 
+files = (stem=".coffee", dir="./") ->
+  stemx =  new RegExp(stem,"g");
+  (f.replace stemx,'' for f in fs.readdirSync(dir) \
+     when stemx.test(f) and '.' isnt f[0])
 

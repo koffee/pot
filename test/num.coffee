@@ -1,1 +1,2 @@
--MacBook-Air-2:src
+src = process.env.PWD + "/../src/" 
+(f() for f in  require(src+'num').tests)

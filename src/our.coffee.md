@@ -7,28 +7,6 @@
 
 # Our Shared Stuff
 
-## How to call this code
-
-
-    Usage="""
-
-      export Koffee="$PWD"                    # can also be set in .bashrc
-      export NODE_PATH="$PWD/lib:$NODE_PATH"  # can also be set in .bashrc
-      coffee lib/FILE.coffee.md
-
-    Or, if you don't want to set globals in the envrionment:
-
-      NODE_PATH="$PWD/lib:$NODE_PATH" Koffee="$PWD" coffee lib/FILE.coffee.md
-    """
-
-## Start up checks
-
-#    for x in ['NODE_PATH', 'Koffee']
-#      unless process.env[x]
-#        console.log "Abort. No #{x} variable set."
-#        console.log "Recommended usage: " + Usage
-#        process.exit()
-#
 ## Shared Constants
 
     @ninf   = -1 * (Number.MAX_SAFE_INTEGER - 1)
@@ -175,6 +153,7 @@ Unit test
      @rsay = rsay
      @memoize = memoize
      @clone = clone
+     @assert = assert
      @O = O
      if require.main == module
        memoEg()
