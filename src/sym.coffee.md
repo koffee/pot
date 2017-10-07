@@ -7,8 +7,19 @@
 
 # SYM 
 
+Standard usage
+
+    egSym = ->
+      s= new Sym
+      s.adds ['a','b','b','c','c','c','c']
+      console.log 11
+      console.log "NN:",s.n, s.counts, s.ent().toFixed(3)
+      O.k -> assert  s.ent().toFixed(3) == '1.379'
+
+Set up:
+
     src   = process.env.PWD + "/../src/"
-    the   = require src+'our'
+    {say,assert,O,memo} = require src+'our'
     {Col} = require src+'col'
 
 asdassdsaasdasasdsassasa
@@ -23,13 +34,19 @@ asdassdsaasdasasdsassasa
         @counts[x] = 0 unless @counts[x]
         seen = ++@counts[x]
         [ @most,@mode ] = [ seen,x ] if seen > @most
-      ent: ->
-        for x in @counts
-          p = x/@n
-          e -= Math
+        console.log ">>",x,@counts, @mode, @most
+      #-------------------------
+      ent: (tmp=0)->
+        for x,y of @counts
+          p = y/@n
+          tmp -= p*Math.log2(p)
+          console.log '::::::',x,y,p,tmp,@n, @counts
+        console.log ":::",tmp
+        tmp
       #-------------------------
       norm1: (x) -> x
 
 ## Export control
 
     @Sym = Sym
+    @tests=[egSym]

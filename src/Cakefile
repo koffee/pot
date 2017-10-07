@@ -4,15 +4,18 @@ src     = process.env.PWD + "/../src/"
 test    = process.env.PWD + "/../test/" 
 
 all     = []
-ok = (lst...) ->
-  for one in lst
-    all.push one
-    task one,'test '+one, -> test1 one
+ok = (one) ->
+  all.push one
+  task one,'test '+one, -> test1 one
 
 ok 'our'
-ok 'col', 'num',  'sym'
-ok 'lines', 'csv', 'table'
-ok 'bins', 'range'
+ok 'num'
+ok 'sym'
+ok 'lines'
+ok 'csv'
+ok 'table'
+ok 'bins'
+ok 'range'
 
 ##################################
 #
@@ -46,11 +49,12 @@ task 'tests','run all tests/*.coffee', ->
   (test1 f for t in all)
 
 test1 = (f) ->
-  say src+f
   {tests} = require src+f
   if tests
-    (t() for t in tests)
-  fs.exists test+f, ((exists) ->
+    for t in tests
+      t()
+  f1 = test+f+'.coffee'
+  fs.exists f1, ((exists) ->
     if exists
       require test+f)
 

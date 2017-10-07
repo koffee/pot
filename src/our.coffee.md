@@ -84,6 +84,8 @@ Unit test
     class O
       @tries=0
       @failed=0
+      @want: (f) ->
+        O.k(assert(f))
       @k: (funs...) ->
         say funs
         (O.test(f) for f in funs)

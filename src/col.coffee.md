@@ -13,7 +13,6 @@ method `xxx` is handled by subclass methods `xxx1`.
 
     src      = process.env.PWD + "/../src/" 
     {ignore} = require src+"our"
-    class Col
 
 All [`Col`]s have:
 
@@ -23,6 +22,7 @@ All [`Col`]s have:
 
 as defined below by the following constructor:
 
+    class Col
       constructor: (txt,w,pos) ->
          @n   = 0
          @w   = w or 1
