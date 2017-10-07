@@ -92,10 +92,12 @@ Unit test
         try
             f()
             console.log "\n-----| SUCCESS!! |--------------------\n"
+            O.darn()
         catch error
             console.log "\n-----| FAILURE!! |--------------------\n"
             console.log error.stack.split('\n')[0..2].join("\n")
             O.failed++
+            O.darn()
       @darn : ->
         fail =  O.tries - O.fail
         f  = (x)  -> Math.floor(100*x)
@@ -149,15 +151,10 @@ Unit test
 
 ## And finally
 
-     @say = say
-     @rsay = rsay
+     @O       = O
+     @say     = say
+     @rsay    = rsay
+     @clone   = clone
+     @assert  = assert
      @memoize = memoize
-     @clone = clone
-     @assert = assert
-     @O = O
-     if require.main == module
-       memoEg()
-       oEg()
-       rsayEg()
-       cloneEg()
-       O.darn()
+     @tests   = [ memoEg, oEg, rsayEg, cloneEg, O.darn ]

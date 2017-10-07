@@ -21,23 +21,24 @@ some `action`.
 
 The csv constructor accepts an action to be run on every line.
 
-    printColumn3 = (file) ->
+    printColumn3 = (file = data + '/weather2.csv' ) ->
       new Csv file,
-              (row) -> the.say row[3]
+              (row) -> say row[3]
 
 Optionally, the `Csv` constructor accepts an second
 argument defining what to do at end of file.
 
-    countRows = (file) ->
+    countRows = (file = data + '/POM3A.csv') ->
       n=0
       new Csv file,
-          -> ++n,
-          -> the.say "rows: " + n
+        -> ++n,
+        -> say "rows: " + n
 
 ## Code
 
-    reader = require('lines').lines
-    the = require 'our'
+    src  = process.env.PWD + "/../src/" 
+    {lines} = require src + 'lines'
+    {say,data,ignore} = require src + 'our'
 
 **Constructor**
 
@@ -46,7 +47,7 @@ argument defining what to do at end of file.
         @use     = null
         @lines    = []
         @action  = action
-        reader file, @line, over or ->
+        lines file, @line, over or ->
 
 **Process each line.**
 Ignore eof, kill whitepace and comments. If anything left, called `merge`.
@@ -73,7 +74,7 @@ Cells are useful if row1's cell did not contain `the.ignore`
 
       act: (cells) ->
         if cells.length
-          @use or= (i for c,i in cells when the.ignore not in c)
+          @use or= (i for c,i in cells when ignore not in c)
           @action (@prep cells[i] for i in @use)
 
 **Prep each cell.**
@@ -86,7 +87,5 @@ use that number. Else, use the string as-is.
 
 ## End stuff
 
-    if require.main == module
-      printColumn3 the.data + '/weather2.csv'
-      countRows    the.data + '/POM3A.csv'
     @Csv = Csv
+    @tests = [printColumn3, countRows]

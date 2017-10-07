@@ -1,11 +1,25 @@
 # this file proves you can have your cake and eat it too
 
-src    = process.env.PWD + "/../src/" 
-{O,say}= require src+'our'
-{exec} = require 'child_process'
-fs     = require 'fs'
-glob   = require "glob"
+src     = process.env.PWD + "/../src/" 
+test    = process.env.PWD + "/../test/" 
 
+all     = []
+ok = (lst...) ->
+  for one in lst
+    all.push one
+    task one,'test '+one, -> test1 one
+
+ok 'our'
+ok 'col', 'num',  'sym'
+ok 'lines', 'csv', 'table'
+ok 'bins', 'range'
+
+##################################
+#
+{O,say} = require src+'our'
+{exec}  = require 'child_process'
+fs      = require 'fs'
+glob    = require "glob"
 
 task 'setup', "Set stuff up (needs only to be sh once)", ->
   make ".gitignore", gitignore
@@ -29,12 +43,16 @@ task 'inspire', "So you think you're so great?", ->
   console.log alexy
 
 task 'tests','run all tests/*.coffee', ->
-  #process.chdir('../test')
-  codes = files '.coffee.md'
-  tests = files '.coffee','../test'
-  for code in codes
-    say code
-    {tests} = require src + code
+  (test1 f for t in all)
+
+test1 = (f) ->
+  say src+f
+  {tests} = require src+f
+  if tests
+    (t() for t in tests)
+  fs.exists test+f, ((exists) ->
+    if exists
+      require test+f)
 
 alexy="""
         'The stars and the sun are everywhere… I did not expect all this.

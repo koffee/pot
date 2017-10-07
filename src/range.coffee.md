@@ -9,12 +9,12 @@ todo: is out[b] wrong? need another method
 
 # Unsupervised  discretizer
 
-    the = require 'our'
-    say = the.say
-    Range = require('range').Range
-    Num   = require('num').Num
-    Sym   = require('num').Sym
-    Rand  = require('rand').Rand
+    src     = process.env.PWD + "/../src/"
+    {say,ignore} = require src+'our'
+    {Range} = require src+'range'
+    {Num}   = require src+'num'
+    {Sym}   = require src+'num'
+    {Rand}  = require src+'rand'
 
     xRanges = (lst0, opt={}) ->
       # setting defaults
@@ -32,7 +32,7 @@ todo: is out[b] wrong? need another method
       # pre-scan 
       for one in lst0
         xval = opt.x(one)
-        if xval isnt the.ignore
+        if xval isnt ignore
           all.add xval
           lst.push [xval,one]
       # more initializations (that use pre-scan results)
@@ -100,11 +100,11 @@ yranges(ranges, opt)
               if tmp < 0.2 
                 [tmp,0.2]
               else if tmp < 0.6 
-                ptmp,0.6]
+                [tmp,0.6]
               else [tmp,0.2]
       opt= 
         x: (z) -> [0]
         y: (z) -> [1]
       ranges = xRanges(lst,opt)
-      (say r for r in ranes)
+      (say r for r in ranges)
 

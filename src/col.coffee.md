@@ -11,8 +11,8 @@ Abstract superclass for [`num`](num.coffee.md) and [`sym`](sym.coffee.md).
 Implements some _mixin_ behaviours where common patterns in
 method `xxx` is handled by subclass methods `xxx1`.
 
-    src  = process.env.PWD + "/../src/" 
-    the = require src+"our"
+    src      = process.env.PWD + "/../src/" 
+    {ignore} = require src+"our"
     class Col
 
 All [`Col`]s have:
@@ -32,7 +32,7 @@ as defined below by the following constructor:
 Only add things that should not be `ignore`d.
 
       add: (x) ->
-         if x isnt the.ignore
+         if x isnt ignore
            @n++
            @add1 x
          x
@@ -47,7 +47,7 @@ Add many things, mabye filtering them through the `f` function.
 Normalize things, unless they are things to be `ignored`.
 
       norm: (x) ->
-         if x isnt the.ignore then @norm1 x else x
+         if x isnt ignore then @norm1 x else x
 
 ## Export control
 
