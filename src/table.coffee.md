@@ -7,13 +7,23 @@
 
 # Table reader
 
-    src   = process.env.PWD + "/../src/" 
-    data  = process.env.PWD + "/../data/" 
-    {say} = require src+'our'
-    {Csv} = require src+'csv'
-    {Row} = require src+'row'
-    {Num} = require src+'num'
-    {Sym} = require src+'sym'
+Example usage
+
+    standardDeviation2ndNumericColumn = ->
+      t = new Table
+      t.from data + '/weather2.csv' , -> 
+        sd= t.xy.nums[1].sd
+        O.want sd.toFixed(2) == '17.03'
+
+Setting up
+
+    src     = process.env.PWD + "/../src/" 
+    data    = process.env.PWD + "/../data/" 
+    {say,O} = require src+'our'
+    {Csv}   = require src+'csv'
+    {Row}   = require src+'row'
+    {Num}   = require src+'num'
+    {Sym}   = require src+'sym'
 
     class Table
       constructor: (spec) ->
@@ -54,7 +64,5 @@
 
 ## End stuff
 
-    if require.main == module
-      t = new Table
-      t.from data + '/weather2.csv' , -> say t.xy.nums[1].sd
-    @Table = Table
+        @Table = Table
+    @tests=[ standardDeviation2ndNumericColumn ]

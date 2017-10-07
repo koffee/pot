@@ -74,7 +74,7 @@ task 'Inspire', "So you think you're so great?", ->
   console.log alexy
 
 task 'Tests','run all tests/*.coffee', ->
-  (test1 f for t in all)
+  (test1 t for t in all)
 
 alexy="""
         'The stars and the sun are everywhere… I did not expect all this.
@@ -193,4 +193,4 @@ all = files '.coffee.md'
 # show hello file, if it exists
 fs.readFile hello, ( err, str ) ->
   if not err
-    console.log bold,yellow,str.toString(),reset
+    process.stdout.write bold+yellow+(str.toString())+reset 

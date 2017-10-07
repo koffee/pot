@@ -91,6 +91,8 @@ Unit test
       @test: (f) ->
         O.tries++
         try
+            s="==========="
+            console.log "\n"+s+s+s+s+s+s+s
             f()
             console.log "\n-----| SUCCESS!! |--------------------\n"
             O.darn()
