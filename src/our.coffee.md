@@ -85,9 +85,8 @@ Unit test
       @tries=0
       @failed=0
       @want: (f) ->
-        O.k(assert(f))
+        O.k(-> assert(f))
       @k: (funs...) ->
-        say funs
         (O.test(f) for f in funs)
       @test: (f) ->
         O.tries++
@@ -104,15 +103,13 @@ Unit test
         fail =  O.tries - O.fail
         f  = (x)  -> Math.floor(100*x)
         console.log
+           tries: O.tries
            pass: f (O.tries - O.failed)/O.tries
            fail: f O.failed/O.tries
 
 ## Magic
 
     String::last = ->
-      this[ this.length - 1 ]
-
-    Object::last = ->
       this[ this.length - 1 ]
 
 # END

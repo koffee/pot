@@ -1,18 +1,19 @@
 [home](http://tiny.cc/koff) |
 [copyright](https://github.com/koffee/script/blob/master/LICENSE.md) &copy;2017, tim&commat;menzies.us<br>
 [<img width=900 src=https://raw.githubusercontent.com/koffee/script/master/img/head.jpg>](http://tiny.cc/koff)<br>
-[src](https://github.com/koffee/script/tree/master/lib) |
+[src](https://github.com/koffee/script/tree/master/src) |
 [tour](https://github.com/koffee/script/blob/master/docs/TOUR.md) |
 [style](https://github.com/koffee/script/blob/master/docs/STYLE.md)
 
 # Table reader
 
-    the = require('our')
-    say = the.say
-    Csv = require('csv').Csv
-    Row = require('row').Row
-    Num = require('num').Num
-    Sym = require('sym').Sym
+    src   = process.env.PWD + "/../src/" 
+    data  = process.env.PWD + "/../data/" 
+    {say} = require src+'our'
+    {Csv} = require src+'csv'
+    {Row} = require src+'row'
+    {Num} = require src+'num'
+    {Sym} = require src+'sym'
 
     class Table
       constructor: (spec) ->
@@ -55,5 +56,5 @@
 
     if require.main == module
       t = new Table
-      t.from the.data + '/weather2.csv' , -> say t.xy.nums[1].sd
+      t.from data + '/weather2.csv' , -> say t.xy.nums[1].sd
     @Table = Table

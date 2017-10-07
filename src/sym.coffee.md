@@ -12,9 +12,8 @@ Standard usage
     egSym = ->
       s= new Sym
       s.adds ['a','b','b','c','c','c','c']
-      console.log 11
-      console.log "NN:",s.n, s.counts, s.ent().toFixed(3)
-      O.k -> assert  s.ent().toFixed(3) == '1.379'
+      console.log "egSym:",s.n, s.counts, s.ent().toFixed(3)
+      O.want  s.ent().toFixed(3) == '1.379'
 
 Set up:
 
@@ -34,15 +33,14 @@ asdassdsaasdasasdsassasa
         @counts[x] = 0 unless @counts[x]
         seen = ++@counts[x]
         [ @most,@mode ] = [ seen,x ] if seen > @most
-        console.log ">>",x,@counts, @mode, @most
       #-------------------------
-      ent: (tmp=0)->
-        for x,y of @counts
-          p = y/@n
-          tmp -= p*Math.log2(p)
-          console.log '::::::',x,y,p,tmp,@n, @counts
-        console.log ":::",tmp
-        tmp
+      ent: (e=0)->
+        if @_ent == null
+          for x,y of @counts
+            p  = y/@n
+            e -= p*Math.log2(p)
+          @_ent = e
+        @_ent
       #-------------------------
       norm1: (x) -> x
 

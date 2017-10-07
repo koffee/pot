@@ -37,8 +37,9 @@ argument defining what to do at end of file.
 ## Code
 
     src  = process.env.PWD + "/../src/" 
+    data = process.env.PWD + "/../data/" 
     {lines} = require src + 'lines'
-    {say,data,ignore} = require src + 'our'
+    {say,ignore} = require src + 'our'
 
 **Constructor**
 

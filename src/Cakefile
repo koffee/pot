@@ -1,62 +1,80 @@
-# this file proves you can have your cake and eat it too
+# This file proves you can have your cake and eat it too
+
+###########################################
+# Assumes you are working in Github
+#   - if frequently committing, type 'cake Install' 
+
+###########################################
+# Assumes literate programming; i.e. all
+# source in .coffee.md files.
+
+###########################################
+# Assumes there may be a 'hello.txt' file to print
+#   - Optional. stores in ../src/hello.txt
+
+###########################################
+# Assumes TDD; specifically, the existance of
+#
+# 1) Test code that runs in you load that file
+#   - stored in ../test/*.coffee files 
+#
+# 2) Source code that returns, optionally, @tests
+# which is a list of test cases to run
+#   - stored in ../src/*.coffee.md 
+#
+# So for short demo, tutorial tests, use
+# egXYZ functions in ../src/*.coffee.md and
+# list all those functions on the last line; e.g
+#
+#    @tests=[eg1,eg2]
+#
+# And for longer tests, place tests for
+# ../src/X.coffee.md in ../test/X.coffee
+
+###########################################
+# Config
 
 src     = process.env.PWD + "/../src/" 
 test    = process.env.PWD + "/../test/" 
+hello   = src + 'hello.txt'
 
-all     = []
-ok = (one) ->
-  all.push one
-  task one,'test '+one, -> test1 one
+###########################################
+# Stop typing. Everything below should be generic
 
-ok 'our'
-ok 'num'
-ok 'sym'
-ok 'lines'
-ok 'csv'
-ok 'table'
-ok 'bins'
-ok 'range'
+bold = red = green = yellow = reset = ''
+unless process.env.NODE_DISABLE_COLORS
+    bold   = '\x1B[0;1m'
+    red    = '\x1B[0;31m'
+    green  = '\x1B[0;32m'
+    yellow = '\x1B[0;33m'
+    reset  = '\x1B[0m'
 
-##################################
-#
-{O,say} = require src+'our'
-{exec}  = require 'child_process'
-fs      = require 'fs'
-glob    = require "glob"
+{exec} = require 'child_process'
+fs     = require 'fs'
 
-task 'setup', "Set stuff up (needs only to be sh once)", ->
+task 'Setup', "Set stuff up (needs only to be sh once)", ->
   make ".gitignore", gitignore
 
-task 'update', 'Update from github', ->
+task 'Update', 'Update from github', ->
 	sh "git pull"
 
-option '-w', '--who [GH Peson]', "set github user.name for 'github'"
-option '-e', '--elm [GH email]', "set github user.email for 'github'"
+option '-w', '--who [GH Peson]', "set github user.name for 'Github'"
+option '-e', '--elm [GH email]', "set github user.email for 'Github'"
 
-task 'github', 'Setup for github', (the)->
+task 'Github', 'Setup for github', (the)->
    who = the.who or "'Tim Menzies'"
    elm = the.elm or "'tim.menzies@gmail.com'"
    sh 'git config --global user.name '  + who
    sh 'git config --global user.email ' + elm
 
-task 'commit', 'Push back to  github', ->
+task 'Commit', 'Push back to  github', ->
   sh "git status; git commit -am 'committing'; git push"
 
-task 'inspire', "So you think you're so great?", ->
+task 'Inspire', "So you think you're so great?", ->
   console.log alexy
 
-task 'tests','run all tests/*.coffee', ->
+task 'Tests','run all tests/*.coffee', ->
   (test1 f for t in all)
-
-test1 = (f) ->
-  {tests} = require src+f
-  if tests
-    for t in tests
-      t()
-  f1 = test+f+'.coffee'
-  fs.exists f1, ((exists) ->
-    if exists
-      require test+f)
 
 alexy="""
         'The stars and the sun are everywhere… I did not expect all this.
@@ -157,3 +175,22 @@ files = (stem=".coffee", dir="./") ->
   (f.replace stemx,'' for f in fs.readdirSync(dir) \
      when stemx.test(f) and '.' isnt f[0])
 
+test1 = (f) ->
+  {tests} = require src+f
+  if tests
+    for t in tests
+      t()
+  f1 = test+f+'.coffee'
+  fs.exists f1, ((exists) ->
+    if exists
+      require test+f)
+
+#############################################
+# add "test X" recipes for all source code
+all = files '.coffee.md'
+((do (i) -> task i, 'test '+i,-> test1 i) for i in all)
+
+# show hello file, if it exists
+fs.readFile hello, ( err, str ) ->
+  if not err
+    console.log bold,yellow,str.toString(),reset
