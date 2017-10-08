@@ -64,5 +64,5 @@ Setting up
 
 ## End stuff
 
-        @Table = Table
+    @Table = Table
     @tests=[ standardDeviation2ndNumericColumn ]

@@ -22,8 +22,11 @@ some `action`.
 The csv constructor accepts an action to be run on every line.
 
     printColumn3 = (file = data + '/weather2.csv' ) ->
+      r=0
+      n=0
       new Csv file,
-              (row) -> say row[3]
+              ((row) -> if r++ > 0 then n += row[3]),
+              (-> say "total ",n; O.want n==513)
 
 Optionally, the `Csv` constructor accepts an second
 argument defining what to do at end of file.
@@ -31,15 +34,15 @@ argument defining what to do at end of file.
     countRows = (file = data + '/POM3A.csv') ->
       n=0
       new Csv file,
-        -> ++n,
-        -> say "rows: " + n
+              (-> ++n),
+              (-> O.want n==10001; say "rows: " + n)
 
 ## Code
 
     src  = process.env.PWD + "/../src/" 
     data = process.env.PWD + "/../data/" 
     {lines} = require src + 'lines'
-    {say,ignore} = require src + 'our'
+    {say,ignore,O} = require src + 'our'
 
 **Constructor**
 

@@ -7,24 +7,43 @@
 
 # RAND
 
-For test portabilty, I need a random number generator that produces the same numbers on different platforms.
+For test portabilty, I need a random number generator that produces
+the same numbers on different platforms.
 
-This generator is a so-called 'Lehmer random number generator' which returns a pseudo-random number uniformly distributed 0.0 and 1.0. The period is (m - 1) where m = 2,147,483,647 and the smallest and largest possible values are (1 / m) and 1 - (1 / m) respectively. For more details see:
+This generator is a so-called 'Lehmer random number generator' which
+returns a pseudo-random number uniformly distributed 0.0 and 1.0.
+The period is (m - 1) where m = 2,147,483,647 and the smallest and
+largest possible values are (1 / m) and 1 - (1 / m) respectively.
+For more details see:
 
-- _Random Number Generators: Good Ones Are Hard To Find_ Steve Park and Keith Miller Communications of the ACM, October 1988
+- _Random Number Generators: Good Ones Are Hard To Find_ Steve Park
+  and Keith Miller Communications of the ACM, October 1988
 
-This generator is **ABSOLUTELY NOT** acceptable for cryptographic purposes!
+This generator is **ABSOLUTELY NOT** acceptable for cryptographic
+purposes!
 
 ## Examples
 
-    fiveRandomNumbers = ->
-      r= new Rand
-      console.log  ( r.next().toFixed(5) for  [1..5] ).join(', ')
+    src = process.env.PWD + "/../src/"
+    {want,zip,say} = require src+'our'
+
+    fiveRandomNumbers = (seed=1) ->
+      r = new Rand(seed)
+      lst =  ( r.next().toFixed(5) for  [1..5] )
+      #console.log lst.join(', ')
+      lst
 
     recreateRandomNumbers = (max=10) ->
       # should the print the same rands, twice
-      fiveRandomNumbers()
-      fiveRandomNumbers()
+      say 10
+      lst1 = fiveRandomNumbers(1)
+      lst2 = fiveRandomNumbers(1)
+      say 20
+      console.log zip(lst1,lst2)
+      for x of zip(lst1,lst2)
+        say 30
+        console.log '!!',x #[a,b]
+        #want a is b
 
 ## Code
 
@@ -72,6 +91,4 @@ in a 97 table to increase randomness.
 ## End
 
     @Rand = Rand
-    if require.main == module
-      fiveRandomNumbers()
-      recreateRandomNumbers()
+    @tests= [ fiveRandomNumbers, recreateRandomNumbers ]
