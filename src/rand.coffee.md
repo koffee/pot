@@ -30,20 +30,14 @@ purposes!
     fiveRandomNumbers = (seed=1) ->
       r = new Rand(seed)
       lst =  ( r.next().toFixed(5) for  [1..5] )
-      #console.log lst.join(', ')
       lst
 
     recreateRandomNumbers = (max=10) ->
       # should the print the same rands, twice
-      say 10
       lst1 = fiveRandomNumbers(1)
       lst2 = fiveRandomNumbers(1)
-      say 20
-      console.log zip(lst1,lst2)
-      for x of zip(lst1,lst2)
-        say 30
-        console.log '!!',x #[a,b]
-        #want a is b
+      for [a,b] from zip(lst1,lst2)
+        want a is b
 
 ## Code
 
@@ -92,3 +86,4 @@ in a 97 table to increase randomness.
 
     @Rand = Rand
     @tests= [ fiveRandomNumbers, recreateRandomNumbers ]
+    recreateRandomNumbers()

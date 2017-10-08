@@ -30,17 +30,12 @@ Print a list of things.
 Zip 
 
     zip = (arrs...) ->
+      console.log 10
       lengths = (arr.length for arr in arrs)
       length = Math.min(lengths...)
       console.log 'l:',length
       for i in [0...length-1]
         yield (arr[i] for arr in arrs)
-
-Zip eg:
-
-    console.log 100
-    for x of zip([10,20,30],[11,21,31],[12,22,32])
-      console.log "!!",x
 
 Recursive print of things. Ignores attributes shose first symbol
 is "\_". Crashes on recursive contents
@@ -131,7 +126,7 @@ Unit test
 # END
 
      @O       = O
-     @zip     = say
+     @zip     = zip
      @say     = say
      @rsay    = rsay
      @want    = want
