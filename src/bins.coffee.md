@@ -13,10 +13,10 @@ functions we can customise).
 
 ## Set up
 
-    src  = process.env.PWD + "/../src/" 
-    {say,assert,O} = require src+ 'our'
-    {Num} = require src + 'num'
-    {Sym} = require src + 'sym'
+    src     = process.env.PWD + "/../src/" 
+    {say,O} = require src+ 'our'
+    {Num}   = require src + 'num'
+    {Sym}   = require src + 'sym'
 
 ## Range class
 

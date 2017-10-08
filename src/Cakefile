@@ -34,10 +34,15 @@
 ###########################################
 # Config
 
-src     = process.env.PWD + "/../src/" 
-test    = process.env.PWD + "/../test/" 
-hello   = src + 'hello.txt'
+all     = [ "our",   "rand",
+            "col",   "num",  "sym",
+            "lines", "csv",  "row", "table",
+            "bins" ]
 
+src     = process.env.PWD + "/../src/"
+test    = process.env.PWD + "/../test/"
+hello   = src + 'hello.txt'
+#
 ###########################################
 # Stop typing. Everything below should be generic
 
@@ -187,7 +192,7 @@ test1 = (f) ->
 
 #############################################
 # add "test X" recipes for all source code
-all = files '.coffee.md'
+all or= files '.coffee.md'
 ((do (i) -> task i, 'test '+i,-> test1 i) for i in all)
 
 # show hello file, if it exists
