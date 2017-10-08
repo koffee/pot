@@ -17,6 +17,10 @@
 
 ## Shared functions
 
+    abs = Math.abs
+    min = Math.min
+    max = Math.max
+
 Print a list of things.
 
     say = (l...) ->
@@ -127,6 +131,9 @@ Unit test
 
      @O       = O
      @zip     = zip
+     @min     = min
+     @max     = max
+     @abs     = abs
      @say     = say
      @rsay    = rsay
      @want    = want

@@ -25,7 +25,7 @@ purposes!
 ## Examples
 
     src = process.env.PWD + "/../src/"
-    {want,zip,say} = require src+'our'
+    {want,zip} = require src+'our'
 
     fiveRandomNumbers = (seed=1) ->
       r = new Rand(seed)
@@ -86,4 +86,3 @@ in a 97 table to increase randomness.
 
     @Rand = Rand
     @tests= [ fiveRandomNumbers, recreateRandomNumbers ]
-    recreateRandomNumbers()

@@ -41,10 +41,18 @@ all     = [ "our",   "rand",
 
 src     = process.env.PWD + "/../src/"
 test    = process.env.PWD + "/../test/"
-hello   = src + 'hello.txt'
+hello   = 'hello.txt'
 #
 ###########################################
 # Stop typing. Everything below should be generic
+{exec} = require 'child_process'
+fs     = require 'fs'
+
+# show hello file, if it exists
+task "About", "Show " + hello,->
+  fs.readFile src+hello, ( err, str ) ->
+    if not err
+      process.stdout.write bold+yellow+(str.toString())+reset 
 
 bold = red = green = yellow = reset = ''
 unless process.env.NODE_DISABLE_COLORS
@@ -54,17 +62,14 @@ unless process.env.NODE_DISABLE_COLORS
     yellow = '\x1B[0;33m'
     reset  = '\x1B[0m'
 
-{exec} = require 'child_process'
-fs     = require 'fs'
-
 task 'Setup', "Set stuff up (needs only to be sh once)", ->
   make ".gitignore", gitignore
 
 task 'Update', 'Update from github', ->
 	sh "git pull"
 
-option '-w', '--who [GH Peson]', "set github user.name for 'Github'"
-option '-e', '--elm [GH email]', "set github user.email for 'Github'"
+option null, '--who [GH Peson]', "set github user.name for 'Github'"
+option null, '--elm [GH email]', "set github user.email for 'Github'"
 
 task 'Github', 'Setup for github', (the)->
    who = the.who or "'Tim Menzies'"
@@ -195,7 +200,3 @@ test1 = (f) ->
 all or= files '.coffee.md'
 ((do (i) -> task i, 'test '+i,-> test1 i) for i in all)
 
-# show hello file, if it exists
-fs.readFile hello, ( err, str ) ->
-  if not err
-    process.stdout.write bold+yellow+(str.toString())+reset 

@@ -11,37 +11,38 @@ Incremental collector of `lo,hi` and `sd` (standard deviation) of
 a stream of numbers. Also, implements some parametric
 hypothesis and effect size tests.       
 
+    src   = process.env.PWD + "/../src/" 
+    {say,want,ninf,inf,max,abs} = require src+'our'
+    {Col} = require src+'col'
+
 ## Examples
 
     eg1 = ->
       n = new Num
       (n.add x for x in [9,2,5,4,12,7,8,11,9,3,7,4,12,5,4,10,9,6,9,4])
       say n.mu
-      O.k -> assert n.mu==7
+      want n.mu==7
 
     eg2 = ->
       n = new Num
       n.adds [9,2,5,4,12,7,8,11,9,3,7,4,12,5,4,10,9,6,9,4], (x) -> 0.1*x
       say n.mu,n.sd
-      O.k -> assert n.sd.toFixed(3) == '0.306'
+      want n.sd.toFixed(3) == '0.306'
 
-    eg3 = ->
-     {Rand} = requre src+'rand'
+    eg3 = (near=0.1)->
+     {Rand} = require src+'rand'
      r=new Rand(1)
      [n1,n2] = [new Num, new Num]
      for i in [1..20]
-        s = r()
+        s = r.next()
         n1.add i
-        n2.add i + s/10
-          
+        n2.add i + s*near
+     console.log (n1.ttest n2)
+
 ## Code
 
 All the methods marked as `_xxx` extends functionality of the `xxx`
 methods defined in the [Col](col.coffee.md) superclass.
-
-    src   = process.env.PWD + "/../src/" 
-    {say,O,ninf,inf,assert} = require src+'our'
-    {Col} = require src+'col'
 
     class Num extends Col
       constructor: (args...) ->
@@ -90,18 +91,16 @@ standard t-test critical values table.
           when x >= Num.last  then a[ Num.last  ]
           else y(Num.first)
 
-      max = (x,y) -> if x > y then x else y
-      abs = (x,y) ->  if x >= 0 then x else -1*x
-
-      ttest= (i,j) ->
+      ttest: (j) ->
         #  Debugged using https://goo.gl/CRl1Bz
+        i  = this
         t  = (i.mu - j.mu) / max(10**-64, i.sd**2/i.n + j.sd**2/j.n)**0.5
         a  = i.sd**2/i.n
         b  = j.sd**2/j.n
         df = (a + b)**2 / (10**-64 + a**2/(i.n-1) + b**2/(j.n - 1))
         abs(t) > @ttest1(df)
 
-      hedges= (i,j,small=0.38) ->
+      hedges: (i,j,small=0.38) ->
         # https://goo.gl/w62iIL
         nom   = (i.n - 1)*i.sd**2 + (j.n - 1)*j.sd^2
         denom = (i.n - 1)        + (j.n - 1)
@@ -113,4 +112,4 @@ standard t-test critical values table.
 ## End stuff
 
     @Num = Num
-    @tests=[eg1,eg2]
+    @tests=[eg1,eg2,eg3]
