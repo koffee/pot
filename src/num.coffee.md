@@ -24,20 +24,13 @@ hypothesis and effect size tests.
       want n.mu==7
 
     eg2 = ->
+      say 1
       n = new Num
+      say 2
       n.adds [9,2,5,4,12,7,8,11,9,3,7,4,12,5,4,10,9,6,9,4], (x) -> 0.1*x
-      say n.mu,n.sd
-      want n.sd.toFixed(3) == '0.306'
-
-    eg3 = (near=0.1)->
-     {Rand} = require src+'rand'
-     r=new Rand(1)
-     [n1,n2] = [new Num, new Num]
-     for i in [1..20]
-        s = r.next()
-        n1.add i
-        n2.add i + s*near
-     console.log (n1.ttest n2)
+      say  "eg1",n.mu,n.sd,n.sd.toFixed(3)
+      want n.mu==0.7
+      #want n.sd.toFixed(3) == '0.306'
 
 ## Code
 
@@ -112,4 +105,8 @@ standard t-test critical values table.
 ## End stuff
 
     @Num = Num
-    @tests=[eg1,eg2,eg3]
+    @tests=[eg1,eg2]
+    if require.main == module
+      for f in @tests
+        say f
+        f()

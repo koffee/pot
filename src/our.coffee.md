@@ -111,7 +111,7 @@ Unit test
             O.darn()
         catch error
             console.log "\n-----| FAILURE!! |--------------------\n"
-            console.log error.stack.split('\n')[0..2].join("\n")
+            console.log error.stack.split('\n')[0..7].join("\n")
             O.failed++
             O.darn()
       @darn : ->
