@@ -12,7 +12,7 @@ a stream of numbers. Also, implements some parametric
 hypothesis and effect size tests.       
 
     src   = process.env.PWD + "/../src/" 
-    {say,want,ninf,inf,max,abs} = require src+'our'
+    {say,want,ninf,inf,max,abs,conf} = require src+'our'
     {Col} = require src+'col'
 
 ## Examples
@@ -70,37 +70,40 @@ with other methods).
 **tTestThreshold** Low-level stuff. Implements look-up table on the
 standard t-test critical values table.
 
-      @first:  3
-      @last:  96
+      same: (y) ->
+        @hedges(y) and @ttest(y)
+
       @crit:
         95: {3:3.182, 6:2.447, 12:2.179, 24:2.064, 48:2.011, 96:1.985}
         99: {3:5.841, 6:3.707, 12:3.055, 24:2.797, 48:2.682, 96:2.625}
-      ttest1: (x, a=Num.crit[Num.cert] ) ->
-        y = (i) ->
-          j = i*2
-          if x in [i..j] then a[i] + (a[j]-a[i]) * (x-i) / (j-i) else y(j)
-        switch
-          when x <= Num.first then a[ Num.first ]
-          when x >= Num.last  then a[ Num.last  ]
-          else y(Num.first)
+      ttest1: (x, a=Num.crit[conf],i) ->
+        for j,_ of a
+          i or= j
+          if i <= x <= j
+            return a[i] + (a[j] - a[i]) * (x-i)/(j-i)
+          if x< i
+            return a[i]
+          i = j
+        a[i]
 
       ttest: (j) ->
+        # true if same
         #  Debugged using https://goo.gl/CRl1Bz
-        i  = this
-        t  = (i.mu - j.mu) / max(10**-64, i.sd**2/i.n + j.sd**2/j.n)**0.5
-        a  = i.sd**2/i.n
+        t  = (@mu - j.mu) / max(10**-64, @sd**2/@n + j.sd**2/j.n)**0.5
+        a  = @sd**2/@n
         b  = j.sd**2/j.n
-        df = (a + b)**2 / (10**-64 + a**2/(i.n-1) + b**2/(j.n - 1))
-        abs(t) > @ttest1(df)
+        df = (a + b)**2 / (10**-64 + a**2/(@n-1) + b**2/(j.n - 1))
+        abs(t) < @ttest1(df)
 
-      hedges: (i,j,small=0.38) ->
+      hedges: (j,small=0.38) ->
         # https://goo.gl/w62iIL
-        nom   = (i.n - 1)*i.sd**2 + (j.n - 1)*j.sd^2
-        denom = (i.n - 1)        + (j.n - 1)
+        nom   = (@n - 1)*@sd**2 + (j.n - 1)*j.sd^2
+        denom = (@n - 1)        + (j.n - 1)
         sp    = ( nom / denom )**0.5
-        g     = abs(i.mu - j.mu) / sp
-        c     = 1 - 3.0 / (4*(i.n + j.n - 2) - 1)
-        g * c > small  ## what to put here?
+        g     = abs(@mu - j.mu) / sp
+        c     = 1 - 3.0 / (4*(@n + j.n - 2) - 1)
+        #console.log {g0: abs(@mu - j.mu), sp: sp, g: g, c: c}
+        g * c < small  
 
 ## End stuff
 

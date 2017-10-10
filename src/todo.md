@@ -1,1 +1,5 @@
-tttests hedges num
+- [ ] boostrap
+- [ ] check linear treatment delts
+- [x] tttests hedges num
+- [ ] fast frugal trees
+- [ ] fast frugal bpo
