@@ -1,3 +1,4 @@
+- [ ] cliffs with binary chop
 - [ ] boostrap
 - [ ] check linear treatment delts
 - [x] tttests hedges num

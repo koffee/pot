@@ -12,7 +12,7 @@ Read a file, pass one line at a time to some `action` handler.
     readline  = require 'readline'
     fs        = require 'fs'
    
-    lines = ( file, action, done = (-> ) ) ->
+    lines = ( file, action, done = (-> ) ) ->  
       stream = readline.createInterface
         input:    fs.createReadStream file
         output:   process.stdout

@@ -1,10 +1,13 @@
 src = process.env.PWD + "/../src/"
-{want, memoize, rsay, clone} = require src+'our'
+{want, memoize, rsay, clone,bsearch} = require src+'our'
+
+console.log 10
 
 memoEg = ->
    fib = memoize (n) ->
      if n < 2 then n else fib(n-1) + fib(n-2)
    fib(40,1,10) is  102334155
+
 
 oEg = ->
    10 > 0
@@ -22,6 +25,7 @@ rThing = ->
     e: new Demo
     g: {"aa":2, "bb":4}
 
+
 rsayEg = ->
    rsay rThing()
 
@@ -32,7 +36,17 @@ cloneEg = ->
    now.c[0] = 10000
    now.d.e.a isnt old.d.e.a
 
-want memoEg()
-want oEg()
-want rsayEg()
-want cloneEg()
+bsearchEg = ->
+   console.log 222
+   #  0 1 2 3 4 5 6 7 8 9 10 11
+   l=[0,1,2,3,3,3,4,4,5,6,7,  8]
+   want  bsearch(l,0) == 0
+   want  bsearch(l,3) == 3
+   want  bsearch(l,5) == 8
+   want  bsearch(l,8) == 11
+
+#want memoEg()
+#want oEg()
+#want rsayEg()
+#want cloneEg()
+bsearchEg()

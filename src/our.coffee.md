@@ -41,6 +41,19 @@ Zip
       for i in [0...length-1]
         yield (arr[i] for arr in arrs)
 
+Binary search
+
+    bsearch = (lst,val,f=((a,x) -> a[x])) ->
+      [lo,hi] = [0, lst.length - 1]
+      console.log lo,hi
+      while lo <= hi
+        mid = Math.floor((lo+hi)/2)
+        if f(lst,mid) >= val 
+          hi = mid - 1
+        else
+          lo = mid + 1 
+      Math.min(lo,lst.length-1)  
+  
 Recursive print of things. Ignores attributes shose first symbol
 is "\_". Crashes on recursive contents
 (until I figure out how to hash coffeescript objects... anyone?)
@@ -139,4 +152,5 @@ Unit test
      @want    = want
      @clone   = clone
      @assert  = assert
+     @bsearch = bsearch
      @memoize = memoize
