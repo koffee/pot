@@ -43,12 +43,11 @@ Zip
 
 Binary search
 
-    bsearch = (lst,val,f=((a,x) -> a[x])) ->
+    @bsearch = (lst,val,f=((z) -> z)) ->
       [lo,hi] = [0, lst.length - 1]
-      console.log lo,hi
       while lo <= hi
         mid = Math.floor((lo+hi)/2)
-        if f(lst,mid) >= val 
+        if f(lst[mid]) >= val 
           hi = mid - 1
         else
           lo = mid + 1 
@@ -152,5 +151,4 @@ Unit test
      @want    = want
      @clone   = clone
      @assert  = assert
-     @bsearch = bsearch
      @memoize = memoize

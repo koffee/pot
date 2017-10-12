@@ -12,7 +12,7 @@ a stream of numbers. Also, implements some parametric
 hypothesis and effect size tests.       
 
     src   = process.env.PWD + "/../src/" 
-    {say,want,ninf,inf,max,abs,conf} = require src+'our'
+    {bsearch,say,want,ninf,inf,max,abs,conf} = require src+'our'
     {Col} = require src+'col'
 
 ## Examples
@@ -103,7 +103,23 @@ standard t-test critical values table.
         g     = abs(@mu - j.mu) / sp
         c     = 1 - 3.0 / (4*(@n + j.n - 2) - 1)
         #console.log {g0: abs(@mu - j.mu), sp: sp, g: g, c: c}
-        g * c < small  
+        g * c < small
+
+    @cliffs= (l1,l2, f=((z) -> z) , small=0.147) ->
+      l2 = l2.sort((a,b) -> f(a) - f(b))
+      m  = l1.length
+      n  = l2.length
+      lt=gt=0
+      for x0 in l1
+        x = f(x0)
+        i = j = k= bsearch(l2,x,f)
+        while (i< (n-1) and f(l2[i+1]) == x )
+          i++
+        while (j>0      and f(l2[j-1]) == x )
+          j--
+        gt += Math.min(n,n - j)
+        lt += Math.max(0,j)
+      abs(gt - lt)/ (m*n) < small
 
 ## End stuff
 

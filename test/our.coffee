@@ -25,7 +25,6 @@ rThing = ->
     e: new Demo
     g: {"aa":2, "bb":4}
 
-
 rsayEg = ->
    rsay rThing()
 
