@@ -133,21 +133,21 @@ standard t-test critical values table.
        some = (lst, out=new Num) ->
          (out.add any(lst) for _ in lst)
          out
-       delta = (y,z) ->
+       diff = (y,z) ->
          (y.mu - z.mu) / (10**-64 + (y.sd/y.n + z.sd/z.n)**0.5)
        #------------------------
-       [x,y, z] = [new Num, new Num, new Num]
+       [x,y,z] = [new Num, new Num, new Num]
        (y.add n for n in y0)
        (z.add n for n in z0)
        (x.add n for n in y0)
        (x.add n for n in z0)
-       tobs   = delta(y,z)
-       yhat   = (n - y.mu + x.mu for n in y0)
-       zhat   = (n - z.mu + x.mu for n in z0)
-       bigger = 0
+       t     = delta(y,z)
+       yhat  = (n - y.mu + x.mu for n in y0)
+       zhat  = (n - z.mu + x.mu for n in z0)
+       more  = 0
        for [1..b]
-         bigger++ if delta(some(yhat), some(zhat)) > tobs 
-       bigger / b > conf 
+         more++ if diff(some(yhat), some(zhat)) > t
+       more / b > conf
     
 ## End stuff
 
