@@ -130,7 +130,7 @@ standard t-test critical values table.
     @bootstrap = (y0,z0,conf=0.95,b=500) ->
        any = (lst) -> 
          lst[Math.floor Math.random() * lst.length]
-       sample = (lst, out=new Num) ->
+       some = (lst, out=new Num) ->
          (out.add any(lst) for _ in lst)
          out
        delta = (y,z) ->
@@ -146,7 +146,7 @@ standard t-test critical values table.
        zhat   = (n - z.mu + x.mu for n in z0)
        bigger = 0
        for [1..b]
-         bigger++ if delta( sample(yhat), sample(zhat)) > tobs 
+         bigger++ if delta(some(yhat), some(zhat)) > tobs 
        bigger / b > conf 
     
 ## End stuff
