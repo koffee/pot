@@ -128,10 +128,10 @@ standard t-test critical values table.
       abs(gt - lt)/ (m*n) < small
 
     @bootstrap = (y0,z0,conf=0.95,b=500) ->
-       any = (lst) -> 
+       any = (lst) ->
          lst[Math.floor Math.random() * lst.length]
        some = (lst, out=new Num) ->
-         (out.add any(lst) for _ in lst)
+         (out.add(any(lst)) for _ in lst)
          out
        diff = (y,z) ->
          (y.mu - z.mu) / (10**-64 + (y.sd/y.n + z.sd/z.n)**0.5)
@@ -141,10 +141,10 @@ standard t-test critical values table.
        (z.add n for n in z0)
        (x.add n for n in y0)
        (x.add n for n in z0)
-       t     = delta(y,z)
-       yhat  = (n - y.mu + x.mu for n in y0)
-       zhat  = (n - z.mu + x.mu for n in z0)
-       more  = 0
+       t    = diff(y,z)
+       yhat = (n - y.mu + x.mu for n in y0)
+       zhat = (n - z.mu + x.mu for n in z0)
+       more = 0
        for [1..b]
          more++ if diff(some(yhat), some(zhat)) > t
        more / b > conf
@@ -159,4 +159,4 @@ standard t-test critical values table.
         f()
 
     for [1..10]
-      console.log 
+      console.log  1
