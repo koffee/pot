@@ -145,7 +145,6 @@ then return `true`.
           j--
         gt += Math.min(n,n - i)
         lt += Math.max(0,j)
-      #console.log "\tcliffs ",gt,lt
       abs(gt - lt)/ (m*n) < small
 
 Nonparametric bootstrap test: if the distributions
@@ -171,9 +170,7 @@ this function returns `true`.
        zhat = (z1 - z.mu + x.mu for z1 in z0)
        more = 0
        for [1..b]
-         if diff(some(yhat), some(zhat))  > t
-           more++
-       #console.log b,t,more,more/b, 1-conf
+         more++ if diff(some(yhat), some(zhat))  > t
        (more / b) <  conf
 
 Check if two lists of numbers come from the same distribution
