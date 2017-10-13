@@ -106,21 +106,49 @@ standard t-test critical values table.
         g * c < small
 
     @cliffs= (l1,l2, f=((z) -> z) , small=0.147) ->
+      """
+      with the sort trick on l2, this code handles 100,000
+      data points in < 1 sec (whereas otherwise, runtimes
+      are > 1 minute)
+      """
       l2 = l2.sort((a,b) -> f(a) - f(b))
       m  = l1.length
       n  = l2.length
       lt=gt=0
       for x0 in l1
         x = f(x0)
-        i = j = k= bsearch(l2,x,f)
+        i = j = bsearch(l2,x,f)
         while (i< (n-1) and f(l2[i+1]) == x )
           i++
-        while (j>0      and f(l2[j-1]) == x )
+        while (j > 0 and f(l2[j-1]) == x )
           j--
-        gt += Math.min(n,n - j)
+        gt += Math.min(n,n - i)
         lt += Math.max(0,j)
+      #console.log "\tcliffs ",gt,lt
       abs(gt - lt)/ (m*n) < small
 
+    @bootstrap = (y0,z0,conf=0.95,b=500) ->
+       any = (lst) -> 
+         lst[Math.floor Math.random() * lst.length]
+       sample = (lst, out=new Num) ->
+         (out.add any(lst) for _ in lst)
+         out
+       delta = (y,z) ->
+         (y.mu - z.mu) / (10**-64 + (y.sd/y.n + z.sd/z.n)**0.5)
+       #------------------------
+       [x,y, z] = [new Num, new Num, new Num]
+       (y.add n for n in y0)
+       (z.add n for n in z0)
+       (x.add n for n in y0)
+       (x.add n for n in z0)
+       tobs   = delta(y,z)
+       yhat   = (n - y.mu + x.mu for n in y0)
+       zhat   = (n - z.mu + x.mu for n in z0)
+       bigger = 0
+       for [1..b]
+         bigger++ if delta( sample(yhat), sample(zhat)) > tobs 
+       bigger / b > conf 
+    
 ## End stuff
 
     @Num = Num
@@ -129,3 +157,6 @@ standard t-test critical values table.
       for f in @tests
         say f
         f()
+
+    for [1..10]
+      console.log 

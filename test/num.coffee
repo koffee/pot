@@ -21,7 +21,7 @@ cliffs0 = (p,q,small=0.147) ->
     for y in q
       if y > x then gt++
       if y < x then lt++
-  console.log "\t cliffs0",lt,gt,p.length,q.length
+  #console.log "\tcliffs0",gt,lt
   abs(gt - lt)/ (p.length * q.length) < small
 
 eg4= (x=1,
@@ -36,10 +36,11 @@ eg4= (x=1,
   console.log "\t>>", cliffs0(p,r), cliffs(p,r)
 
 eg5 = ->
-  for i in [50,500,5000,50000]
+  for e in [1,2,3,4,5,6,7]
+    i = 5**e
     r=new Rand(1)
-    lst1 = (r.next() for _  in [1..i])
-    lst2 = (r.next() for _  in [1..i])
+    lst1 = (Math.round(100*r.next(),0) for _  in [1..i])
+    lst2 = (Math.round(100*r.next(),0) for _  in [1..i])
     t1=  (new Date).getTime()
     x= cliffs0(lst1,lst2)
     t2=  (new Date).getTime()
