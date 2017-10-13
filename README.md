@@ -1,11 +1,13 @@
 [home](http://tiny.cc/koff) |
 [copyright](https://github.com/koffee/script/blob/master/LICENSE.md) &copy;2017, tim&commat;menzies.us<br>
 [<img width=900 src=https://raw.githubusercontent.com/koffee/script/master/img/head.jpg>](http://tiny.cc/koff)<br>
-[src](https://github.com/koffee/script/tree/master/lib) |
-[tour](https://github.com/koffee/script/blob/master/docs/TOUR.md) |
-[style](https://github.com/koffee/script/blob/master/docs/STYLE.md) 
+[src](https://github.com/koffee/script/tree/master/src) |
+[tour](https://github.com/koffee/script/blob/master/doc/TOUR.md) |
+[style](https://github.com/koffee/script/blob/master/doc/STYLE.md) 
 
 <img src="http://www.backcountryengineering.com/wp-content/uploads/2016/11/workinprogress1.jpg" align=right width=400>
+
+[![DOI](https://zenodo.org/badge/101403816.svg)](https://zenodo.org/badge/latestdoi/101403816)
 
 
 <em>(This code ports and extends
@@ -78,7 +80,7 @@ me that this was a viable approach:
   CoffeeScript is “just JavaScript,” as the docs say, so in some
   sense it’s part of the JavaScript ecosystem just like ES6 through
   ES2017 are and TypeScript is. When new features are added to ES,
-  unless they require new syntax (and most don’t), they’re available
+  unless
   for use in CoffeeScript automatically. CoffeeScript and JavaScript
   aren’t separate languages, in the traditional sense; if anything,
   CoffeeScript is a dialect of JavaScript. CoffeeScript code can
