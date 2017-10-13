@@ -147,7 +147,7 @@ standard t-test critical values table.
        more = 0
        for [1..b]
          more++ if diff(some(yhat), some(zhat)) > t
-       more / b > conf
+       more / b < conf
     
 ## End stuff
 
