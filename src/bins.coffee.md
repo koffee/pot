@@ -13,10 +13,10 @@ functions we can customise).
 
 ## Set up
 
-    src     = process.env.PWD + "/../src/" 
-    {say,O} = require src+ 'our'
-    {Num}   = require src + 'num'
-    {Sym}   = require src + 'sym'
+    src        = process.env.PWD + "/../src/"
+    {say,O}    = require src+ 'our'
+    {Num,same} = require src + 'num'
+    {Sym}      = require src + 'sym'
 
 ## Range class
 
@@ -57,7 +57,7 @@ any xrange that does not change the `y` value are discarded.
     class Bins
       constructor: (@data=[], o=[]) ->
         #-------------------
-        # set config options 
+        # set config options
         @x     = o.x     or ((z) => z[0]) # where to find the `x` values
         @y     = o.y     or ((z) => z[1]) # where to find the `y` values
         @no    = o.no    or "?"           # what marks missing values
@@ -131,27 +131,34 @@ value stays.
         if xs1.has.n
           yield [xs1,ys1]
 
+Ranking items
+
     rank = (rxs...) ->
+      console.log 999999
       abs = (x) -> if x >= 0 then x else -1*x
-      rx0 = (rx) -> 
+      rx0 = (rx) ->
         [txt,data...] = rx
         n= (new Nums).adds data
+        console.log n
         n.txt=txt
         n
       lst = (rx0(rx) for rx in rxs)
-      [xs1,rest...] = lst.sort (z1,z2) -> z1.has.mu - z2.has.mu
-      r=0
-      for xs2 in rest
-        xs12 = xs1.clone( xs2.seen)
-        if diff(xs1,xs2) 
-          xs1.r = ++r
-          yield xs1
-          xs1=xs2
-        else
-          xs1.adds xs2.seen
-      if xs1.has.n
-        yield xs1
-        
+      [xs1,rest...] = lst.sort((z1,z2) -> z1.mu - z2.mu)
+      console.log rest
+      #say xs1
+      #r=0
+      #for xs2 in rest
+      #  xs12 = xs1.clone( xs2.seen)
+      #  say 1
+      #  if diff(xs1,xs2)
+      #    xs1.r = ++r
+      #    yield xs1
+      #    xs1=xs2
+      #  else
+      #    xs1.adds xs2.seen
+      #if xs1.has.n
+      #  yield xs1
+
 ## End stuff
 
     @Bins = Bins

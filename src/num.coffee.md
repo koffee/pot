@@ -14,6 +14,7 @@ hypothesis and effect size tests.
     src   = process.env.PWD + "/../src/" 
     {bsearch,say,want,ninf,inf,max,abs,conf} = require src+'our'
     {Col} = require src+'col'
+    {Rand} = require src+'rand'
 
 ## Examples
 
@@ -67,11 +68,37 @@ with other methods).
       toString: ->
          " #{@n}:#{@lo}..#{@hi}"
 
+**Sample(( from this `Num`'s gaussian space. Requires
+a random number generator `r`.
+
+      any: (r)  ->
+          w=1
+          while w >= 1
+            x1= 2.0 * r.next() - 1
+            x2= 2.0 * r.next() - 1
+            w = x1*x1 + x2*x2
+          w = ((-2 * Math.log(w))/w)**0.5
+          @mu + @sd* x1 * w
+
 **tTestThreshold** Low-level stuff. Implements look-up table on the
 standard t-test critical values table.
 
       same: (y) ->
         @hedges(y) and @ttest(y)
+
+**Parametric** effect size test:
+
+      hedges: (j,small=0.38) ->
+        # https://goo.gl/w62iIL
+        nom   = (@n - 1)*@sd**2 + (j.n - 1)*j.sd^2
+        denom = (@n - 1)        + (j.n - 1)
+        sp    = ( nom / denom )**0.5
+        g     = abs(@mu - j.mu) / sp
+        c     = 1 - 3.0 / (4*(@n + j.n - 2) - 1)
+        #console.log {g0: abs(@mu - j.mu), sp: sp, g: g, c: c}
+        g * c < small
+
+
 
       @crit:
         95: {3:3.182, 6:2.447, 12:2.179, 24:2.064, 48:2.011, 96:1.985}
@@ -95,17 +122,11 @@ standard t-test critical values table.
         df = (a + b)**2 / (10**-64 + a**2/(@n-1) + b**2/(j.n - 1))
         abs(t) < @ttest1(df)
 
-      hedges: (j,small=0.38) ->
-        # https://goo.gl/w62iIL
-        nom   = (@n - 1)*@sd**2 + (j.n - 1)*j.sd^2
-        denom = (@n - 1)        + (j.n - 1)
-        sp    = ( nom / denom )**0.5
-        g     = abs(@mu - j.mu) / sp
-        c     = 1 - 3.0 / (4*(@n + j.n - 2) - 1)
-        #console.log {g0: abs(@mu - j.mu), sp: sp, g: g, c: c}
-        g * c < small
+Nonparametric effect size test: if the central
+tendancy of two lists of numbers are similar,
+then return `true`.
 
-    @cliffs= (l1,l2, f=((z) -> z) , small=0.147) ->
+    cliffs= (l1,l2, f=((z) -> z) , small=0.147) ->
       """
       with the sort trick on l2, this code handles 100,000
       data points in < 1 sec (whereas otherwise, runtimes
@@ -127,7 +148,11 @@ standard t-test critical values table.
       #console.log "\tcliffs ",gt,lt
       abs(gt - lt)/ (m*n) < small
 
-    @bootstrap = (y0,z0,conf=0.95,b=500) ->
+Nonparametric bootstrap test: if the distributions
+of numbers in two lists are too similar, then
+this function returns `true`.
+
+    bootstrap = (y0,z0,conf=0.95,b=1000) ->
        any = (lst) ->
          lst[Math.floor Math.random() * lst.length]
        some = (lst, out=new Num) ->
@@ -137,26 +162,46 @@ standard t-test critical values table.
          (y.mu - z.mu) / (10**-64 + (y.sd/y.n + z.sd/z.n)**0.5)
        #------------------------
        [x,y,z] = [new Num, new Num, new Num]
-       (y.add n for n in y0)
-       (z.add n for n in z0)
-       (x.add n for n in y0)
-       (x.add n for n in z0)
+       (y.add y1 for y1 in y0)
+       (z.add z1 for z1 in z0)
+       (x.add y1 for y1 in y0)
+       (x.add z1 for z1 in z0)
        t    = diff(y,z)
-       yhat = (n - y.mu + x.mu for n in y0)
-       zhat = (n - z.mu + x.mu for n in z0)
+       yhat = (y1 - y.mu + x.mu for y1 in y0)
+       zhat = (z1 - z.mu + x.mu for z1 in z0)
        more = 0
        for [1..b]
-         more++ if diff(some(yhat), some(zhat)) > t
-       more / b < conf
-    
+         if diff(some(yhat), some(zhat))  > t
+           more++
+       #console.log b,t,more,more/b, 1-conf
+       (more / b) <  conf
+
+Check if two lists of numbers come from the same distribution
+(using a non-parameteric effect size test, then a bootstrap).
+
+    same = (l1,l2) ->
+      cliffs(l1,l2) and bootstrap(l1,l2)
+
+Utility: print some percentiles out of a list of numbers
+
+    tiles = (lst,want=[25,50,75]) ->
+      lst = lst.sort ((a,b) -> a - b)
+      pos = (n) -> Math.floor(n*0.01* lst.length ) 
+      (lst[ pos(n) ] for n in want)
+     
+Utility: preppty print some percentiles, formated to `f` decimal
+places.
+
+    nums = (lst, want, f=3) ->
+      (n.toFixed(3) for n in tiles(lst,want,f)).toString()
+
+
 ## End stuff
 
     @Num = Num
     @tests=[eg1,eg2]
-    if require.main == module
-      for f in @tests
-        say f
-        f()
-
-    for [1..10]
-      console.log  1
+    @cliffs = cliffs
+    @bootstrap=bootstrap
+    @nums=nums
+    @same = same
+   

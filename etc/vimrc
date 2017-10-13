@@ -53,11 +53,13 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'bling/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'croaker/mustang-vim'
+Plugin 'morhetz/gruvbox'
+Plugin 'chriskempson/base16-vim'
 "Plugin 'enricobacis/vim-airline-clock'
 
-let g:airline_theme='behlit'
+"let g:airline_theme='behlit'
 "set noshowmode
-let g:airline_section_z = airline#section#create(['windowswap', '%3p%% ', 'linenr'])
+"let g:airline_section_z = airline#section#create(['windowswap', '%3p%% ', 'linenr'])
 "let g:airline_section_z = airline#section#create(['windowswap',  'linenr', ':%3v'])
 
 "set invlist
@@ -66,6 +68,9 @@ let g:airline_section_z = airline#section#create(['windowswap', '%3p%% ', 'linen
 
 "Remove all trailing whitespace by pressing F5
 nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
+
+"Kill irritating highlight of char1 that sometimes pops up"
+nnoremap <F2> :nohl<CR>
 
 syntax enable
 filetype plugin indent on
