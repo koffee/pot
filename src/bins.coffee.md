@@ -13,10 +13,10 @@ functions we can customise).
 
 ## Set up
 
-    src        = process.env.PWD + "/../src/"
-    {say,O}    = require src+ 'our'
-    {Num,same} = require src + 'num'
-    {Sym}      = require src + 'sym'
+    src               = process.env.PWD + "/../src/"
+    {say,O}           = require src+ 'our'
+    {Num,same,cliffs} = require src + 'num'
+    {Sym}             = require src + 'sym'
 
 ## Range class
 
@@ -27,7 +27,7 @@ object for that range.
 
     class Range
       constructor: (inits=[],@has=@ako()) -> @seen= []; @adds inits
-      adds:        (data=[])              -> (@add x for x in data)
+      adds:        (data=[])              -> (@add x for x in data); this
       add:         (x)                    -> @seen.push (@has.add x)
       xpect:       (n=1)                  -> @has.n/n * @impurity()
       clone:       (inits=[])  ->
@@ -133,31 +133,41 @@ value stays.
 
 Ranking items
 
-    rank = (rxs...) ->
-      console.log 999999
-      abs = (x) -> if x >= 0 then x else -1*x
+    rank = (lst) ->
       rx0 = (rx) ->
         [txt,data...] = rx
-        n= (new Nums).adds data
-        console.log n
-        n.txt=txt
+        n = (new Nums).adds data
+        n.txt = txt
         n
-      lst = (rx0(rx) for rx in rxs)
-      [xs1,rest...] = lst.sort((z1,z2) -> z1.mu - z2.mu)
-      console.log rest
-      #say xs1
-      #r=0
-      #for xs2 in rest
-      #  xs12 = xs1.clone( xs2.seen)
-      #  say 1
-      #  if diff(xs1,xs2)
-      #    xs1.r = ++r
-      #    yield xs1
-      #    xs1=xs2
-      #  else
-      #    xs1.adds xs2.seen
-      #if xs1.has.n
-      #  yield xs1
+      leftRight = (lo,mid,hi) ->
+        [left,right] = [new Nums, new Nums]
+        (left.adds  rxs[i].seen for i in [lo..mid]  )
+        (right.adds rxs[i].seen for i in [mid+1..hi])
+        [left,right]
+      xpect = (b4,x,y) ->
+        x.n/b4.n * (b4.mu - x.mu)**2 + y.n/b4.n * (b4.mu - y.mu)**2
+      split = (lo,hi,rank,lvl,best,cut) ->
+        b4 = new Nums
+        (b4.adds rxs[j].seen for j in [lo..hi])
+        for j in [lo..hi]
+          if   lo < j < hi
+            console.log lo,j,hi
+            [l,r] = leftRight(lo,j,hi)
+            now = xpect(b4.has,l.has, r.has)
+            if now > best and not same(l.seen, r.seen)
+              [best,cut] = [now,j]
+              console.log "!!",j,best
+        if cut
+          rank = split(lo,cut  ,rank,lvl+1,best) + 1
+          rank = split(cut+1,hi,rank,lvl+1,best)
+        else
+          for j in [lo..hi]
+            rxs[j].rank = rank
+        rank
+      rxs = (rx0(x) for x in lst)
+               .sort((a,b) -> a.has.mu - b.has.mu)
+      split(0, rxs.length-1, 1,1, 0)
+      rxs
 
 ## End stuff
 

@@ -33,11 +33,10 @@ Treatmetnts
       rx3=['x3', 0.15, 0.25, 0.4,  0.35]
       rx4=['x4', 0.6 , 0.7 , 0.8,  0.9]
       rx5=['x5', 0.1 , 0.2 , 0.3,  0.4]
-      say 3
-      rank(rx1,rx2,rx3,rx4,rx5)
-      say 1111
+      for x,i in rank([rx1,rx2,rx3,rx4,rx5])
+        console.log i, x.rank, x.txt, x.has.mu
 
 Run stuff
 
     eg2()
-    eg1()
+    #eg1()

@@ -68,7 +68,7 @@ with other methods).
       toString: ->
          " #{@n}:#{@lo}..#{@hi}"
 
-**Sample(( from this `Num`'s gaussian space. Requires
+**Sample** from this `Num`'s gaussian space. Requires
 a random number generator `r`.
 
       any: (r)  ->
@@ -176,7 +176,7 @@ this function returns `true`.
 Check if two lists of numbers come from the same distribution
 (using a non-parameteric effect size test, then a bootstrap).
 
-    same = (l1,l2) ->
+    same = (l1,l2) ->  
       cliffs(l1,l2) and bootstrap(l1,l2)
 
 Utility: print some percentiles out of a list of numbers

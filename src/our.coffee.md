@@ -139,6 +139,9 @@ Unit test
     String::last = ->
       this[ this.length - 1 ]
 
+    String::repeat = (n) -> 
+      Array(n+1).join(this)
+
 # END
 
      @O       = O
