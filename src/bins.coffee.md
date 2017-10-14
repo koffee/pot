@@ -147,15 +147,15 @@ Ranking items
       xpect = (b4,x,y) ->
         x.n/b4.n * (b4.mu - x.mu)**2 + y.n/b4.n * (b4.mu - y.mu)**2
       split = (lo,hi,    cut=null,best=0) ->
-        say "spkitting",lo,hi
+        say "spkitting",lo,hi, lst.length-1
         if lo < hi 
           b4 = new Nums
           (b4.adds rxs[j].seen for j in [lo..hi])
           for j in [lo..hi]
-            if   j  < hi 
+            if    j <  hi
               [l,r] = leftRight(lo,j,hi)
               now = xpect(b4.has,l.has, r.has)
-              say lo,j,hi,now,best,l.has,r.has
+              say lo,j,hi,now,best,l.has,r.has,l.seen,"|",r.seen
               if now > best and not same(l.seen, r.seen)
                 [best,cut] = [now,j]
         say "cut", lo,cut,hi
