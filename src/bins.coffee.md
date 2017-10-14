@@ -133,7 +133,7 @@ value stays.
 
 Ranking items
 
-    rank = (lst) ->
+    sk = (lst, rank=0) ->
       rx0 = (rx) ->
         [txt,data...] = rx
         n = (new Nums).adds data
@@ -146,18 +146,59 @@ Ranking items
         [left,right]
       xpect = (b4,x,y) ->
         x.n/b4.n * (b4.mu - x.mu)**2 + y.n/b4.n * (b4.mu - y.mu)**2
-      split = (lo,hi,rank,lvl,cut) ->
+      split = (lo,hi,    cut,best=0) ->
+        say "spkitting",lo,hi
         b4 = new Nums
         (b4.adds rxs[j].seen for j in [lo..hi])
-        best = 0
+        if lo < hi
+          for j in [lo..hi]
+            if j  < hi 
+              [l,r] = leftRight(lo,j,hi)
+              now = xpect(b4.has,l.has, r.has)
+              say lo,j,hi,now,best,l.has,r.has
+              if now > best and not same(l.seen, r.seen)
+                [best,cut] = [now,j]
+        say "cut", lo,cut,hi
+        if cut isnt null 
+          say "cutting"
+          split(lo,   cut)
+          split(cut+1, hi)
+        else
+          rank++
+          say "other", rank
+          (rxs[j].rank = rank for j in [lo..hi])
+      rxs = (rx0(x) for x in lst)
+               .sort (a,b) -> a.has.mu - b.has.mu
+      split(0, rxs.length-1)
+      rxs
+
+    xrank = (lst) ->
+      rx0 = (rx) ->
+        [txt,data...] = rx
+        n = (new Nums).adds data
+        n.txt = txt
+        n
+      leftRight = (lo,mid,hi) ->
+        say lo,mid,hi
+        [left,right] = [new Nums, new Nums]
+        say 1
+        (left.adds  rxs[i].seen for i in [lo..mid]  )
+        say 2
+        (right.adds rxs[i].seen for i in [mid+1..hi])
+        [left,right]
+      xpect = (b4,x,y) ->
+        x.n/b4.n * (b4.mu - x.mu)**2 + y.n/b4.n * (b4.mu - y.mu)**2
+      split = (lo,hi,rank,lvl,    cut) ->
+        b4 = new Nums
+        (b4.adds rxs[j].seen for j in [lo..hi])
+        best=0
         for j in [lo..hi]
           if lo < j < hi
-            console.log lo,j,hi
             [l,r] = leftRight(lo,j,hi)
-            now = xpect(b4.has,l.has, r.has)
-            if now > best and not same(l.seen, r.seen)
-              [best,cut] = [now,j]
-              console.log "!!",j,best
+            if l.n > 0 and r.n > 0 
+              now = xpect(b4.has,l.has, r.has)
+              if now > best and not same(l.seen, r.seen)
+                [best,cut] = [now,j]
         if cut
           rank = split(lo,cut  ,rank,lvl+1) + 1
           rank = split(cut+1,hi,rank,lvl+1)
@@ -173,4 +214,4 @@ Ranking items
 ## End stuff
 
     @Bins = Bins
-    @rank = rank
+    @sk = sk
