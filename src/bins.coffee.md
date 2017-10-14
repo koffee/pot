@@ -146,9 +146,10 @@ Ranking items
         [left,right]
       xpect = (b4,x,y) ->
         x.n/b4.n * (b4.mu - x.mu)**2 + y.n/b4.n * (b4.mu - y.mu)**2
-      split = (lo,hi,rank,lvl,best,cut) ->
+      split = (lo,hi,rank,lvl,cut) ->
         b4 = new Nums
         (b4.adds rxs[j].seen for j in [lo..hi])
+        best = 0
         for j in [lo..hi]
           if lo < j < hi
             console.log lo,j,hi
@@ -158,15 +159,15 @@ Ranking items
               [best,cut] = [now,j]
               console.log "!!",j,best
         if cut
-          rank = split(lo,cut  ,rank,lvl+1,best) + 1
-          rank = split(cut+1,hi,rank,lvl+1,best)
+          rank = split(lo,cut  ,rank,lvl+1) + 1
+          rank = split(cut+1,hi,rank,lvl+1)
         else
           for j in [lo..hi]
             rxs[j].rank = rank
         rank
       rxs = (rx0(x) for x in lst)
                .sort((a,b) -> a.has.mu - b.has.mu)
-      split(0, rxs.length-1, 1,1, 0)
+      split(0, rxs.length-1, 1,1)
       rxs
 
 ## End stuff
