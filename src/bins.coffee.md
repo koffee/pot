@@ -150,7 +150,7 @@ Ranking items
         b4 = new Nums
         (b4.adds rxs[j].seen for j in [lo..hi])
         for j in [lo..hi]
-          if   lo < j < hi
+          if lo < j < hi
             console.log lo,j,hi
             [l,r] = leftRight(lo,j,hi)
             now = xpect(b4.has,l.has, r.has)
