@@ -146,27 +146,27 @@ Ranking items
         [left,right]
       xpect = (b4,x,y) ->
         x.n/b4.n * (b4.mu - x.mu)**2 + y.n/b4.n * (b4.mu - y.mu)**2
-      split = (lo,hi,    cut,best=0) ->
+      split = (lo,hi,    cut=null,best=0) ->
         say "spkitting",lo,hi
-        b4 = new Nums
-        (b4.adds rxs[j].seen for j in [lo..hi])
-        if lo < hi
+        if lo < hi 
+          b4 = new Nums
+          (b4.adds rxs[j].seen for j in [lo..hi])
           for j in [lo..hi]
-            if j  < hi 
+            if   j  < hi 
               [l,r] = leftRight(lo,j,hi)
               now = xpect(b4.has,l.has, r.has)
               say lo,j,hi,now,best,l.has,r.has
               if now > best and not same(l.seen, r.seen)
                 [best,cut] = [now,j]
         say "cut", lo,cut,hi
-        if cut isnt null 
+        if cut  isnt null
           say "cutting"
           split(lo,   cut)
           split(cut+1, hi)
         else
           rank++
-          say "other", rank
-          (rxs[j].rank = rank for j in [lo..hi])
+          say "other", j,rank
+          (rxs[k].rank = rank for k in [lo..hi])
       rxs = (rx0(x) for x in lst)
                .sort (a,b) -> a.has.mu - b.has.mu
       split(0, rxs.length-1)
