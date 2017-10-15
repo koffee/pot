@@ -133,43 +133,45 @@ value stays.
 
 Ranking items
 
-    sk = (lst, rank=0) ->
+    sk = (lst, cohen=0.3,epsilon=null) ->
+      ok = (i) -> 0 <= i < lst.length
+      mid = (l,n) ->  l[Math.floor(l.length  *0.5)]
       rx0 = (rx) ->
-        [txt,data...] = rx
-        n = (new Nums).adds data
-        n.txt = txt
+        n = (new Nums).adds rx[1..].sort((a,b) -> a-b)
+        n.txt = rx[0]
         n
       leftRight = (lo,mid,hi) ->
         [left,right] = [new Nums, new Nums]
-        (left.adds  rxs[i].seen for i in [lo..mid]  )
-        (right.adds rxs[i].seen for i in [mid+1..hi])
+        (left.adds  rxs[i].seen for i in [lo..mid]  when ok(i))
+        (right.adds rxs[i].seen for i in [mid+1..hi] when ok(i))
         [left,right]
       xpect = (b4,x,y) ->
-        x.n/b4.n * (b4.mu - x.mu)**2 + y.n/b4.n * (b4.mu - y.mu)**2
-      split = (lo,hi,    cut=null,best=0) ->
-        say "spkitting",lo,hi, lst.length-1
-        if lo < hi 
+        [n, mu] = [b4.n, b4.mu]
+        x.n/n * (mu - x.mu)**2 + y.n/n * (mu - y.mu)**2
+      split = (lo,hi, pad,    cut=null) ->
+        if lo < hi
           b4 = new Nums
-          (b4.adds rxs[j].seen for j in [lo..hi])
+          (b4.adds rxs[j].seen for j in [lo..hi] when ok(j))
+          epsilon or= b4.has.sd*cohen
+          best=0
           for j in [lo..hi]
-            if    j <  hi
+            if ok(j) and j < hi # lo
               [l,r] = leftRight(lo,j,hi)
-              now = xpect(b4.has,l.has, r.has)
-              say lo,j,hi,now,best,l.has,r.has,l.seen,"|",r.seen
-              if now > best and not same(l.seen, r.seen)
-                [best,cut] = [now,j]
-        say "cut", lo,cut,hi
-        if cut  isnt null
-          say "cutting"
-          split(lo,   cut)
-          split(cut+1, hi)
+              now   = xpect(b4.has, l.has, r.has)
+              if now > best 
+                if l.has.mu+epsilon < r.has.mu
+                  if not same(l.seen, r.seen)
+                    [best,cut] = [now,j]
+        if cut isnt null
+          split(lo,     cut,  pad+'|...')
+          split(cut+1,   hi,  pad+'|...')
         else
           rank++
-          say "other", j,rank
-          (rxs[k].rank = rank for k in [lo..hi])
+          (rxs[k].rank = rank for k in [lo..hi] when ok(k))
+      rank=0
       rxs = (rx0(x) for x in lst)
                .sort (a,b) -> a.has.mu - b.has.mu
-      split(0, rxs.length-1)
+      split(0, rxs.length-1,  '|...')
       rxs
 
 ## End stuff
