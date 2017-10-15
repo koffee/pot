@@ -13,13 +13,13 @@ Example usage
       t = new Table
       t.from data + '/weather2.csv' , -> 
         sd= t.xy.nums[1].sd
-        O.want sd.toFixed(2) == '17.03'
+        want sd.toFixed(2) == '17.03'
 
 Setting up
 
     src     = process.env.PWD + "/../src/" 
     data    = process.env.PWD + "/../data/" 
-    {say,O} = require src+'our'
+    {say,want} = require src+'our'
     {Csv}   = require src+'csv'
     {Row}   = require src+'row'
     {Num}   = require src+'num'

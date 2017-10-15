@@ -15,7 +15,7 @@ functions we can customise).
 
     src               = process.env.PWD + "/../src/"
     {say,O}           = require src+ 'our'
-    {Num,same,cliffs} = require src + 'num'
+    {Num,same,cliffs,bootstrap} = require src + 'num'
     {Sym}             = require src + 'sym'
 
 ## Range class
@@ -161,7 +161,7 @@ Ranking items
               if now > best 
                 if l.has.mu+epsilon < r.has.mu
                   if not same(l.seen, r.seen)
-                    [best,cut] = [now,j]
+                     [best,cut] = [now,j]
         if cut isnt null
           split(lo,     cut,  pad+'|...')
           split(cut+1,   hi,  pad+'|...')

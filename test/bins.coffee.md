@@ -100,6 +100,20 @@ Treatmetnts
        console.log i,x.rank,x.txt,x.has.mu
 
 
+    eg11 = ->
+      console.log ""
+      r = new Rand
+      for m in [1..5]
+        n = 10**m
+        say ""
+        top = 20
+        for f in [0..top/2]
+          g = 1+f/top
+          lst1= ["x1", (   r.next()**2 for [1..n])...]
+          lst2= ["x2", (g* x for x in lst1[1..])...]
+          out = sk [lst1,lst2]
+          console.log out[1].rank,n,g
+
 Run stuff
 
     eg1()
@@ -112,3 +126,4 @@ Run stuff
     eg8()
     eg9()
     eg10()
+    eg11()
