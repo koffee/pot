@@ -134,8 +134,8 @@ value stays.
 Ranking items
 
     sk = (lst, cohen=0.3,epsilon=null) ->
-      ok = (i) -> 0 <= i < lst.length
-      mid = (l,n) ->  l[Math.floor(l.length  *0.5)]
+      ok = (i) -> 
+        0 <= i < lst.length
       rx0 = (rx) ->
         n = (new Nums).adds rx[1..].sort((a,b) -> a-b)
         n.txt = rx[0]
@@ -157,7 +157,7 @@ Ranking items
           for j in [lo..hi]
             if ok(j) and j < hi # lo
               [l,r] = leftRight(lo,j,hi)
-              now   = xpect(b4.has, l.has, r.has)
+              now = xpect(b4.has, l.has, r.has)
               if now > best 
                 if l.has.mu+epsilon < r.has.mu
                   if not same(l.seen, r.seen)
