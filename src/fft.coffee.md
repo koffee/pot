@@ -18,29 +18,58 @@ Setting up
     data    = process.env.PWD + "/../data/" 
     {say,want} = require src+'our'
     {Table}   = require src+'table'
-    
-    class 
+    {ABCD}   = require src+'abcd'
 
-    fft = (file=data + 'weather2.csv') ->
-      medians = {}
-      pre = -> 
+# with pretty print strings and constructors with column name
+
+    class More
+
+    class Less
+
+    class Is
+
+    class  Rule
+      constructor: (@col,@accepts,@want) ->
+        @has = new ABCD
+        @does = []
+        @dont = []
+      add: (t,row) ->
+        val = row.cells[@col]
+        @has.add @want val, @accepts row
+        (if @accepts row then @does else @dont).push row
+      best: (that) ->
+        if that is null 
+          this
+        else
+          if @has.acc > that.has.acc then this else that
+
+    fft = (c,file=data + 'weather2.csv') ->
+      pre = () -> 
         t= new Table
-        t.from file, -> post(t)
-      post = (t) ->
-        say t.rows.length
-        for num in  t.
+        t.from file, (-> post(t))
+      post = (t) -> say t.rows.length
       pre()
-   
-    median = (col,t, lo,hi) ->
-      lst = t.rows.sort (a,b) -> a.cells[col] - b.cells[col]
-      n   = lst.length
+
+    bestSum = (col,t,goal,best=null) ->
+      all = {}
+      for row in t.rows
+        val = row.cells[col]
+        all[val] or= new Rule col, ((z) -> z==val), ((z) -> z.klass(t) == goal)
+        all[val].add t,rows[i]
+      for _,rule of all
+        best = rule.best best
+      best
+  
+    bestNum = (col,t,goal,best=null) ->
+      rows = t.rows.sort((a,b) -> a.cells[col] - b.cells[col])
+      n   = lst.length 
       mid = n // 2
-      (lo( lst[i] ) for i in [0..mid])
-      (hi( lst[i] ) for i in [mid+1....n])
+      lo = new Rule col,((z) -> z<mid),  ((z) -> z.klass(t) == goal) 
+      hi = new Rule col,((z) -> z>=mid), ((z) -> z.klass(t) == goal) 
+      (lo.add t,rows[i] for i in [0..mid-1])
+      (hi.add t,rows[i] for i in [mid .. n-1])
+      (lo.best hi).best best
 
-      lst[mid].cells[col]
-
-#
 ## End stuff
 
     @fft = fft

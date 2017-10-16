@@ -32,7 +32,7 @@ Setup
 
 Code
 
-    class ABCD
+    class ABCD:
       constructor: (round=3) ->
         @a   = {} ; @b  = {} ; @c   = {} ; @d = {}
         @yes = 0  ; @no = 0  ; @all = {}
@@ -56,16 +56,19 @@ Code
         @d[x]   or= 0
         @a[x]= @yes + @no if ++@all[x] is 1
     
+      acc: ->
+        if (@yes+@no) > 0 then @yes / (@yes+@no) else 0
+         
       report1: (k,a,b,c,d) ->
         y      = {}
-        y.acc  = y.pd = y.pf = y.prec = y.f = y.g = y.pn = 0
+        y.pd   = y.pf = y.prec = y.f = y.g = y.pn = 0
         y.pd   = d     / (b+d) if (b+d) > 0
         y.pf   = c     / (a+c) if (a+c) > 0
         y.pn   = (b+d) / (a+c) if (a+c) > 0
         y.prec = d     / (c+d) if (c+d) > 0
         y.g    = 2*(1-y.pf)*y.pd / (1-y.pf+y.pd)  if (1-y.pf+y.pd)    > 0
         y.f    = 2*y.prec*y.pd   / (y.prec+y.pd)  if (y.prec+y.pd)    > 0
-        y.acc  = @yes        / (@yes+@no)  if (@yes+@no) > 0
+        y.acc  = @acc()
         y
     
       report: () ->

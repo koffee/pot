@@ -12,5 +12,7 @@
       constructor: (cells,t) ->
         @cells= (cell for cell in cells)
         @id   = ++@id
+      klass: (t) ->
+        @cells[t.klasses[0].pos]
 
     @Row = Row
