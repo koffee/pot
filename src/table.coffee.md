@@ -2,8 +2,8 @@
 [copyright](https://github.com/koffee/script/blob/master/LICENSE.md) &copy;2017, tim&commat;menzies.us<br>
 [<img width=900 src=https://raw.githubusercontent.com/koffee/script/master/img/head.jpg>](http://tiny.cc/koff)<br>
 [src](https://github.com/koffee/script/tree/master/src) |
-[tour](https://github.com/koffee/script/blob/master/docs/TOUR.md) |
-[style](https://github.com/koffee/script/blob/master/docs/STYLE.md)
+[tour](https://github.com/koffee/script/blob/master/doc/TOUR.md) |
+[style](https://github.com/koffee/script/blob/master/doc/STYLE.md)
 
 # Table reader
 
@@ -23,7 +23,7 @@ Setting up
     {Csv}   = require src+'csv'
     {Row}   = require src+'row'
     {Num}   = require src+'num'
-    {Sym}   = require src+'sym'
+    {Sym}   = require src+'sym':e Ro
 
     class Table
       constructor: (spec) ->
