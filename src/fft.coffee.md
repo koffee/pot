@@ -22,21 +22,29 @@ Setting up
 
 # with pretty print strings and constructors with column name
 
-    class More
+    class Cmp
+      @less = (attr,col,val) ->
+        new Cmp attr,col,val,'<=', (a,b) => a <= b
+      @more = (attr,col,val) ->
+        new Cmp attr,col,val,'>',  (a,b) => a  > b
+      @is   = (attr,col,val) ->
+        new Cmp attr,col,val,'==', (a,b) => a == b
+      constructor: (@attr,@col,@val,@show,@f) 
+      toString: ->
+        return "#{@name} #{@show} #{@val}"
+      cell: (row) ->
+        row.cells[@col]
+      accepts: (row) ->
+        @f( @cell(row), @val)
 
-    class Less
-
-    class Is
-
-    class  Rule
-      constructor: (@col,@accepts,@want) ->
+    class  Constraint
+      constructor: (@cmp,@want) ->
         @has = new ABCD
-        @does = []
-        @dont = []
+        @unacceptable = []
       add: (t,row) ->
-        val = row.cells[@col]
-        @has.add @want val, @accepts row
-        (if @accepts row then @does else @dont).push row
+        relevant = @cmp.accepts row
+        @has.add @want t,row, relevant
+        @unacceptable.push row if not relevant
       best: (that) ->
         if that is null 
           this
@@ -54,6 +62,7 @@ Setting up
       all = {}
       for row in t.rows
         val = row.cells[col]
+        #insert cmp here
         all[val] or= new Rule col, ((z) -> z==val), ((z) -> z.klass(t) == goal)
         all[val].add t,rows[i]
       for _,rule of all
