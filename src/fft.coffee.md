@@ -22,62 +22,68 @@ Setting up
 
 # with pretty print strings and constructors with column name
 
-    class Cmp
-      @less = (attr,col,val) ->
-        new Cmp attr,col,val,'<=', (a,b) => a <= b
-      @more = (attr,col,val) ->
-        new Cmp attr,col,val,'>',  (a,b) => a  > b
-      @is   = (attr,col,val) ->
-        new Cmp attr,col,val,'==', (a,b) => a == b
-      constructor: (@attr,@col,@val,@show,@f) 
-      toString: ->
-        return "#{@name} #{@show} #{@val}"
-      cell: (row) ->
-        row.cells[@col]
-      accepts: (row) ->
-        @f( @cell(row), @val)
+    class Compare
+      @upTo = (what,col,val) ->
+        new Compare what,col,val,'<=',  (a,b) => a <= b )
+      @above = (what,col,val) ->
+        new Compare what,col,val,'>',  (a,b) => a  > b )
+      @is = (what,col,val) ->
+        new Compare what,col,val,'==', (a,b) => a == b )
+      constructor: (@what,@val,@col,@show,@f)
+      toString   :  -> return "#{@name} #{@show} #{@val}"
+      good       : (x) -> @f( x[@col], @val)
+
 
     class  Constraint
-      constructor: (@cmp,@want) ->
-        @has = new ABCD
-        @unacceptable = []
-      add: (t,row) ->
-        relevant = @cmp.accepts row
-        @has.add @want t,row, relevant
-        @unacceptable.push row if not relevant
-      best: (that) ->
+      @acc = (x,y) =>
+        new Constraint(x,y, (z) -> z.acc()
+      @y = (t) => (goal) => row.klass(t) == goal
+      constructor: (@x,@y,@score) ->
+        @abcd = new ABCD
+        @bad = []
+      add: (this) ->
+        @abcd.add @y(this), @x.good(this)
+        @bad.push this if not @x.good(this)
+      better: (that) ->
         if that is null 
           this
         else
-          if @has.acc > that.has.acc then this else that
+          if @score(@has) > @score(@has) then this else that
 
-    fft = (c,file=data + 'weather2.csv') ->
+    fft = (file=data + 'weather2.csv') ->
       pre = () -> 
         t= new Table
-        t.from file, (-> post(t))
-      post = (t) -> say t.rows.length
-      pre()
+        t.from file, (-> fft1(t))
 
-    bestSum = (col,t,goal,best=null) ->
+    fft1= (t) ->
+      say t.rows.length
+
+    estSum = (col,t,goal,best=null) ->
       all = {}
       for row in t.rows
         val = row.cells[col]
-        #insert cmp here
-        all[val] or= new Rule col, ((z) -> z==val), ((z) -> z.klass(t) == goal)
-        all[val].add t,rows[i]
+        if not val in all
+          here = Constraint.acc(Compare.is(col.txt.col.pos,val)
+                                (row) ==> row.klass(t) == goal)
+      for row in t.rows
+        val[row.cells[col]].add row
       for _,rule of all
-        best = rule.best best
+        best = rule.better best
       best
   
     bestNum = (col,t,goal,best=null) ->
-      rows = t.rows.sort((a,b) -> a.cells[col] - b.cells[col])
-      n   = lst.length 
-      mid = n // 2
-      lo = new Rule col,((z) -> z<mid),  ((z) -> z.klass(t) == goal) 
-      hi = new Rule col,((z) -> z>=mid), ((z) -> z.klass(t) == goal) 
-      (lo.add t,rows[i] for i in [0..mid-1])
-      (hi.add t,rows[i] for i in [mid .. n-1])
-      (lo.best hi).best best
+      rows    = t.rows.sort((a,b) -> a.cells[col] - b.cells[col])
+      mid     = t.rows[lst.length // 2].cells[col.pos]
+      klass   = t.y.syms[0]
+      goody   = (row) => row.klass(t) == goal
+      goodxlo = Compare.below(col.text, col.pos,mid)
+      goodxhi = Compare.above(col.text, col.pos,mid)
+      below   = Constraint.acc( goodxlo, goody)
+      above   = Constraint.acc( goodxhi, goody)
+      for row in t.rows
+        below.add row
+        above.add row
+      (below.better above).better best
 
 ## End stuff
 
