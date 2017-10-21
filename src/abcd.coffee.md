@@ -27,12 +27,12 @@ Example
 
 Setup
 
-    src     = process.env.PWD + "/../src/" 
+    src = process.env.PWD + "/../src/" 
     {say,rsay,want} = require src+'our'
 
 Code
 
-    class ABCD:
+    class ABCD
       constructor: (round=3) ->
         @a   = {} ; @b  = {} ; @c   = {} ; @d = {}
         @yes = 0  ; @no = 0  ; @all = {}
@@ -50,10 +50,10 @@ Code
             if predicted is target then @c[target] += 1 else @a[target] += 1
     
       known: (x) ->
-        @a[x]   or= 0
-        @b[x]   or= 0
-        @c[x]   or= 0
-        @d[x]   or= 0
+        @a[x] or= 0
+        @b[x] or= 0
+        @c[x] or= 0
+        @d[x] or= 0
         @a[x]= @yes + @no if ++@all[x] is 1
     
       acc: ->
@@ -76,8 +76,9 @@ Code
         for k,val of @all
           y[k]  = @report1 k,@a[k],@b[k],@c[k],@d[k]
         y
-     
+
+End stuff
+
     @ABCD = ABCD
-    @tests=[ egABCD ]
-    f() for f in @tests if require.main is module
-    
+    @tests = [ egABCD ]
+    (f() for f in @tests if require.main is module)

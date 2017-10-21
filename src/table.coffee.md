@@ -23,7 +23,7 @@ Setting up
     {Csv}   = require src+'csv'
     {Row}   = require src+'row'
     {Num}   = require src+'num'
-    {Sym}   = require src+'sym':e Ro
+    {Sym}   = require src+'sym'
 
     class Table
       constructor: (spec) ->

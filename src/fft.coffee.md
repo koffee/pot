@@ -7,12 +7,13 @@
 
 # Table reader
 
-Example usage
+#Example usage
 
     egFft = ->
+      say 1 
       fft()
 
-Setting up
+#Setting up
 
     src     = process.env.PWD + "/../src/" 
     data    = process.env.PWD + "/../data/" 
@@ -24,31 +25,31 @@ Setting up
 
     class Compare
       @upTo = (what,col,val) ->
-        new Compare what,col,val,'<=',  (a,b) => a <= b )
+        new Compare what,col,val,'<=',  (a,b) => a <= b 
       @above = (what,col,val) ->
-        new Compare what,col,val,'>',  (a,b) => a  > b )
+        new Compare what,col,val,'>',  (a,b) => a  > b 
       @is = (what,col,val) ->
-        new Compare what,col,val,'==', (a,b) => a == b )
-      constructor: (@what,@val,@col,@show,@f)
+        new Compare what,col,val,'==', (a,b) => a == b 
+      constructor: (@what,@val,@col,@show,@f) ->
       toString   :  -> return "#{@name} #{@show} #{@val}"
       good       : (x) -> @f( x[@col], @val)
-
-
+ 
     class  Constraint
-      @acc = (x,y) =>
-        new Constraint(x,y, (z) -> z.acc()
-      @y = (t) => (goal) => row.klass(t) == goal
-      constructor: (@x,@y,@score) ->
-        @abcd = new ABCD
-        @bad = []
-      add: (this) ->
-        @abcd.add @y(this), @x.good(this)
-        @bad.push this if not @x.good(this)
-      better: (that) ->
-        if that is null 
-          this
-        else
-          if @score(@has) > @score(@has) then this else that
+       @acc = (x,y) =>
+         new Constraint x,y, (z) -> z.acc()
+       @y = (t) => (goal) => row.klass(t) == goal
+       constructor: (@x,@y,@score) ->
+         @abcd = new ABCD
+         @bad = []
+       add: (that) ->
+         @abcd.add @y(that), @x.good(that)
+         @bad.push that if not @x.good(that)
+       better: (that) ->
+         if that is null 
+           this
+         else
+           if @score(@has) > @score(@has) then this else that
+
 
     fft = (file=data + 'weather2.csv') ->
       pre = () -> 
@@ -58,19 +59,19 @@ Setting up
     fft1= (t) ->
       say t.rows.length
 
-    estSum = (col,t,goal,best=null) ->
+    bestSum = (col,t,goal,best=null) ->
       all = {}
       for row in t.rows
         val = row.cells[col]
         if not val in all
-          here = Constraint.acc(Compare.is(col.txt.col.pos,val)
-                                (row) ==> row.klass(t) == goal)
+          here = Constraint.acc(Compare.is(col.txt.col.pos,val),
+                                (row) => row.klass(t) == goal)
       for row in t.rows
         val[row.cells[col]].add row
       for _,rule of all
         best = rule.better best
       best
-  
+
     bestNum = (col,t,goal,best=null) ->
       rows    = t.rows.sort((a,b) -> a.cells[col] - b.cells[col])
       mid     = t.rows[lst.length // 2].cells[col.pos]
@@ -87,6 +88,6 @@ Setting up
 
 ## End stuff
 
-    @fft = fft
-    @tests=[ egFft ]
-    f() for f in @tests if require.main is module
+#    @fft = fft
+ #   @tests=[ egFft ]
+  #  (f() for f in @tests if require.main is module)
