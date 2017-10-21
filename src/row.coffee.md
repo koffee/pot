@@ -13,6 +13,6 @@
         @cells= (cell for cell in cells)
         @id   = ++@id
       klass: (t) ->
-        @cells[t.klasses[0].pos]
+        @cells[t.y.klasses[0].pos]
 
     @Row = Row

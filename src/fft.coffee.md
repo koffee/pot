@@ -10,13 +10,13 @@
 #Example usage
 
     egFft = ->
-      say 1 
+      say 3
       fft()
 
 #Setting up
 
-    src     = process.env.PWD + "/../src/" 
-    data    = process.env.PWD + "/../data/" 
+    src     = process.env.PWD + "/../src/"
+    data    = process.env.PWD + "/../data/"
     {say,want} = require src+'our'
     {Table}   = require src+'table'
     {ABCD}   = require src+'abcd'
@@ -25,39 +25,45 @@
 
     class Compare
       @upTo = (what,col,val) ->
-        new Compare what,col,val,'<=',  (a,b) => a <= b 
+        new Compare what,col,val,'<=',  (a,b) => a <= b
       @above = (what,col,val) ->
-        new Compare what,col,val,'>',  (a,b) => a  > b 
+        new Compare what,col,val,'>',  (a,b) => a  > b
       @is = (what,col,val) ->
-        new Compare what,col,val,'==', (a,b) => a == b 
+        new Compare what,col,val,'==', (a,b) => a == b
       constructor: (@what,@val,@col,@show,@f) ->
-      toString   :  -> return "#{@name} #{@show} #{@val}"
+        say "what #{@what}"
+      toString   :  -> return "#{@what} #{@show} #{@val}"
       good       : (x) -> @f( x[@col], @val)
- 
+
     class  Constraint
        @acc = (x,y) =>
-         new Constraint x,y, (z) -> z.acc()
+         new Constraint x,y, (z) => say(z); z.acc()
        @y = (t) => (goal) => row.klass(t) == goal
        constructor: (@x,@y,@score) ->
          @abcd = new ABCD
          @bad = []
+       toString : ->
+         'if ' + @x.toString() + ' then ' + @y.toString() + ' so ' + @abcd.acc()
        add: (that) ->
          @abcd.add @y(that), @x.good(that)
          @bad.push that if not @x.good(that)
        better: (that) ->
-         if that is null 
+         if that is null
            this
          else
-           if @score(@has) > @score(@has) then this else that
+           if @score(@abcd) > @score(that.abcd) then this else that
 
+    fft = (file=data + 'weather.csv') ->
+      t=new Table
+      t.from file, (-> fft1(t))
 
-    fft = (file=data + 'weather2.csv') ->
-      pre = () -> 
-        t= new Table
-        t.from file, (-> fft1(t))
-
-    fft1= (t) ->
-      say t.rows.length
+    fft1= (t, out) ->
+      say 1
+      for num in t.x.nums
+        say num
+        out = bestNum num,t,"yes",out
+      say out
+      want 14 == t.rows.length
 
     bestSum = (col,t,goal,best=null) ->
       all = {}
@@ -73,12 +79,12 @@
       best
 
     bestNum = (col,t,goal,best=null) ->
-      rows    = t.rows.sort((a,b) -> a.cells[col] - b.cells[col])
-      mid     = t.rows[lst.length // 2].cells[col.pos]
-      klass   = t.y.syms[0]
+      mid      = t.median(col)
+      say "median",mid
       goody   = (row) => row.klass(t) == goal
-      goodxlo = Compare.below(col.text, col.pos,mid)
-      goodxhi = Compare.above(col.text, col.pos,mid)
+      goodxlo = Compare.upTo(col.txt, col.pos,mid)
+      goodxhi = Compare.above(col.txt, col.pos,mid)
+      say 2
       below   = Constraint.acc( goodxlo, goody)
       above   = Constraint.acc( goodxhi, goody)
       for row in t.rows
@@ -88,6 +94,6 @@
 
 ## End stuff
 
-#    @fft = fft
- #   @tests=[ egFft ]
-  #  (f() for f in @tests if require.main is module)
+    @fft = fft
+    @tests=[ egFft ]
+    f() for f in @tests if require.main is module
