@@ -56,6 +56,9 @@ Code
         @d[x] or= 0
         @a[x]= @yes + @no if ++@all[x] is 1
     
+      toString: ->
+        "#{@yes+@no}= #{@yes}+#{@no} :acc #{@acc()} "
+        
       acc: ->
         if (@yes+@no) > 0 then @yes / (@yes+@no) else 0
          

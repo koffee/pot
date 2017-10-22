@@ -30,8 +30,7 @@
         new Compare what,col,val,'>',  (a,b) => a  > b
       @is = (what,col,val) ->
         new Compare what,col,val,'==', (a,b) => a == b
-      constructor: (@what,@val,@col,@show,@f) ->
-        say "what #{@what}"
+      constructor: (@what,@col,@val,@show,@f) ->
       toString   :  -> return "#{@what} #{@show} #{@val}"
       good       : (x) -> @f( x[@col], @val)
 
@@ -84,7 +83,6 @@
       goody   = (row) => row.klass(t) == goal
       goodxlo = Compare.upTo(col.txt, col.pos,mid)
       goodxhi = Compare.above(col.txt, col.pos,mid)
-      say 2
       below   = Constraint.acc( goodxlo, goody)
       above   = Constraint.acc( goodxhi, goody)
       for row in t.rows
