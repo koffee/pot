@@ -25,14 +25,15 @@
 
     class Compare
       @upTo = (what,col,val) ->
-        new Compare what,col,val,'<=',  (a,b) => a <= b
+        new Compare what,col,val,'<=',  ((a,b) => a <= b)
       @above = (what,col,val) ->
-        new Compare what,col,val,'>',  (a,b) => a  > b
+        new Compare what,col,val,'>',  ((a,b) => a  > b)
       @is = (what,col,val) ->
-        new Compare what,col,val,'==', (a,b) => a == b
+        new Compare what,col,val,'==', ((a,b) => a == b)
       constructor: (@what,@col,@val,@show,@f) ->
       toString   :  -> return "#{@what} #{@show} #{@val}"
-      good       : (x) -> @f( x[@col], @val)
+      good       : (x) ->   
+        @f( x.cells[@col], @val)
 
     class  Constraint
        @acc = (x,y) =>
@@ -44,6 +45,7 @@
        toString : ->
          'if ' + @x.toString() + ' then ' + @y.toString() + ' so ' + @abcd.acc()
        add: (that) ->
+         say  ">",@y(that),  @x.good(that)
          @abcd.add @y(that), @x.good(that)
          @bad.push that if not @x.good(that)
        better: (that) ->
@@ -57,11 +59,8 @@
       t.from file, (-> fft1(t))
 
     fft1= (t, out) ->
-      say 1
       for num in t.x.nums
-        say num
         out = bestNum num,t,"yes",out
-      say out
       want 14 == t.rows.length
 
     bestSum = (col,t,goal,best=null) ->
@@ -88,6 +87,14 @@
       for row in t.rows
         below.add row
         above.add row
+      for f,v of below.abcd.report()
+        say "-",f
+        for f1,v1 of v
+          say "\t",f1,v1
+      for f,v of above.abcd.report()
+        say "+",f
+        for f1,v1 of v
+          say "\t",f1,v1
       (below.better above).better best
 
 ## End stuff

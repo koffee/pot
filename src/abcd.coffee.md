@@ -5,7 +5,6 @@
 [tour](https://github.com/koffee/script/blob/master/doc/TOUR.md) |
 [style](https://github.com/koffee/script/blob/master/doc/STYLE.md)
 
-
 Example
 
     egABCD = ->
@@ -21,10 +20,14 @@ Example
       abcd.add("maybe","maybe") for i in [1..5]
       abcd.add("maybe","no")
       y = abcd.report()
+      for f,v of y
+        say "f",f
+        for f1,v1 of v
+          say "\t",f1,v1
       want y.yes.acc.toFixed(2) == '0.93'
       want y.no.prec.toFixed(2) == '0.67'
       want y.maybe.g.toFixed(2) == '0.91'
-
+      
 Setup
 
     src = process.env.PWD + "/../src/" 
@@ -48,7 +51,7 @@ Code
             if predicted is actual then @d[target] += 1 else @b[target] += 1
           else
             if predicted is target then @c[target] += 1 else @a[target] += 1
-    
+          say "!!!", actual, predicted, target,@a[target] or 0, @b[target] or 0, @c[target] or 0,  @d[target] or 0
       known: (x) ->
         @a[x] or= 0
         @b[x] or= 0
