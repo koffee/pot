@@ -13,6 +13,11 @@
 <em>(This code ports and extends
 [lualure](https://lualure.github.io/info/). Work in progress. Check back in sometime in October'17.)</em>
 
+<em>UPDATE, Nov 25 2017.  
+Started having scale-up issues with coffeescript programming (e.g. wrong line error numbers when literate
+coffeescript loads nested files). Shelving this project for a while why I try a
+[more classical approach](http://git.io/cram).</em>
+
 # README 
 
 ## What (is this code)?
